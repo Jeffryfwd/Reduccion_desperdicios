@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from django.contrib.auth.models import User
 from rest_framework import generics
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser
+
 from .models import Categoria, Productos, Promociones, Alerta, Ventas, Reporte, Usuarios, Empresa, Inventario
 from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers 
 # Create your views here.
@@ -10,6 +13,10 @@ from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSer
 class CategoriaListCreate(generics.ListCreateAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+    permission_classes= [AllowAny]
+    
+    def get(self, request):
+       return Response({"message": "Tienes acceso a esta vista protegida."})
 
 
 class CategoriaDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -64,7 +71,7 @@ class ReporteDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UsuarioListCreate(generics.ListCreateAPIView):
-    queryset= Usuarios.objects.all()
+    queryset= User.objects.all()
     serializer_class= UsuarioSerializer
     permission_classes= [AllowAny]
     
@@ -96,13 +103,12 @@ class InventarioDetail(generics.RetrieveUpdateDestroyAPIView):
     
 ############################################################################
 class ProductosListCreate(generics.ListCreateAPIView):
-    queryset= Productos
-    serializer_class= ProductoSerializer
+    queryset= Productos.objects.all()
+    serializer_class = ProductoSerializer
     
+    permission_classes= [AllowAny]
+ 
 class ProductoDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset= Productos
+    queryset= Productos.objects.all()
     serializer_class= ProductoSerializer
-    
-    
-                              
-           
+  

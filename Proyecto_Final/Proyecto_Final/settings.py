@@ -51,6 +51,14 @@ REST_FRAMEWORK = {
     ),
 }
 
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Duración del Access Token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     # Duración del Refresh Token
+    'ROTATE_REFRESH_TOKENS': True,                  # Generar nuevos Refresh Tokens
+    'BLACKLIST_AFTER_ROTATION': True,               # Invalidar tokens antiguos tras rotación
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
