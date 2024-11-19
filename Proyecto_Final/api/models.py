@@ -74,29 +74,30 @@ class Reporte(models.Model):
         return self.Fecha_reporte, self.Mes_reporte, self.Total_ventas
     
     
-class Usuarios(models.Model):
-    Usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=False)
-    Telefono = models.IntegerField(null=False, blank=False)
-    
-    def __str__(self):
-        return f"{self.Usuario.username} - {self.Email} - {self.Telefono}"
+
     
     
 class Empresa(models.Model):
-    Nombre_empresa= models.CharField(max_length=100, null=False, blank=False, unique=False)
-    Ubicacion= models.CharField(max_length=100, blank=False, null=False)
-    Actividad_principal= models.CharField(max_length=100, null=False, blank=False)
-    Descripcion= models.CharField(max_length=100, null=False, blank=False)
-    Telefono= models.IntegerField(null=False, blank=False)
-    Email_empresa= models.EmailField(null=False, blank=False)
-    Fecha_fundacion= models.DateField(null=False, blank=False)
-    
+    Nombre_empresa = models.CharField(max_length=100, null=False, blank=False, unique=False)
+    Ubicacion = models.CharField(max_length=100, blank=False, null=False)
+    Actividad_principal = models.CharField(max_length=100, null=False, blank=False)
+    Descripcion = models.CharField(max_length=100, null=False, blank=False)
+    Telefono = models.IntegerField(null=False, blank=False)
+    Email_empresa = models.EmailField(null=False, blank=False)
+    Fecha_fundacion = models.DateField(null=False, blank=False)
     
     def __str__(self):
-        return self.Nombre_empresa, self.Ubicacion, self.Actividad_principal, self.Descripcion, self.Telefono, self.Email_empresa, self.Fecha_fundacion
-    
+        # Formatea una cadena con la información más relevante
+        return f"{self.Nombre_empresa} - {self.Ubicacion} ({self.Actividad_principal})"
 
-    
+
+class Usuarios(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.empresa.Nombre_empresa}"  # Ahora es un string.
+
     
 
         

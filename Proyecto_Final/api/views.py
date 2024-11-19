@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser
 
 from .models import Categoria, Productos, Promociones, Alerta, Ventas, Reporte, Usuarios, Empresa, Inventario
-from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers 
+from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser_Empresa
 # Create your views here.
 
 
@@ -69,22 +69,33 @@ class ReporteDetail(generics.RetrieveUpdateDestroyAPIView):
     
 ##########################################################################
 
+from rest_framework import status
 
 class UsuarioListCreate(generics.ListCreateAPIView):
     queryset= User.objects.all()
     serializer_class= UsuarioSerializer
     permission_classes= [AllowAny]
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)  # Depuración
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
 class UsuarioDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset= Usuarios.objects.all()
+    queryset= User.objects.all()
     serializer_class= UsuarioSerializer
+    permission_classes= [AllowAny]
     
 ##########################################################################
 
 
 class EmpresaListCreate(generics.ListCreateAPIView):
-    queryset= Empresa
+    queryset= Empresa.objects.all()
     serializer_class= EmpresaSerializer
+    permission_classes= [AllowAny]
     
 class EmpresaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset= Empresa
@@ -111,4 +122,10 @@ class ProductosListCreate(generics.ListCreateAPIView):
 class ProductoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset= Productos.objects.all()
     serializer_class= ProductoSerializer
+    
+class Registro_userListCreate(generics.ListCreateAPIView):
+    queryset= Usuarios.objects.all()
+    serializer_class=  RegistroUser_Empresa 
+    permission_classes= [AllowAny]
+  
   

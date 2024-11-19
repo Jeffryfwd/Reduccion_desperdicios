@@ -42,4 +42,7 @@ urlpatterns = [
     
     path('categoria/', views.CategoriaListCreate.as_view(), name='Categoria-List'),
     path('categoria/<int:pk>', views.CategoriaDetail.as_view(), name='Categoria-Detail'),
+    
+    path('registro/user/', views.Registro_userListCreate.as_view(), name='Categoria-List'),
+    
 ]
