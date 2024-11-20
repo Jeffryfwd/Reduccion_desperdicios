@@ -49,6 +49,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
        user.set_password(validated_data['password'])#luego aca codifica la contraseña ingresada
        user.save()# y la guarda
        return user
+   
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Este correo electronico ya esta registrado.")
