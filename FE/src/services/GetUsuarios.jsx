@@ -1,15 +1,13 @@
-async function PostUsuarios(first_name, last_name, username, email, password, is_staff) {
+async function GetUsuarios(username, password) {
     try {
         const userData = { 
-            first_name: first_name,
-            last_name: last_name,
             username: username,
-            email: email,
-            password: password,
-            is_staff: Boolean(is_staff) // Garantiza que sea un booleano
+            password: password
         };
 
-        const response = await fetch("http://127.0.0.1:8000/api/usuario/", {
+        console.log(userData)
+
+        const response = await fetch("http://127.0.0.1:8000/api/api/token/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -17,13 +15,20 @@ async function PostUsuarios(first_name, last_name, username, email, password, is
             body: JSON.stringify(userData)
         });
 
+        console.log(response)
+
         if (!response.ok) {
             const errorData = await response.json();
             console.error('Server responded with an error:', errorData);
             throw new Error(`Error ${response.status}: ${JSON.stringify(errorData)}`);
         }
 
-        return await response.json();
+        const respuesta = await response.json();
+        console.log(respuesta)
+        localStorage.setItem('access-token', respuesta.access)
+        localStorage.setItem('Token-refresh',respuesta.refresh);
+        return respuesta;
+        
 
     } catch (error) {
         console.error('Error posting user:', error.message);
@@ -31,8 +36,7 @@ async function PostUsuarios(first_name, last_name, username, email, password, is
     }
 }
 
-export default PostUsuarios;
 
 
-
+export default GetUsuarios;
 

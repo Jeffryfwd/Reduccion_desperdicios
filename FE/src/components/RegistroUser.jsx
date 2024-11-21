@@ -41,6 +41,7 @@ const Registrar = async (e) => {
         password,
         is_staff,
     };
+    
     console.log("Datos enviados al backend:", userData);
     try {
         const Registro = await PostUsuarios(first_name, last_name, username, email, password, is_staff);

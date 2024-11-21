@@ -3,7 +3,14 @@ from django.contrib.auth.models import User
 from .models import Productos, Categoria, Usuarios, Empresa, Alerta, Inventario, Promociones, Ventas, Reporte, Usuarios
 from datetime import date
 
+class CategoriaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Categoria
+        fields= '__all__'
+        
 class ProductoSerializer(serializers.ModelSerializer):
+    #Categoria = CategoriaSerializer() #Obtener todos los campos del modelo categoria desde el serializer
+    
     class Meta:
         model = Productos
         fields = '__all__'
@@ -23,21 +30,14 @@ class ProductoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("La cantidad debe ser mayor a 0")
         return value
     
-    def validate_Nombre_producto(self, value):
+    #def validate_Nombre_producto(self, value):
         """Validar que el nombre del producto sea único dentro de la categoría."""
         # Obtener la categoría del contexto del serializador
-        categoria = self.initial_data.get('Categoria')
+       #categoria = self.initial_data.get('Categoria')
 
-        if Productos.objects.filter(Nombre_producto=value, Categoria=categoria).exists():
-            raise serializers.ValidationError("Ya existe un producto con este nombre en esta categoría.")
-        return value
-   
-    
-        
-class CategoriaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model= Categoria
-        fields= '__all__'
+        #if Productos.objects.filter(Nombre_producto=value, Categoria=categoria).exists():
+         #   raise serializers.ValidationError("Ya existe un producto con este nombre en esta categoría.")
+        #return value
         
 class UsuarioSerializer(serializers.ModelSerializer):
     is_staff = serializers.BooleanField()
@@ -55,7 +55,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Este correo electronico ya esta registrado.")
         return value
     def validate_password(self, value):
-        if len(value)< 8:
+        if len(value)> 8:
             raise serializers.ValidationError("La contraseña debe contener minimo 8 caracteres")
         if not any(char.isdigit() for char in value ):
             raise serializers.ValidationError("La contraseña debe contener al menos un numero")
