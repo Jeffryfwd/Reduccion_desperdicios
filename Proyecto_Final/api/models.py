@@ -35,12 +35,13 @@ class Alerta(models.Model):
     
     
 class Inventario(models.Model):
-    Nombre_producto= models.ForeignKey(Productos, on_delete=models.CASCADE)
-    Cantidad_actual= models.IntegerField(null=False, blank=False)
-    Seccion= models.CharField(max_length=100, null=False, blank=False)
+    Nombre_producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    Cantidad_actual = models.IntegerField(null=False, blank=False)
+    Seccion = models.CharField(max_length=100, null=False, blank=False)
     
     def __str__(self):
-        return self.Nombre_producto, self.Cantidad_actual, self.Seccion
+        return f"{self.Nombre_producto} - {self.Cantidad_actual} - {self.Seccion} "
+
     
     
 class Promociones(models.Model):

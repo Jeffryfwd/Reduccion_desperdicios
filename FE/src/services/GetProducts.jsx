@@ -64,7 +64,7 @@ async function PutProduct(id, Nombre_producto, Fecha_vencimiento, Cantidad, Prec
              Cantidad,
               Precio, 
               Estado,
-              Categoria
+              Categoria: { id: Categoria.id }
         }
         // Asegúrate de que la URL incluya el id de la tarea que quieres eliminar
         const response = await fetch(`http://127.0.0.1:8000/api/productos/${id}`, {
@@ -86,6 +86,44 @@ async function PutProduct(id, Nombre_producto, Fecha_vencimiento, Cantidad, Prec
  
 }
 
+async function Postproducts(Nombre_producto, Fecha_vencimiento,Cantidad,Estado,Precio,Categoria) {
+    const token = localStorage.getItem('access-token');
+    const tokenBearer = 'Bearer ' + token;
+    try {
+        const userData = { 
+             Nombre_producto,
+             Fecha_vencimiento,
+             Cantidad,
+             Estado,
+             Precio,
+             Categoria//: { Categoria: Categoria.Categoria }
+            
+        };
+        console.log(userData.Categoria);
+        const response = await fetch("http://127.0.0.1:8000/api/productos/", {
+            method: 'POST',
+            headers: {
+                'Authorization': tokenBearer,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Server responded with an error:', errorData);
+            throw new Error(`Error ${response.status}: ${JSON.stringify(errorData)}`);
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error posting user:', error.message);
+        throw error;
+    }
+}
 
 
-export {GetProducts,DeleteProducts, PutProduct}
+
+
+export {GetProducts,DeleteProducts, PutProduct, Postproducts}

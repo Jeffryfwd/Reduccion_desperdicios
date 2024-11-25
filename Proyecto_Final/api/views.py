@@ -214,6 +214,7 @@ class UsuarioListCreate(generics.ListCreateAPIView):
     queryset= User.objects.all()
     serializer_class= UsuarioSerializer
     permission_classes= [AllowAny]
+    
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
@@ -278,6 +279,7 @@ class EmpresaDetail(generics.RetrieveUpdateDestroyAPIView):
 class InventarioListCreate(generics.ListCreateAPIView):
     queryset = Inventario.objects.all()
     serializer_class = InventarioSerializer
+    permission_classes= [AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -321,7 +323,7 @@ class InventarioDetail(generics.RetrieveUpdateDestroyAPIView):
 class ProductosListCreate(generics.ListCreateAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductoSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -335,6 +337,7 @@ class ProductosListCreate(generics.ListCreateAPIView):
             {"message": "Error al crear el producto", "data": serializer.errors},
             status=status.HTTP_400_BAD_REQUEST
         )
+        
 
 
 class ProductoDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DeleteProducts, GetProducts, PutProduct } from '../services/GetProducts'
+import { Link } from 'react-router-dom';
 
 
 function Principal() {
@@ -36,6 +37,8 @@ function Principal() {
     
     
   }
+  console.log(ListaProductos);
+
 
   return (
     <div className="dashboard">
@@ -43,9 +46,9 @@ function Principal() {
       <aside className="sidebar">
         <h2 className="sidebar-title">Sistema de Gestión de Inventario</h2>
         <nav className="sidebar-nav">
-          <a href="#viewProduct" className="sidebar-link">View Product</a>
+          <Link  className="sidebar-link" to='/principal'>View Product</Link>
           <a href="#category" className="sidebar-link">Category</a>
-          <a href="#addProduct" className="sidebar-link">Add Product</a>
+          <Link  className="sidebar-link" to='/añadir' >Add Product</Link>
           <a href="#reports" className="sidebar-link">Reports</a>
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
@@ -75,7 +78,10 @@ function Principal() {
                 <p className="product-info">Cantidad: {Prod.Cantidad || 'No disponible'}</p>
                 <p className="product-info">Precio: {Prod.Precio || 'No disponible'}</p>
                 <p className="product-info">Estado: {Prod.Estado || 'No disponible'}</p>
-                <p className="product-info">Categoria: {Prod.Categoria.Categoria || 'No disponible'}</p>
+                <p className="product-info">
+  Categoria: {Prod.Categoria && Prod.Categoria.Categoria ? Prod.Categoria.Categoria : 'No disponible'}
+</p>
+
                 <button onClick={() => AbrirModal(Prod)}>Editar</button>
                 <button onClick={()=>EliminarProductos(Prod.id)}>Eliminar</button>
               </div>

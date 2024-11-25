@@ -5,11 +5,11 @@ from datetime import date
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
-        model= Categoria
-        fields= '__all__'
+        model = Categoria
+        fields = '__all__' #['Categoria']
         
 class ProductoSerializer(serializers.ModelSerializer):
-    #Categoria = CategoriaSerializer() #Obtener todos los campos del modelo categoria desde el serializer
+    Categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all()) #serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all()) #CategoriaSerializer() #Obtener todos los campos del modelo categoria desde el serializer
     
     class Meta:
         model = Productos

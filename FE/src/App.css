@@ -185,3 +185,75 @@
   font-size: 14px;
   margin-bottom: 5px;
 }
+
+
+
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9fafc; /* Pastel light blue-gray */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 700px;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-title {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #4a5568; /* Muted dark gray */
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  font-size: 1rem;
+  color: #2d3748; /* Dark gray-blue */
+  margin-bottom: 5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #cbd5e0; /* Light gray */
+  border-radius: 5px;
+  background-color: #edf2f7; /* Soft pastel gray */
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #63b3ed; /* Light blue */
+  background-color: #ffffff;
+}
+
+.form-submit {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #3182ce; /* Vibrant blue */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-submit:hover {
+  background-color: #2b6cb0; /* Darker blue */
+}
+
+
+
+
+
+
+
