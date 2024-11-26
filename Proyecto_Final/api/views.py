@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser
 
 from .models import Categoria, Productos, Promociones, Alerta, Ventas, Reporte, Usuarios, Empresa, Inventario
-from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser_Empresa
+from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser_Empresa, ProductoSerializer2
 # Create your views here.
 
 
@@ -383,4 +383,22 @@ class Registro_userListCreate(generics.ListCreateAPIView):
             status=status.HTTP_400_BAD_REQUEST
         )
   
-  
+  ################################################}
+
+class ProductosApiView(generics.ListAPIView):
+      queryset= Productos.objects.all()
+      serializer_class= ProductoSerializer2
+     
+      permission_classes= [AllowAny]
+      
+##################################################
+from datetime import timedelta
+from django.utils import timezone
+class ProductoVencimientoView(APIView):
+    
+      def get(self, request):
+        hoy = timezone.now()
+        fecha_limite = hoy + timedelta(days=15)
+        productos = Productos.objects.filter(Fecha_vencimiento__lte=fecha_limite)
+        serializer = ProductoSerializer(productos, many=True)
+        return Response(serializer.data)           

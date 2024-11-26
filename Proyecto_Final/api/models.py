@@ -11,17 +11,16 @@ class Categoria(models.Model):
         return self.Categoria
 
 class Productos(models.Model):
-    Nombre_producto= models.CharField(max_length=100, null=False, blank=False,)
-    Categoria= models.ForeignKey(Categoria,null= False, blank=False, on_delete=models.CASCADE)
-    Fecha_vencimiento= models.DateField(null=False, blank=False)
-    Cantidad= models.IntegerField()
-    Precio= models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
-    Estado= models.CharField(max_length=100, null=False, blank=False)
+    Nombre_producto = models.CharField(max_length=100, null=False, blank=False)
+    Categoria = models.ForeignKey(Categoria, null=False, blank=False, on_delete=models.CASCADE)
+    Fecha_vencimiento = models.DateField(null=False, blank=False)
+    Cantidad = models.IntegerField()
+    Precio = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
+    Estado = models.CharField(max_length=100, null=False, blank=False)
 
     def __str__(self):
-        return self.Nombre_producto, self.Categoria, self.Fecha_vencimiento, self.Cantidad, self.Cantidad, self.Estado
-    
-    
+        return f"{self.Nombre_producto} - {self.Categoria} - {self.Fecha_vencimiento} - {self.Cantidad} - {self.Estado}"
+
 class Alerta(models.Model):
     id_producto= models.ForeignKey(Productos, on_delete=models.CASCADE)
     Fecha_alerta= models.DateField(null=False, blank=False)
@@ -40,7 +39,7 @@ class Inventario(models.Model):
     Seccion = models.CharField(max_length=100, null=False, blank=False)
     
     def __str__(self):
-        return f"{self.Nombre_producto} - {self.Cantidad_actual} - {self.Seccion} "
+        return f"{self.Nombre_producto} - {self.Cantidad_actual} - {self.Seccion}"
 
     
     

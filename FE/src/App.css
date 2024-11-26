@@ -257,3 +257,166 @@
 
 
 
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table th,
+.product-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.product-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.product-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.product-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Botón Editar */
+.btn-edit {
+  background-color: #4caf50; /* Verde */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-edit:hover {
+  background-color: #45a049; /* Verde más oscuro */
+}
+
+/* Botón Eliminar */
+.btn-delete {
+  background-color: #f44336; /* Rojo */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+  background-color: #d32f2f; /* Rojo más oscuro */
+}
+
+
+
+
+
+
+/* Estilos generales */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+h1, h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Estilo de la tabla */
+.productos-tabla {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.tabla-header {
+  background-color: #3498db;
+  color: white;
+  font-size: 1.1rem;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.tabla-fila {
+  transition: background-color 0.3s ease;
+}
+
+.tabla-fila:hover {
+  background-color: #f4f4f4;
+}
+
+.tabla-dato {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1rem;
+}
+
+/* Estilo de las alertas */
+.alertas-titulo {
+  color: #c0392b;
+  font-size: 1.4rem;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.alertas-lista {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-width: 80%;
+  margin: 20px auto;
+}
+
+.alerta-item {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  font-size: 1.1rem;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alerta-item:hover {
+  background-color: #f1b0b7;
+}
+
+.no-alerta {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #7f8c8d;
+}
+
+/* Resposividad */
+@media screen and (max-width: 768px) {
+  .productos-tabla {
+      width: 95%;
+  }
+
+  h1, h2 {
+      font-size: 1.2rem;
+  }
+}
+
+.contenVenci{
+margin-top: -450px;
+margin-left: 200px;
+ 
+}

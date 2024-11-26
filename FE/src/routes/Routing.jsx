@@ -4,6 +4,7 @@ import PregistroUser from '../pages/PregistroUser';
 import PLogin from '../pages/PLogin';
 import PPrincipal from '../pages/PPrincipal';
 import PañadirProducto from '../pages/PañadirProducto';
+import Ppvencimiento from '../pages/Ppvencimiento';
 
 function Routing() {
   return (
@@ -15,6 +16,8 @@ function Routing() {
                 <Route path='/Registro' element={<PregistroUser/>}></Route>
                 <Route path='/Principal' element={<PPrincipal/>}></Route>
                 <Route path='/añadir' element={<PañadirProducto/>}></Route>
+                <Route path='/vencimiento' element={<Ppvencimiento/>}></Route>
+
 
 
             </Routes>

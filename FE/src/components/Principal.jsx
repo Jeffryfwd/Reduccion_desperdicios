@@ -47,8 +47,10 @@ function Principal() {
         <h2 className="sidebar-title">Sistema de Gestión de Inventario</h2>
         <nav className="sidebar-nav">
           <Link  className="sidebar-link" to='/principal'>View Product</Link>
-          <a href="#category" className="sidebar-link">Category</a>
+          <a  href="#category" className="sidebar-link">Category</a>
           <Link  className="sidebar-link" to='/añadir' >Add Product</Link>
+          <Link  className="sidebar-link" to='/vencimiento' >Productos a Vencer</Link>
+
           <a href="#reports" className="sidebar-link">Reports</a>
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
@@ -67,29 +69,45 @@ function Principal() {
 
         {/* Product Grid */}
         <section className="product-grid">
-          {ListaProductos.length > 0 ? (
-            ListaProductos.map((Prod) => (
-              <div key={Prod.id} className="product-card">
-                <div className="product-image-placeholder">
-                  Imagen aquí {/* Puedes agregar una imagen real */}
-                </div>
-                <h3 className="product-name">{Prod.Nombre_producto || 'Sin nombre'}</h3>
-                <p className="product-info">Fecha de vencimiento: {Prod.Fecha_vencimiento || 'No disponible'}</p>
-                <p className="product-info">Cantidad: {Prod.Cantidad || 'No disponible'}</p>
-                <p className="product-info">Precio: {Prod.Precio || 'No disponible'}</p>
-                <p className="product-info">Estado: {Prod.Estado || 'No disponible'}</p>
-                <p className="product-info">
-  Categoria: {Prod.Categoria && Prod.Categoria.Categoria ? Prod.Categoria.Categoria : 'No disponible'}
-</p>
+  {ListaProductos.length > 0 ? (
+    <table className="product-table">
+      <thead>
+        <tr>
+          
+          <th>Nombre</th>
+          <th>Fecha de Vencimiento</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+          <th>Estado</th>
+          <th>Categoría</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {ListaProductos.map((Prod) => (
+          <tr key={Prod.id}>
+            
+            <td>{Prod.Nombre_producto || 'Sin nombre'}</td>
+            <td>{Prod.Fecha_vencimiento || 'No disponible'}</td>
+            <td>{Prod.Cantidad || 'No disponible'}</td>
+            <td>{Prod.Precio || 'No disponible'}</td>
+            <td>{Prod.Estado || 'No disponible'}</td>
+            <td>{Prod.Categoria?.Categoria || 'No disponible'}</td>
+            <td>
+            <td>
+           <button className="btn-edit" onClick={() => AbrirModal(Prod)}>Editar</button>
+           <button className="btn-delete" onClick={() => EliminarProductos(Prod.id)}>Eliminar</button>
+</td>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>Cargando productos...</p>
+  )}
+</section>
 
-                <button onClick={() => AbrirModal(Prod)}>Editar</button>
-                <button onClick={()=>EliminarProductos(Prod.id)}>Eliminar</button>
-              </div>
-            ))
-          ) : (
-            <p>Cargando productos...</p>
-          )}
-        </section>
       </main>
       {abrirModal && (
         <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">

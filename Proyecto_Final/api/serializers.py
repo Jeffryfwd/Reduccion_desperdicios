@@ -38,6 +38,14 @@ class ProductoSerializer(serializers.ModelSerializer):
         #if Productos.objects.filter(Nombre_producto=value, Categoria=categoria).exists():
          #   raise serializers.ValidationError("Ya existe un producto con este nombre en esta categoría.")
         #return value
+
+class ProductoSerializer2(serializers.ModelSerializer):
+    Categoria = CategoriaSerializer() #Obtener todos los campos del modelo categoria desde el serializer
+    
+    class Meta:
+        model = Productos
+        fields = '__all__'
+    
         
 class UsuarioSerializer(serializers.ModelSerializer):
     is_staff = serializers.BooleanField()

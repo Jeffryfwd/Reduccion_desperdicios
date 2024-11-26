@@ -4,7 +4,7 @@ async function  GetProducts() {
     try {
         const token = localStorage.getItem('access-token');
         const tokenBearer = 'Bearer ' + token
-        const response = await fetch("http://127.0.0.1:8000/api/productos/", {
+        const response = await fetch("http://127.0.0.1:8000/api/produc2/", {
             method: 'GET',
             headers: {
                 'Authorization': tokenBearer,
@@ -126,4 +126,37 @@ async function Postproducts(Nombre_producto, Fecha_vencimiento,Cantidad,Estado,P
 
 
 
-export {GetProducts,DeleteProducts, PutProduct, Postproducts}
+
+//###############################################################################################
+
+//Para obterner los productos pronto a vencer
+async function GetVencer() {
+    try {
+        const token = localStorage.getItem('access-token');
+        const tokenBearer = 'Bearer ' + token;
+        const response = await fetch("http://127.0.0.1:8000/api/productosvenci/", {
+            method: 'GET',
+            headers: {
+                'Authorization': tokenBearer,
+                'Content-Type': 'application/json'
+            }
+        });
+    
+        if (!response.ok) {
+            throw new Error('Error fetching products');
+        }
+    
+        const products = await response.json();
+        console.log('Productos recibidos:', products);  // Ver los productos recibidos
+        return products;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        throw error;
+    }
+}
+
+
+
+
+
+export {GetProducts,DeleteProducts, PutProduct, Postproducts, GetVencer}

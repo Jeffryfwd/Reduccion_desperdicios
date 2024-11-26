@@ -39,4 +39,10 @@ urlpatterns = [
     
     path('registro/user/', views.Registro_userListCreate.as_view(), name='Categoria-List'),
     
+    path('produc2/', views.ProductosApiView.as_view(), name='Categoria-List'),
+    
+    path('productosvenci/', views.ProductoVencimientoView.as_view(), name='Categoria-List'),
+    
+    
+    
 ]
