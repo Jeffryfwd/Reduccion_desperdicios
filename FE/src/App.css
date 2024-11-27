@@ -420,3 +420,113 @@ margin-top: -450px;
 margin-left: 200px;
  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Contenedor principal */
+.productos-vencer {
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  margin: 30px auto;
+  border: 1px solid #e0e0e0;
+  margin-top: -450px;
+  margin-left: 340px;
+}
+
+/* Título */
+.titulo {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333333;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Tabla */
+.tabla-productos {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #dcdcdc;
+  
+}
+
+/* Encabezado de la tabla */
+.encabezado-tabla {
+  background-color: #007BFF;
+  color: #ffffff;
+  text-align: left;
+}
+
+.encabezado-tabla th {
+  padding: 12px 15px;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+/* Filas de la tabla */
+.fila-producto:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.fila-producto:hover {
+  background-color: #e9f5ff;
+  transition: background-color 0.3s ease;
+}
+
+.fila-producto td {
+  padding: 10px 15px;
+  font-size: 15px;
+  color: #333333;
+}
+
+/* Alertas */
+.alerta {
+  display: inline-block;
+  background-color: #FFB74D;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.no-alerta {
+  color: #757575;
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* Estilo adicional */
+.columna-nombre,
+.columna-fecha,
+.columna-cantidad,
+.columna-dias {
+  text-align: center;
+  font-weight: 500;
+}
+
+.dato-nombre,
+.dato-fecha,
+.dato-cantidad,
+.dato-alerta {
+  text-align: center;
+}

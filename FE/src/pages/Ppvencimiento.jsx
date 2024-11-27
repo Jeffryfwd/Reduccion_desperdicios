@@ -1,5 +1,5 @@
 import React from 'react'
-import PVencimiento from '../components/PVencimiento'
+import PVencimiento from '../components/AdminProduccion/PVencimiento'
 
 function Ppvencimiento() {
   return (

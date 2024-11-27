@@ -1,5 +1,5 @@
 import React from 'react'
-import Principal from '../components/Principal'
+import Principal from '../components/AdminProduccion/Principal'
 
 function PPrincipal() {
   return (

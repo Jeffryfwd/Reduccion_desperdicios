@@ -1,5 +1,5 @@
 import React from 'react'
-import AñadirProducto from '../components/AñadirProducto'
+import AñadirProducto from '../components/AdminProduccion/AñadirProducto'
 
 function PañadirProducto() {
   return (

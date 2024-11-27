@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Await, Link } from 'react-router-dom';
-import { Postproducts } from '../services/GetProducts';
+import { Postproducts } from '../../services/GetProducts';
 import { useEffect } from 'react';
-import GetCategoria from '../services/GetCategoria';
+import GetCategoria from '../../services/GetCategoria';
 
 function AñadirProducto() {
     const[Nombre_producto, setNombre]= useState("")

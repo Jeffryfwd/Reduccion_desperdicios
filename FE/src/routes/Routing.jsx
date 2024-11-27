@@ -5,6 +5,9 @@ import PLogin from '../pages/PLogin';
 import PPrincipal from '../pages/PPrincipal';
 import PañadirProducto from '../pages/PañadirProducto';
 import Ppvencimiento from '../pages/Ppvencimiento';
+import Ppromociones from '../pages/AdminVenta/Ppromociones';
+import PprincipalAdminVenta from '../pages/AdminVenta/PprincipalAdminVenta';
+
 
 function Routing() {
   return (
@@ -17,6 +20,9 @@ function Routing() {
                 <Route path='/Principal' element={<PPrincipal/>}></Route>
                 <Route path='/añadir' element={<PañadirProducto/>}></Route>
                 <Route path='/vencimiento' element={<Ppvencimiento/>}></Route>
+                <Route path='/promociones' element={<Ppromociones/>}></Route>
+                <Route path='/principal/adminV' element={<PprincipalAdminVenta/>}></Route>
+
 
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { GetVencer } from '../services/GetProducts';
+import { GetVencer } from '../../services/GetProducts';
 
 function PVencimiento() {
     const [productos, setproductos]= useState([])
@@ -8,20 +8,20 @@ function PVencimiento() {
 
     useEffect(()=>{
         const ObtenerProductos= async()=>{
-            const prontoVencer= await GetVencer()
-            setproductos(prontoVencer)
-            const alertasGeneradas = prontoVencer.map(producto => {
-                const fechaVencimiento = new Date(producto.Fecha_vencimiento);
+            const prontoVencer= await GetVencer() //Obtengo los productos 
+            setproductos(prontoVencer) //Los inserto en mi hooks
+            const alertasGeneradas = prontoVencer.map(producto => { //Recorro el array pronto a vencer donde estan los productos pronto a vencer
+                const fechaVencimiento = new Date(producto.Fecha_vencimiento); // convierto la fecha de vencimiento en un objeto y le añado date para trabajar en el
                 const hoy = new Date();
-                const diasRestantes = (fechaVencimiento - hoy) / (1000 * 3600 * 24);
-                return {
+                const diasRestantes = (fechaVencimiento - hoy) / (1000 * 3600 * 24); //calculo la diferencia entre la fecha de vencimiento y la actual
+                return { // Y creo un objeto alerta lo cual cada producto pronto a vencer crea un objeto con sus atributos
                     id: producto.id,
                     nombre: producto.Nombre_producto,
                     diasRestantes,
                     alerta: diasRestantes <= 15 && diasRestantes > 0
                 };
             });
-            setalerta(alertasGeneradas.filter(alerta => alerta.alerta));
+            setalerta(alertasGeneradas.filter(alerta => alerta.alerta)); //recorro el el array y devuelve unicamente los productos a vencer en el hooks alertas para mostrarlas
         }
         ObtenerProductos()
 
