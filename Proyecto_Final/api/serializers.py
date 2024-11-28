@@ -159,3 +159,13 @@ class RegistroUser_Empresa(serializers.ModelSerializer):
         if not data.get("empresa"):
             raise serializers.ValidationError("El usuario debe estar asociado a una empresa.")
         return data
+    
+#---------------------------------------------------------------#
+
+#Serializer para solo obtener los datos de promociones
+class SerializerPromocionesGet(serializers.ModelSerializer):
+    id_producto = ProductoSerializer() #Traigo todos los datos de Productos
+    
+    class Meta:
+        model= Promociones
+        fields= '__all__'

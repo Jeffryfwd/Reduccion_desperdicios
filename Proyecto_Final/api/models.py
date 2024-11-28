@@ -44,13 +44,15 @@ class Inventario(models.Model):
     
     
 class Promociones(models.Model):
-    id_producto= models.ForeignKey(Productos, on_delete=models.CASCADE)
-    Descuento= models.CharField(max_length=100, null=False, blank=False)
-    Fecha_inicio= models.DateField(null=False, blank=False)
-    Fecha_fin= models.DateField(null=False, blank=False)
-    
+    id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    Descuento = models.CharField(max_length=100, null=False, blank=False)  # % descuento
+    Fecha_inicio = models.DateField(null=False, blank=False)
+    Fecha_fin = models.DateField(null=False, blank=False)
+    Precio_total = models.DecimalField(max_digits=10, decimal_places=2, blank=False)  # Precio final con descuento
+
     def __str__(self):
-        return self.id_producto, self.Descuento, self.Fecha_inicio, self.Fecha_fin
+        return f"{self.id_producto.Nombre_producto} - {self.Descuento}% - {self.Precio_total}"
+
     
     
 class Ventas(models.Model):

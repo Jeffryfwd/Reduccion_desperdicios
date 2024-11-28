@@ -530,3 +530,96 @@ margin-left: 200px;
 .dato-alerta {
   text-align: center;
 }
+
+
+
+
+
+/*Css para las cartas de promociones*/
+.contenedorCartasPromo{
+  display: flex;
+  margin-left: 250px;
+  margin-top: -320px;
+}
+
+.promocion-card {
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 16px;
+}
+
+.promocion-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.promocion-card-header {
+  text-align: center;
+  background-color: #f5f5f5;
+  padding: 8px;
+}
+
+.promocion-card-imagen {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.promocion-card-body {
+  padding: 16px;
+}
+
+.promocion-card-nombre {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.promocion-card-precio-antes {
+  font-size: 0.9rem;
+  color: #999;
+  text-decoration: line-through;
+  margin-bottom: 8px;
+}
+
+.promocion-card-precio-total {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #2a9d8f;
+  margin-bottom: 8px;
+}
+
+.promocion-card-descuento {
+  font-size: 0.9rem;
+  color: #e63946;
+  margin-bottom: 16px;
+}
+
+.promocion-card-fechas p {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 4px 0;
+}
+
+.promocion-card-fechas span {
+  font-weight: bold;
+}
+
+.main-content2{
+  display: flex;
+  margin-top: -300px;
+}
+
+.header-actions1{
+  margin-top: -750px;
+}
+.header-title2{
+  margin-top: -750px;
+  margin-left: 250px;
+}

@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser
 
 from .models import Categoria, Productos, Promociones, Alerta, Ventas, Reporte, Usuarios, Empresa, Inventario
-from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser_Empresa, ProductoSerializer2
+from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser_Empresa, ProductoSerializer2, SerializerPromocionesGet
 # Create your views here.
 
 
@@ -94,7 +94,9 @@ class PromocionesDetail(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.delete()
-        return Response({"message": "Promoción eliminada exitosamente"}, status=status.HTTP_204_NO_CONTENT)   
+        return Response({"message": "Promoción eliminada exitosamente"}, status=status.HTTP_204_NO_CONTENT)
+    
+       
     
 ############################################################################
 
@@ -402,3 +404,13 @@ class ProductoVencimientoView(APIView):
         productos = Productos.objects.filter(Fecha_vencimiento__lte=fecha_limite)
         serializer = ProductoSerializer(productos, many=True)
         return Response(serializer.data)           
+    
+    
+    
+#_---------------------------------------------------------------#
+class PromocionesApiViews(generics.ListAPIView):
+    queryset= Promociones.objects.all()
+    serializer_class= SerializerPromocionesGet
+    permission_classes=[AllowAny]
+    
+    

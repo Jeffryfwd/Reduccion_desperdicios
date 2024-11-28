@@ -10,23 +10,24 @@ function Principal() {
     const[Productos, setProductos]= useState([])
     const [alertas, setalerta]= useState([])
     const [datosModal, setModal] = useState([]);
-
     const [abrirModal, setAbrirModal] = useState(false);
-
     const [Fecha_inicio, setFechaInicio]= useState("")
     const [Fecha_fin, setFechaFin]= useState("")
     const[id_producto, setIdproducto]= useState("")
-    const[descuento, setDescuento]= useState("")
+    const[descuento, setDescuento]= useState(0)
+    const [Precio, setPrecio]= useState(0)
+    const [Precio_total, setPrecioTotal]= useState("")
 
     useEffect(()=>{
         const ObtenerProductos = async()=>{
             const ProductosVnecer= await GetVencer()
-            setProductos(ProductosVnecer)
+            setProductos(ProductosVnecer);
+
             const alertasGeneradas = ProductosVnecer.map(producto => { //Recorro el array pronto a vencer donde estan los productos pronto a vencer
                 const fechaVencimiento = new Date(producto.Fecha_vencimiento); // convierto la fecha de vencimiento en un objeto y le añado date para trabajar en el
                 const hoy = new Date();
                 const diasRestantes = (fechaVencimiento - hoy) / (1000 * 3600 * 24); //calculo la diferencia entre la fecha de vencimiento y la actual
-                return { // Y creo un objeto alerta lo cual cada producto pronto a vencer crea un objeto con sus atributos
+                return { // Y creo un objeto alerta lo cual cada p  roducto pronto a vencer crea un objeto con sus atributos
                     id: producto.id,
                     nombre: producto.Nombre_producto,
                     diasRestantes,
@@ -48,28 +49,55 @@ function Principal() {
     function AbrirModal(product) {
       setModal(product);
       setIdproducto(product.id);
+      setPrecio(Precio_total)
       setAbrirModal(true);
+      setDescuento("")
+      setPrecioTotal(product.Precio)
     }
     
+    // useEffect(()=>{
+    //   console.log("Precio_total calculado:", Precio_total)
+    // },[descuento, Precio])
+    
+    //Calcula el descuento
+    function calcularDescuento(descuento, precio) {
+      if (isNaN(precio) || isNaN(descuento)) {
+        console.error("Valores inválidos:", { descuento, precio });
+        setPrecioTotal(0);
+        return;
+      }
+      const descuentoPorcentaje = descuento / 100;
+      const PrecioConDescuento = precio - (precio * descuentoPorcentaje);
+      setPrecioTotal(PrecioConDescuento > 0 ? PrecioConDescuento.toFixed(2) : 0); 
+    }
+
+    //Devuelve el precio total con el descuento calculado
+    function descuentoCalculado(event){
+      const nuevoDescuento = parseFloat(event.target.value);
+      setDescuento(nuevoDescuento);
+      calcularDescuento(nuevoDescuento, parseFloat(datosModal.Precio));
+    }
+    
+    console.log(datosModal.Precio);
+    
     async function AñadirPromocion() {
-      await Postpromociones(id_producto, Fecha_inicio, Fecha_fin, descuento)
+      await Postpromociones(id_producto, Fecha_inicio, Fecha_fin, descuento, Precio_total)
     }
   return (
     <div>
-          <aside className="sidebar">
+        <aside className="sidebar">
         <h2 className="sidebar-title">Sistema de Gestión de Inventario</h2>
         <nav className="sidebar-nav">
-          <Link  className="sidebar-link" to='/principal'>View Product</Link>
-          <a  href="#category" className="sidebar-link">Category</a>
-          <Link  className="sidebar-link" to='/añadir' >Add Product</Link>
-          <Link  className="sidebar-link" to='/vencimiento' >Productos a Vencer</Link>
+          <Link  className="sidebar-link" to='/principal/adminV'>Productos proximos a vencer</Link>
+          <Link  to="/promociones" className="sidebar-link">Promociones</Link>
+          
 
           <a href="#reports" className="sidebar-link">Reports</a>
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
       </aside>
       <div className="productos-vencer">
-    <h1 className="titulo">Productos Pronto a Vencer</h1>
+    <h1 className="titulo">Productos disponibles para promociones</h1>
 
     <table className="tabla-productos">
         <thead>
@@ -82,27 +110,32 @@ function Principal() {
             </tr>
         </thead>
         <tbody>
-            {Productos.map(product => (
-                <tr key={product.id} className="fila-producto">
-                    <td className="dato-nombre">{product.Nombre_producto}</td>
-                    <td className="dato-fecha">{product.Fecha_vencimiento}</td>
-                    <td className="dato-cantidad">{product.Cantidad}</td>
-                    <td className="dato-alerta">
-                        {alertas.length > 0 ? (
-                            alertas.map(alerta => (
-                                <span key={alerta.id} className="alerta">
-                                    Vence en {Math.round(alerta.diasRestantes)} días
-                                </span>
-                            ))
-                        ) : (
-                            <p className="no-alerta">Sin alertas de vencimiento</p>
-                        )}
-                    </td>
-                    <td>
-                      <button onClick={() => AbrirModal(product)}>Crear promocion</button>
-                    </td>
-                </tr>
-            ))}
+               {Productos.map(product => {
+                // Filtrar las alertas correspondientes al producto actual
+                const alertasProducto = alertas.filter(alerta => alerta.id === product.id);
+
+                return (
+                    <tr key={product.id} className="fila-producto">
+                        <td className="dato-nombre">{product.Nombre_producto}</td>
+                        <td className="dato-fecha">{product.Fecha_vencimiento}</td>
+                        <td className="dato-cantidad">{product.Cantidad}</td>
+                        <td className="dato-alerta">
+                            {alertasProducto.length > 0 ? (
+                                alertasProducto.map(alerta => (
+                                    <span key={alerta.id} className="alerta">
+                                        Vence en {Math.round(alerta.diasRestantes)} días
+                                    </span>
+                                ))
+                            ) : (
+                                <p className="no-alerta">Sin alertas de vencimiento</p>
+                            )}
+                        </td>
+                        <td>
+                            <button onClick={() => AbrirModal(product)}>Crear promoción</button>
+                        </td>
+                    </tr>
+                );
+            })} 
         </tbody>
     </table>
 </div>
@@ -118,15 +151,29 @@ function Principal() {
               </div>
               <div className="modal-body">
                 <div className="mb-3">
-                  <label htmlFor="modalNombre" className="form-label">Producto</label>
+                  <label htmlFor="modalNombre" className="form-label">ID Producto</label>
                   <input
                     type="null"
                     className="form-control"
                     id="modalNombre"
-                    value={id_producto }
-                    onChange={(e) => setIdproducto({...datosModal, id_producto: e.target.value})}
+                    value={id_producto}
+                    onChange={(e) => setIdproducto({...datosModal})}
+                    readOnly // Hace que el campo no sea editable.
+
                   />
                 </div>
+                <div className="modal-body">
+                <div className="mb-3">
+                  <label htmlFor="modalNombre" className="form-label">Precio Anterior</label>
+                  <input
+                    type="number  "
+                    className="form-control"
+                    id="modalNombre"
+                    value={datosModal.Precio}
+                    onChange={(e) => setPrecio({...datosModal})}
+                    readOnly // Hace que el campo no sea editable
+                  />
+                 </div>
                 <div className="mb-3">
                   <label htmlFor="modalDescripcion" className="form-label">Fecha de inicio</label>
                   <input
@@ -148,13 +195,24 @@ function Principal() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="modalPrecio" className="form-label">Descuento</label>
+                  <label htmlFor="modalPrecio" className="form-label">Descuento(%)</label>
                   <input
                     type="number"
                     className="form-control"
                     id="modalPrecio"
-                    value={descuento|| ''}
-                    onChange={(e) => setDescuento(e.target.value )}
+                    value={descuento}
+                    onChange={descuentoCalculado}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="modalPrecio" className="form-label">Precio Total</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="modalPrecio"
+                    min={"0"}
+                    value={Precio_total}
+                    readOnly
                   />
                 </div>
                
@@ -167,6 +225,7 @@ function Principal() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       )}
      

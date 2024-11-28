@@ -43,6 +43,10 @@ urlpatterns = [
     
     path('productosvenci/', views.ProductoVencimientoView.as_view(), name='Categoria-List'),
     
+    path('promocionesget/', views.PromocionesApiViews.as_view(), name='Categoria-List'),
+    
+    
+
     
     
 ]
