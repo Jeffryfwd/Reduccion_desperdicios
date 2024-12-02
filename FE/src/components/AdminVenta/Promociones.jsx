@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import GetPromociones from '../../services/Promociones/GetPromociones'
-
+import Autenticacion from '../Autenticacion';
 
 function Promociones() {
+  Autenticacion()
 const [LitaPromociones, setListaPromociones]= useState([])
 const navigate= useNavigate();
 

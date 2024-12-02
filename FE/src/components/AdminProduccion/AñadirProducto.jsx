@@ -3,8 +3,10 @@ import { Await, Link, useNavigate  } from 'react-router-dom';
 import { Postproducts } from '../../services/GetProducts';
 import { useEffect } from 'react';
 import GetCategoria from '../../services/GetCategoria';
+import Autenticacion from '../Autenticacion';
 
 function AñadirProducto() {
+  Autenticacion()
     const[Nombre_producto, setNombre]= useState("")
     const[Fecha_vencimiento, setFecha]= useState("")
     const[Cantidad, setCantidad]=useState("")

@@ -2,11 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate} from 'react-router-dom';
 import { GetVencer } from '../../services/GetProducts';
 import Postpromociones from '../../services/Promociones/PostPromociones'
+import Autenticacion from '../Autenticacion';
+
 
 
 
 
 function Principal() {
+  Autenticacion()
+  console.log("Aquie esta la funcion de autenticacio",Autenticacion);
+  
     const[Productos, setProductos]= useState([])
     const [alertas, setalerta]= useState([])
     const [datosModal, setModal] = useState([]);

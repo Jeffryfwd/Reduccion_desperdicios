@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { DeleteProducts, GetProducts, PutProduct } from '../../services/GetProducts'
 import { Link, useNavigate } from 'react-router-dom';
-
+import Autenticacion from '../Autenticacion';
 
 
 function Principal() {
+  Autenticacion()
   const [ListaProductos, setProductos] = useState([]); // Estado inicializado como array vacío.
   const [datosModal, setModal] = useState([]);
   const [abrirModal, setAbrirModal] = useState(false);
