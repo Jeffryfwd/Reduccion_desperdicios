@@ -7,6 +7,7 @@ import PañadirProducto from '../pages/PañadirProducto';
 import Ppvencimiento from '../pages/Ppvencimiento';
 import Ppromociones from '../pages/AdminVenta/Ppromociones';
 import PprincipalAdminVenta from '../pages/AdminVenta/PprincipalAdminVenta';
+import ProtectAdmin from '../../ProtectAdmin';
 
 
 function Routing() {
@@ -17,11 +18,11 @@ function Routing() {
             <Routes>
                 <Route path='/' element={<PLogin/>}></Route>
                 <Route path='/Registro' element={<PregistroUser/>}></Route>
-                <Route path='/Principal' element={<PPrincipal/>}></Route>
-                <Route path='/añadir' element={<PañadirProducto/>}></Route>
-                <Route path='/vencimiento' element={<Ppvencimiento/>}></Route>
-                <Route path='/promociones' element={<Ppromociones/>}></Route>
-                <Route path='/principal/adminV' element={<PprincipalAdminVenta/>}></Route>
+                <Route path='/Principal' element={<ProtectAdmin><PPrincipal/></ProtectAdmin>}></Route>
+                <Route path='/añadir' element={<ProtectAdmin><PañadirProducto/></ProtectAdmin>}></Route>
+                <Route path='/vencimiento' element={<ProtectAdmin><Ppvencimiento/></ProtectAdmin>}></Route>
+                <Route path='/promociones' element={<ProtectAdmin><Ppromociones/></ProtectAdmin>}></Route>
+                <Route path='/principal/adminV' element={<ProtectAdmin><PprincipalAdminVenta/></ProtectAdmin>}></Route>
 
 
 

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { DeleteProducts, GetProducts, PutProduct } from '../../services/GetProducts'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 
 function Principal() {
   const [ListaProductos, setProductos] = useState([]); // Estado inicializado como array vacío.
   const [datosModal, setModal] = useState([]);
   const [abrirModal, setAbrirModal] = useState(false);
+  const navigate= useNavigate();
+  
 
   useEffect(() => {
     async function ObtenerProductos() {
@@ -16,10 +19,15 @@ function Principal() {
     ObtenerProductos();
   }, []);
 
+  console.log(datosModal)
+
   function AbrirModal(product) {
     setModal(product);
     setAbrirModal(true);
   }
+
+
+
   async function EditarProducto() {
     const { id, Nombre_producto, Fecha_vencimiento,Cantidad, Precio,Categoria,Estado} = datosModal;
     await PutProduct(id, Nombre_producto, Fecha_vencimiento,Cantidad, Precio, Categoria,Estado);
@@ -27,6 +35,8 @@ function Principal() {
     setProductos(productoActualizado);
     alert("Se a editado correctamente el producto")
     setAbrirModal(false);
+   
+    
   }
 
   async function EliminarProductos(id) {
@@ -39,6 +49,12 @@ function Principal() {
   }
   console.log(ListaProductos);
 
+  const CerrarSesion=()=>{
+    localStorage.clear()
+    navigate('/')
+    
+  }
+
 
   return (
     <div className="dashboard">
@@ -46,13 +62,15 @@ function Principal() {
       <aside className="sidebar">
         <h2 className="sidebar-title">Sistema de Gestión de Inventario</h2>
         <nav className="sidebar-nav">
-          <Link  className="sidebar-link" to='/principal'>View Product</Link>
-          <a  href="#category" className="sidebar-link">Category</a>
-          <Link  className="sidebar-link" to='/añadir' >Add Product</Link>
-          <Link  className="sidebar-link" to='/vencimiento' >Productos a Vencer</Link>
-
+          <Link  className="sidebar-link" to='/principal'>Lista de productos</Link>
+          <a  href="#category" className="sidebar-link">Categoria</a>
+          <Link  className="sidebar-link" to='/añadir' >Añadir productos</Link>
+          <Link  className="sidebar-link" to='/principal/adminV' >Productos a Vencer</Link>
+          <Link  to="/promociones" className="sidebar-link">Promociones</Link>
           <a href="#reports" className="sidebar-link">Reports</a>
+          <p className="sidebar-link" ><button onClick={CerrarSesion}>Cerrar Sesion</button></p>
           <a href="#systemManagement" className="sidebar-link">System Management</a>
+          
         </nav>
       </aside>
 
@@ -92,7 +110,7 @@ function Principal() {
             <td>{Prod.Cantidad || 'No disponible'}</td>
             <td>{Prod.Precio || 'No disponible'}</td>
             <td>{Prod.Estado || 'No disponible'}</td>
-            <td>{Prod.Categoria?.Categoria || 'No disponible'}</td>
+            <td>{Prod.Categoria.Categoria || 'No disponible'}</td>
             <td>
             <td>
            <button className="btn-edit" onClick={() => AbrirModal(Prod)}>Editar</button>
@@ -109,6 +127,7 @@ function Principal() {
 </section>
 
       </main>
+      
       {abrirModal && (
         <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
           <div className="modal-dialog" role="document">
@@ -175,7 +194,7 @@ function Principal() {
                     type="text"
                     className="form-control"
                     id="modalPrecio"
-                    value={datosModal.Categoria || ''}
+                    value={datosModal.Categoria.Categoria  || ''}
                     onChange={(e) => setModal({ ...datosModal, Categoria: e.target.value })}
                   />
                 </div>

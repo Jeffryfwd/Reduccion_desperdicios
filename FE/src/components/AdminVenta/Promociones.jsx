@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import GetPromociones from '../../services/Promociones/GetPromociones'
 
 
 function Promociones() {
 const [LitaPromociones, setListaPromociones]= useState([])
+const navigate= useNavigate();
 
 useEffect(()=>{
   async function ObtenerPromociones() {
@@ -13,16 +14,26 @@ useEffect(()=>{
 
   }
   ObtenerPromociones()
-},[]) 
+},[])
+
+const CerrarSesion=()=>{
+  localStorage.clear()
+  navigate('/')
+  
+}
     
   return (
     <div>
        <aside className="sidebar">
         <h2 className="sidebar-title">Sistema de Gestión de Inventario</h2>
         <nav className="sidebar-nav">
-          <Link  className="sidebar-link" to='/principal/adminV'>Productos proximos a vencer</Link>
+        <Link  className="sidebar-link" to='/principal'>Lista de productos</Link>
+          <a  href="#category" className="sidebar-link">Categoria</a>
+          <Link  className="sidebar-link" to='/añadir' >Añadir productos</Link>
+          <Link  className="sidebar-link" to='/principal/adminV'>Productos a vencer</Link>
           <Link  to="/promociones" className="sidebar-link">Promociones</Link>
           <a href="#reports" className="sidebar-link">Reports</a>
+          <p className="sidebar-link" ><button onClick={CerrarSesion}>Cerrar Sesion</button></p>
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
         

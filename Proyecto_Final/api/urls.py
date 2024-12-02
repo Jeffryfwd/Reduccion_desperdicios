@@ -45,6 +45,9 @@ urlpatterns = [
     
     path('promocionesget/', views.PromocionesApiViews.as_view(), name='Categoria-List'),
     
+    path('group/', views.gruopListacreate.as_view(), name='Categoria-List'),
+    
+    
     
 
     

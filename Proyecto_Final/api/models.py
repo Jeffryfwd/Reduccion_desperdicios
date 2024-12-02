@@ -97,7 +97,7 @@ class Usuarios(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
 
-    def __str__(self):
+    def __str__(self):  
         return f"{self.user.username} - {self.empresa.Nombre_empresa}"  # Ahora es un string.
 
     

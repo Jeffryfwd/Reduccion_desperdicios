@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState } from 'react'
-import GetUsuarios from '../services/GetUsuarios'
+import token from '../services/token'
+import GetUsuario2 from '../services/GetUsuario'
 import { useNavigate } from 'react-router-dom'
+import '../css/Login.css'
 
 function FormLogin() {
     const[username, setUsername]= useState("")
@@ -15,30 +17,84 @@ function FormLogin() {
     const CargarPassword= (event)=>{
         setPassword(event.target.value)
     }
+    async function BuscarAdmin(username, password) {
+       try {
+        const usuarios= await GetUsuario2();
+        console.log(usuarios);
+        
+            const usuario= usuarios.find(user=> user.username===username);
+
+            if (usuario && usuario.is_staff) {
+                console.log('Admin encontrado', usuario);
+                localStorage.setItem('Autenticado', 'Admin')
+                return true
+                
+                
+            }else {
+                console.log('No se encontro admin');
+                return false;
+                
+            }
+       } catch (error) {
+            console.log('Error al encontrar admin', error);
+            
+       }
+    }
 
     const IniciarSesion= async(event)=>{
         event.preventDefault()
-        await GetUsuarios(username, password)
-        Navigate("/principal")
+
+        try {
+            if (username === '' || password==='') {
+               return alert('Rellene todos lo espacios')
+            }
+
+            const esAdmin = await BuscarAdmin(username, password)
+            if (!esAdmin) {
+               return alert('No tiene permiso para acceder')
+            }
+            await token(username, password)
+            Navigate("/principal")
+            alert('Bienvenido')
+        } catch (error) {
+            console.log('Ocurrio un error',error);
+            alert(error)
+            
+            
+        }
+      
     }
 
   return (
-    <div>
-        <form action="" onSubmit={IniciarSesion}>
-            <label htmlFor="">Nombre Usuario</label>
-            <input type="text" value={username}
-            onChange={CargarUsername}/>
-            <label htmlFor="">Contraseña</label>
-            <input type="text"
+    <div className="form-container">
+    <h1 className="title">Iniciar Sesión</h1>
+    <form className="form" onSubmit={IniciarSesion}>
+        <label htmlFor="username" className="page-link-label">Nombre Usuario</label>
+        <input
+            id="username"
+            type="text"
+            value={username}
+            onChange={CargarUsername}
+            className="input"
+        />
+        <label htmlFor="password" className="page-link-label">Contraseña</label>
+        <input
+            id="password"
+            type="password"
             value={password}
-            onChange={CargarPassword} />
-
-            <button type='submit'>Iniciar sesion</button>
-
-        </form>
-
-
-    </div>
+            onChange={CargarPassword}
+            className="input"
+        />
+        <button type="submit" className="form-btn">Iniciar Sesión</button>
+    </form>
+    <p className="sign-up-label">
+        ¿No tienes una cuenta?{' '}
+        <span className="sign-up-link" onClick={() => Navigate('/registro')}>
+            Regístrate
+        </span>
+    </p>
+</div>
+ 
   )
 }
 

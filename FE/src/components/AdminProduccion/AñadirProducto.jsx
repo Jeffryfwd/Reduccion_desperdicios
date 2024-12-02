@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Await, Link } from 'react-router-dom';
+import { Await, Link, useNavigate  } from 'react-router-dom';
 import { Postproducts } from '../../services/GetProducts';
 import { useEffect } from 'react';
 import GetCategoria from '../../services/GetCategoria';
@@ -12,6 +12,7 @@ function AñadirProducto() {
     const[Precio, setPrecio]=useState("")
     const[Estado, setEstado]= useState("")
     const[ListaCategoria, SetListaCategoria]=useState([])
+    const navigate= useNavigate();
     
 
     useEffect(() => {
@@ -42,6 +43,13 @@ function AñadirProducto() {
     const CargarEstado=(e)=>{
         setEstado(e.target.value)
     }
+
+    const CerrarSesion=()=>{
+      localStorage.removeItem('Autenticado', 'Admin')
+      navigate('/')
+      
+    } 
+
     const Agregar = async (e) => {
       e.preventDefault();
       
@@ -72,10 +80,13 @@ function AñadirProducto() {
       <aside className="sidebar">
         <h2 className="sidebar-title">Sistema de Gestión de Inventario</h2>
         <nav className="sidebar-nav">
-          <Link  className="sidebar-link" to='/principal'>View Product</Link>
-          <a href="#category" className="sidebar-link">Category</a>
-          <Link  className="sidebar-link" to='/añadir' >Add Product</Link>
+          <Link  className="sidebar-link" to='/principal'>Lista de productos</Link>
+          <a href="#category" className="sidebar-link">Categoria</a>
+          <Link  className="sidebar-link" to='/añadir' >Añadir productos</Link>
+          <Link  className="sidebar-link" to='/principal/adminV' >Productos a Vencer</Link>
+          <Link  to="/promociones" className="sidebar-link">Promociones</Link>
           <a href="#reports" className="sidebar-link">Reports</a>
+          <a className="sidebar-link"><button onClick={CerrarSesion}>Cerrar Sesion</button></a>
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
       </aside>

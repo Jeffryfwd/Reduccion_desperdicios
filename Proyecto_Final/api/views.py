@@ -1,19 +1,23 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser
+from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser, BasePermission
 
 from .models import Categoria, Productos, Promociones, Alerta, Ventas, Reporte, Usuarios, Empresa, Inventario
-from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser_Empresa, ProductoSerializer2, SerializerPromocionesGet
+from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser_Empresa, ProductoSerializer2, SerializerPromocionesGet,Serializergroup
 # Create your views here.
+class IsAdminUser(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_staff
 
 
 class CategoriaListCreate(generics.ListCreateAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -391,7 +395,7 @@ class ProductosApiView(generics.ListAPIView):
       queryset= Productos.objects.all()
       serializer_class= ProductoSerializer2
      
-      permission_classes= [AllowAny]
+      permission_classes= [IsAdminUser]
       
 ##################################################
 from datetime import timedelta
@@ -414,3 +418,8 @@ class PromocionesApiViews(generics.ListAPIView):
     permission_classes=[AllowAny]
     
     
+#-------------------------------------------------#
+class gruopListacreate(generics.ListCreateAPIView):
+    queryset= Group.objects.all()
+    serializer_class= Serializergroup
+    permission_classes= [AllowAny]

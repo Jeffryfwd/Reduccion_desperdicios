@@ -64,7 +64,7 @@ async function PutProduct(id, Nombre_producto, Fecha_vencimiento, Cantidad, Prec
              Cantidad,
               Precio, 
               Estado,
-              Categoria: { id: Categoria.id }
+              Categoria
         }
         // Asegúrate de que la URL incluya el id de la tarea que quieres eliminar
         const response = await fetch(`http://127.0.0.1:8000/api/productos/${id}`, {

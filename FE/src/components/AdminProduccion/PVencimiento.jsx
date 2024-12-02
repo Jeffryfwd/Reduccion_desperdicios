@@ -26,6 +26,12 @@ function PVencimiento() {
         ObtenerProductos()
 
     },[])
+
+    const CerrarSesion=()=>{
+        localStorage.clear()
+        navigate('/')
+        
+      }
   return (
     <div  >
         <aside className="sidebar">
@@ -37,6 +43,8 @@ function PVencimiento() {
       <Link  className="sidebar-link" to='/vencimiento' >Productos a Vencer</Link>
 
       <a href="#reports" className="sidebar-link">Reports</a>
+      <p  className="sidebar-link" onClick={CerrarSesion}>Cerrar Sesion</p>
+
       <a href="#systemManagement" className="sidebar-link">System Management</a>
     </nav>
   </aside>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import { GetVencer } from '../../services/GetProducts';
 import Postpromociones from '../../services/Promociones/PostPromociones'
 
@@ -17,6 +17,7 @@ function Principal() {
     const[descuento, setDescuento]= useState(0)
     const [Precio, setPrecio]= useState(0)
     const [Precio_total, setPrecioTotal]= useState("")
+    const navigate= useNavigate();
 
     useEffect(()=>{
         const ObtenerProductos = async()=>{
@@ -83,16 +84,27 @@ function Principal() {
     async function AñadirPromocion() {
       await Postpromociones(id_producto, Fecha_inicio, Fecha_fin, descuento, Precio_total)
     }
+
+    const CerrarSesion=()=>{
+      localStorage.clear()
+      navigate('/')
+      
+    }
   return (
     <div>
         <aside className="sidebar">
         <h2 className="sidebar-title">Sistema de Gestión de Inventario</h2>
         <nav className="sidebar-nav">
-          <Link  className="sidebar-link" to='/principal/adminV'>Productos proximos a vencer</Link>
+        <Link  className="sidebar-link" to='/principal'>Lista de productos</Link>
+          <a  href="#category" className="sidebar-link">Categoria</a>
+          <Link  className="sidebar-link" to='/añadir' >Añadir productos</Link>
+          <Link  className="sidebar-link" to='/principal/adminV'>Productos a vencer</Link>
           <Link  to="/promociones" className="sidebar-link">Promociones</Link>
           
 
           <a href="#reports" className="sidebar-link">Reports</a>
+          <p className="sidebar-link" ><button onClick={CerrarSesion}>Cerrar Sesion</button></p>
+
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
       </aside>

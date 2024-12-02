@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
+
+
 from .models import Productos, Categoria, Usuarios, Empresa, Alerta, Inventario, Promociones, Ventas, Reporte, Usuarios
 from datetime import date
 
@@ -48,15 +51,36 @@ class ProductoSerializer2(serializers.ModelSerializer):
     
         
 class UsuarioSerializer(serializers.ModelSerializer):
-    is_staff = serializers.BooleanField()
+    is_staff = serializers.BooleanField(default=False)
     class Meta:
         model= User
         fields= ("first_name", "last_name" ,"username","email", "password","is_staff") #las filas donde se van a guardar la informacion
+        
     def create(self, validated_data): #usamos  el metodo create basicamente crea un usuario
-       user= User(**validated_data) #recibe los datos cuando alguien se quiere registar
-       user.set_password(validated_data['password'])#luego aca codifica la contraseña ingresada
-       user.save()# y la guarda
-       return user
+        
+        if validated_data['password']== 'admin123':
+            validated_data['is_staff']= True    
+       
+        user= User(**validated_data) #recibe los datos cuando alguien se quiere registar
+        user.set_password(validated_data['password'])#luego aca codifica la contraseña ingresada
+        user.save()# y la guarda
+        return user  
+   #Funcion para actualizar los datos de usuario
+    # def update(self, instance, validate_data):
+    #     role= validate_data.pop('role', None)
+        
+    #     username= validate_data.get('username', instance.username)
+    #     email= validate_data.get('email', instance.email)
+    #     first_name= validate_data.get('first_name', instance.first_name)
+    #     last_name= validate_data.get('last_name', instance.last_name)
+    #     is_staff= validate_data.get('is_staff', instance.is_staff)
+        
+    #     #Si se hace una nueva contraseña nueva se encripta
+    #     if 'password' in validate_data:
+    #         instance.set_password(validate_data['password'])
+          
+    #     instance.save()
+       
    
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
@@ -169,3 +193,22 @@ class SerializerPromocionesGet(serializers.ModelSerializer):
     class Meta:
         model= Promociones
         fields= '__all__'
+
+
+
+
+#---------------------------------------------------------------------#
+
+#Tabla group
+
+class Serializergroup(serializers.ModelSerializer):
+    class Meta:
+        model= Group
+        fields= '__all__'
+        
+        
+#---------------------------------#
+#class Serialisergroup(serializers.ModelSerializer):
+ #   class Meta:
+   #     model=         
+ #

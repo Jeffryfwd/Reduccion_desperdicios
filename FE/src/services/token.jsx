@@ -1,4 +1,4 @@
-async function GetUsuarios(username, password) {
+async function token(username, password) {
     try {
         const userData = { 
             username: username,
@@ -38,5 +38,7 @@ async function GetUsuarios(username, password) {
 
 
 
-export default GetUsuarios;
+
+
+export default token;
 
