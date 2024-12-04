@@ -3,6 +3,8 @@ import { Link, useNavigate} from 'react-router-dom';
 import { GetVencer } from '../../services/GetProducts';
 import Postpromociones from '../../services/Promociones/PostPromociones'
 import Autenticacion from '../Autenticacion';
+import { UploadFile } from '../../Firebase/config';
+//import { UploadFile } from '../Firebase/config'
 
 
 
@@ -22,6 +24,7 @@ function Principal() {
     const[descuento, setDescuento]= useState(0)
     const [Precio, setPrecio]= useState(0)
     const [Precio_total, setPrecioTotal]= useState("")
+    const [url_imagen, setFile]= useState("")
     const navigate= useNavigate();
 
     useEffect(()=>{
@@ -87,12 +90,29 @@ function Principal() {
     console.log(datosModal.Precio);
     
     async function AñadirPromocion() {
-      await Postpromociones(id_producto, Fecha_inicio, Fecha_fin, descuento, Precio_total)
+      try {
+        await Postpromociones(id_producto, Fecha_inicio, Fecha_fin, descuento, Precio_total, url_imagen)
+        alert('Promocion creada existosamente')
+      } catch (error) {
+        console.log('Error al crear la promocion', error);
+        
+        
+      }
+   
     }
 
     const CerrarSesion=()=>{
       localStorage.clear()
       navigate('/')
+      
+    }
+    const CargarImagen= async(e)=>{
+      const file = e.target.files[0]
+      setFile(file)
+      if (file) {
+        const resultado= await UploadFile(file);
+        setFile(resultado)
+      }
       
     }
   return (
@@ -231,6 +251,16 @@ function Principal() {
                     value={Precio_total}
                     readOnly
                   />
+                   <div className="mb-3">
+                  <label htmlFor="modalPrecio" className="form-label">Imagen Producto</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="modalPrecio"
+                    
+                    onChange={CargarImagen}
+                  />
+                </div>
                 </div>
                
               

@@ -533,15 +533,80 @@ margin-left: 200px;
   text-align: center;
 }
 
-
+.header{
+  margin-top: -200px;
+}
 
 
 
 /*Css para las cartas de promociones*/
-.contenedorCartasPromo{
+.promocion-card {
+  border: 1px solid #ddd; /* Borde para diferenciar las cartas */
+  border-radius: 10px; /* Esquinas redondeadas */
+  overflow: hidden; /* Asegura que el contenido no salga del contenedor */
   display: flex;
-  margin-left: 250px;
-  margin-top: -320px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombras para diseño */
+  margin: 10px;
+}
+
+.promocion-card-header {
+  width: 100%; /* Para que la imagen ocupe el ancho del header */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9; /* Color de fondo para destacar la imagen */
+}
+
+.promocion-card-header img {
+  max-width: 100%; /* Limita el ancho al contenedor */
+  max-height: 200px; /* Limita la altura para mantener proporción */
+  object-fit: contain; /* Asegura que la imagen no se deforme */
+  border-radius: 8px;
+}
+
+.promocion-card-body {
+  padding: 15px; /* Espaciado interno para texto */
+}
+
+.promocion-card-nombre {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.promocion-card-precio-antes,
+.promocion-card-descuento,
+.promocion-card-precio-total {
+  margin: 5px 0;
+}
+
+.promocion-card-fechas {
+  margin-top: 10px;
+}
+
+.btn-delete {
+  background-color: #e74c3c; /* Color rojo */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b; /* Color más oscuro al pasar el mouse */
+}
+
+.contenedorCartasPromo{
+  margin-top: -400px;
+  margin-left: 200px;
+  
 }
 
 .promocion-card {
@@ -553,6 +618,8 @@ margin-left: 200px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin: 16px;
+  
+  
 }
 
 .promocion-card:hover {
@@ -624,4 +691,25 @@ margin-left: 200px;
 .header-title2{
   margin-top: -750px;
   margin-left: 250px;
+}
+
+
+
+
+.contenedorCartasPromo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta el tamaño mínimo de las cartas */
+  gap: 20px; /* Espaciado entre las cartas */
+  padding: 20px;
+}
+
+.promocion-card {
+  border: 1px solid #ddd; /* Borde para las cartas */
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

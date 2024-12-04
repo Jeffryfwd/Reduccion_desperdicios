@@ -1,4 +1,4 @@
-async function Postpromociones(id_producto, Fecha_inicio, Fecha_fin, Descuento, Precio_total ) {
+async function Postpromociones(id_producto, Fecha_inicio, Fecha_fin, Descuento, Precio_total, url_imagen ) {
     const token = localStorage.getItem('access-token');
     const tokenBearer = 'Bearer ' + token;
     try {
@@ -7,7 +7,8 @@ async function Postpromociones(id_producto, Fecha_inicio, Fecha_fin, Descuento, 
              Fecha_inicio,
              Fecha_fin, 
              Descuento,
-             Precio_total
+             Precio_total,
+             url_imagen
             
         };
         

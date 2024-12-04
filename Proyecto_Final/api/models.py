@@ -45,6 +45,7 @@ class Inventario(models.Model):
     
 class Promociones(models.Model):
     id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    url_imagen= models.URLField()
     Descuento = models.CharField(max_length=100, null=False, blank=False)  # % descuento
     Fecha_inicio = models.DateField(null=False, blank=False)
     Fecha_fin = models.DateField(null=False, blank=False)

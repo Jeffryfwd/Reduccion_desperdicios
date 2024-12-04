@@ -1,11 +1,11 @@
 async function  Getpromociones() {
     try {
-        const token = localStorage.getItem('access-token');
-        const tokenBearer = 'Bearer ' + token
+      
+       
         const response = await fetch("http://127.0.0.1:8000/api/promocionesget/", {
             method: 'GET',
             headers: {
-                'Authorization': tokenBearer,
+                
                 'Content-Type': 'application/json'
             }
         });

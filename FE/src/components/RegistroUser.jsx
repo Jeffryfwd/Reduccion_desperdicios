@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PostUsuarios from '../services/PostUsuario'
-// import GetUsuario2 from '../services/GetUsuarios'
+//import GetUsuario2 from '../services/GetUsuarios'
 import { useNavigate } from 'react-router-dom'
 import '../css/Register.css'
 
@@ -35,14 +35,11 @@ const CargarRol=(event)=>{
     setRol(event.target.value)
 }
 
-async function VerificarUsuarios(first_name, email) {
-    const UsuariosRegistrados= await GetUsuario2();
-    return UsuariosRegistrados.find((usu)=> usu.first_name=== first_name || usu.email=== email)
-}
+
 
 const Registrar = async (e) => {
     e.preventDefault();
-    const UsuarioExiste= await VerificarUsuarios(first_name, email)
+   // const UsuarioExiste= await VerificarUsuarios(first_name, email)
     const userData = {
         first_name,
         last_name,
@@ -61,9 +58,9 @@ const Registrar = async (e) => {
         if (password>= 8) {
             return alert('La contraseña debe ser mayor a 8 digitos')
         }
-        if (UsuarioExiste) {
-            alert('Ya te has registrado anteriormente')
-        }
+        // if (UsuarioExiste) {
+        //     alert('Ya te has registrado anteriormente')
+        // }
         const Registro = await PostUsuarios(first_name, last_name, username, email, password, is_staff);
         alert("Se registró con éxito");
         setTimeout(() => {
@@ -87,7 +84,7 @@ const Registrar = async (e) => {
             type="text" 
             id="primer-nombre" 
             value={first_name} 
-            onChange={CargarNombre}
+            onChange={CargarPrimerNombre}
         />
 
         <label htmlFor="apellido" className="page-link-label">Apellido</label>

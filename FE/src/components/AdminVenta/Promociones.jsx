@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import GetPromociones from '../../services/Promociones/GetPromociones'
+import DeletePromociones from '../../services/Promociones/DeletePromociones';
 import Autenticacion from '../Autenticacion';
+
+
 
 function Promociones() {
   Autenticacion()
 const [LitaPromociones, setListaPromociones]= useState([])
+
 const navigate= useNavigate();
 
 useEffect(()=>{
@@ -22,6 +26,14 @@ const CerrarSesion=()=>{
   navigate('/')
   
 }
+async function EliminarPromociones(id) {
+  await DeletePromociones(id);
+  alert("Producto eliminado con exito")
+  const ListaActualizada= await GetPromociones();
+  setListaPromociones(ListaActualizada)
+}
+
+
     
   return (
     <div>
@@ -51,38 +63,33 @@ const CerrarSesion=()=>{
         </header>
      
       
-      <div className='contenedorCartasPromo'>
-        
-        
-    {LitaPromociones.map((Promo)=>(
-            <div className="promocion-card" key={Promo.id}>
-            <div className="promocion-card-header">
-              <img 
-                src="ruta-a-la-imagen.jpg" 
-                alt="Imagen del Producto" 
-                className="promocion-card-imagen"
-              />
-            </div>
-            <div className="promocion-card-body">
-              <h3 className="promocion-card-nombre">{Promo.id_producto.Nombre_producto}</h3>
-              <p className="promocion-card-precio-antes">
-                Precio Antes: <span className="precio-original">{Promo.id_producto.Precio}</span>
-              </p>
-              <p className="promocion-card-descuento">
-                Descuento: <span className="descuento-porcentaje">{Promo.Descuento}%</span>
-              </p>
-              <p className="promocion-card-precio-total">
-                Precio Total: <span className="precio-con-descuento">{Promo.Precio_total}</span>
-              </p>
-              <div className="promocion-card-fechas">
-                <p>Inicio de Promocion: <span className="fecha-inicio">{Promo.Fecha_inicio}</span></p>
-                <p>Fin de promocion: <span className="fecha-fin">{Promo.Fecha_fin}</span></p>
-              </div>
-            </div>
-            
-          </div>
-    ))}
+        <div className="contenedorCartasPromo">
+  {LitaPromociones.map((Promo) => (
+    <div className="promocion-card" key={Promo.id}>
+      <div className="promocion-card-header">
+        {Promo.url_imagen && <img src={Promo.url_imagen} alt="" />}
+      </div>
+      <div className="promocion-card-body">
+        <h3 className="promocion-card-nombre">{Promo.id_producto.Nombre_producto}</h3>
+        <p className="promocion-card-precio-antes">
+          Precio Antes: <span className="precio-original">{Promo.id_producto.Precio}</span>
+        </p>
+        <p className="promocion-card-descuento">
+          Descuento: <span className="descuento-porcentaje">{Promo.Descuento}%</span>
+        </p>
+        <p className="promocion-card-precio-total">
+          Precio Total: <span className="precio-con-descuento">{Promo.Precio_total}</span>
+        </p>
+        <div className="promocion-card-fechas">
+          <p>Inicio de Promoción: <span className="fecha-inicio">{Promo.Fecha_inicio}</span></p>
+          <p>Fin de Promoción: <span className="fecha-fin">{Promo.Fecha_fin}</span></p>
+        </div>
+        <button className="btn-delete" onClick={() => EliminarPromociones(Promo.id)}>Eliminar</button>
+      </div>
     </div>
+  ))}
+</div>
+
   
      </main>
     </div>
