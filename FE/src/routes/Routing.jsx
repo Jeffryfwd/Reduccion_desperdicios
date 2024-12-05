@@ -11,6 +11,7 @@ import ProtectAdmin from '../../ProtectAdmin';
 import PFile from '../pages/PFile';
 import Carrito from '../components/CarritoCompras/Carrito';
 import PVisualizacionPromociones from '../pages/Visualizacion_Promociones/PVisualizacionPromociones';
+import PConfirmar from '../pages/Confirmar_CompraPage/PConfirmar';
 
 function Routing() {
   return (
@@ -28,6 +29,8 @@ function Routing() {
                 
                 <Route path='/carrito' element={<Carrito/>}></Route>
                 <Route path='/visualizacion/promociones' element={<PVisualizacionPromociones/>}></Route>
+                <Route path='/confirmar/compra' element={<PConfirmar/>}></Route>
+
 
 
                 <Route path='/file' element={<PFile/>}></Route>

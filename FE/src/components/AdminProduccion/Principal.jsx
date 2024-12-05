@@ -87,7 +87,7 @@ function Principal() {
         </header>
 
         {/* Product Grid */}
-        <section className="product-grid">
+        <section className="product-gridlist">
   {ListaProductos.length > 0 ? (
     <table className="product-table">
       <thead>

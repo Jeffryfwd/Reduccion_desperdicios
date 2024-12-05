@@ -92,7 +92,7 @@ function AñadirProducto() {
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
       </aside>
-      <div className="form-container">
+      <div className="form-container-añadir">
       <form className="product-form" onSubmit={Agregar}>
         <h2 className="form-title">Agregar Producto</h2>
         <div className="form-group">

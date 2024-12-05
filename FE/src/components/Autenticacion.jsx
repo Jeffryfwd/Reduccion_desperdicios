@@ -34,7 +34,7 @@ const Autenticacion = () => {
 
     // Función para borrar el token y redirigir al login
     const redirigirLogin = () => {
-      localStorage.removeItem('access-token'); // Borrar el token
+      localStorage.clear(); // Borrar el token
       navigate('/'); // Redirigir al login
     };
 

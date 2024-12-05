@@ -136,7 +136,7 @@ function Principal() {
       <div className="productos-vencer">
     <h1 className="titulo">Productos disponibles para promociones</h1>
 
-    <table className="tabla-productos">
+    <table className="tabla-productos-vencer">
         <thead>
             <tr className="encabezado-tabla">
                 <th className="columna-nombre">Nombre del Producto</th>
