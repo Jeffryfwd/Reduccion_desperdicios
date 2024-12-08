@@ -137,7 +137,12 @@ class InventarioSerializer(serializers.ModelSerializer):
         if value < 0:
             raise serializers.ValidationError("La cantidad no puede ser negativa.")
         return value
+    
+#----------------------------------------------------------------------------------------------#   
 
+
+
+#------------------------------------------------------------------------------------------------#
 
 class PromocionesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -212,3 +217,16 @@ class Serializergroup(serializers.ModelSerializer):
  #   class Meta:
    #     model=         
  #
+ 
+ 
+ 
+from rest_framework import serializers
+from .models import Ventas
+
+class VentasSerializer(serializers.ModelSerializer):
+ 
+    id_User= User()
+    class Meta:
+       
+        model = Ventas
+        fields = '__all__'  # Incluye todos los campos del modelo

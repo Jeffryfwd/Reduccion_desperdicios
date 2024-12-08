@@ -51,11 +51,16 @@ function FormLogin() {
 
             const esAdmin = await BuscarAdmin(username, password)
             if (!esAdmin) {
-               return alert('No tiene permiso para acceder')
+                
+                await token(username, password)
+               Navigate('/visualizacion/promociones')
+               return alert('bienvenido cliente')
+            }else{
+                await token(username, password)
+                Navigate("/principal")
+                alert('Bienvenido')
             }
-            await token(username, password)
-            Navigate("/principal")
-            alert('Bienvenido')
+         
         } catch (error) {
             console.log('Ocurrio un error',error);
             alert(error)

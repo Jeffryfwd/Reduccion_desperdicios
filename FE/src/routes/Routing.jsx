@@ -12,6 +12,7 @@ import PFile from '../pages/PFile';
 import Carrito from '../components/CarritoCompras/Carrito';
 import PVisualizacionPromociones from '../pages/Visualizacion_Promociones/PVisualizacionPromociones';
 import PConfirmar from '../pages/Confirmar_CompraPage/PConfirmar';
+import PVisualizacionVenta from '../pages/PVisualizacion-Compras/PVisualizacionVenta';
 
 function Routing() {
   return (
@@ -26,10 +27,12 @@ function Routing() {
                 <Route path='/vencimiento' element={<ProtectAdmin><Ppvencimiento/></ProtectAdmin>}></Route>
                 <Route path='/promociones' element={<ProtectAdmin><Ppromociones/></ProtectAdmin>}></Route>
                 <Route path='/principal/adminV' element={<ProtectAdmin><PprincipalAdminVenta/></ProtectAdmin>}></Route>
+                <Route path='/visualizacion/venta' element={<PVisualizacionVenta/>}></Route>
                 
                 <Route path='/carrito' element={<Carrito/>}></Route>
                 <Route path='/visualizacion/promociones' element={<PVisualizacionPromociones/>}></Route>
                 <Route path='/confirmar/compra' element={<PConfirmar/>}></Route>
+
 
 
 

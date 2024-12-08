@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import '../../css/VisualizacionPromociones.css'
 import Modal from "../Modal/Modal";
-import { Link, useNavigate } from 'react-router-dom';
+import { json, Link, useNavigate } from 'react-router-dom';
 import GetPromociones from '../../services/Promociones/GetPromociones'
+import LoginButton from '../LoginButton';
+import {jwtDecode}  from 'jwt-decode';
+
+
+
 
 function PromocionesVisuali() {
 const [LitaPromociones, setListaPromociones]= useState([])
 const [abrirModal, setAbrirModal] = useState(false);
 const [carrito, setCarrito] = useState([]); // Estado del carrito
 const navigate= useNavigate();
+const [isLogin, setIsLogin] = useState(true);
 
 useEffect(()=>{
   async function ObtenerPromociones() {
@@ -16,11 +22,43 @@ useEffect(()=>{
     setListaPromociones(Promociones)
 
   }
+  const TokenCodigo= localStorage.getItem('access-token')
+  if (!TokenCodigo) {
+    console.log('No se encontro token en la sesion');
+    return
+    
+  }
+  try {
+    const tokenDecifrado= jwtDecode(TokenCodigo)
+    console.log('Este es el token decifrado', tokenDecifrado );+
+    localStorage.setItem('Id_user',tokenDecifrado.user_id)
+    
+  if (!TokenCodigo) {
+  console.log('No se encontró token en la sesión');
+  return;
+}
+    
+  } catch (error) {
+    console.log('ERROR al decodificar el token', error);
+    
+  }
+  const EliminarLocal=()=>{
+    setTimeout(() => {
+      localStorage.removeItem('CarritoSelecccionado')
+    }, 60000);
+   
+  }
 
+const carritoGuardado= JSON.parse(localStorage.getItem("CarritoSelecccionado"))
+if (carritoGuardado) {
+  setCarrito(carritoGuardado)
+}
   ObtenerPromociones()
+  EliminarLocal()
 
 
 },[])
+
 
 
 
@@ -69,6 +107,9 @@ const ManejarCarrito=()=>{
   navigate('/confirmar/compra')
 
 }
+
+
+
 
 
 const categoriasDestacadas = [
@@ -125,6 +166,11 @@ const categoriasDestacadas = [
           </li>
         </ul>
       </div>
+
+
+{isLogin && <LoginButton/>}
+
+
 
       {/* Modal que se abre al hacer clic */}
       <Modal

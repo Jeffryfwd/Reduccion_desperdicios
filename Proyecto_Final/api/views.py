@@ -151,34 +151,23 @@ class AlertaDetail(generics.RetrieveUpdateDestroyAPIView):
 class VentasListCreate(generics.ListCreateAPIView):
     queryset= Ventas.objects.all()
     serializer_class= VentaSerializers
-    def post(self, request, *args, **kwargs):
-        serializer= self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {
-                    "message": "La venta fue creada exitosamente",
-                    "data": serializer.data,
-                    
-                },
-                status=status.HTTP_201_CREATED
-                
-                
-            )
-        print(serializer.erros)   
-        return Response(
-            {
-                "message": "Ocurrio un error al crear la venta",
-                "data": serializer.errors,
-            },
-            status=status.HTTP_400_BAD_REQUEST
-        ) 
+    permission_classes=[AllowAny]
+
 
 class VentasDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset= Ventas
+    queryset= Ventas.objects.all()
     serializer_class= VentaSerializers
+    permission_classes= [AllowAny]
     
 ##########################################################################
+
+    
+##########################################################################
+#Vista para eliminar o editar
+
+
+    
+#-------------------------------------------------------------------#    
 
 
 class ReporteListCreate(generics.ListCreateAPIView):
@@ -423,3 +412,55 @@ class gruopListacreate(generics.ListCreateAPIView):
     queryset= Group.objects.all()
     serializer_class= Serializergroup
     permission_classes= [AllowAny]
+    
+    
+    
+#---------------------------------------------------------------#
+from datetime import date
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from rest_framework import status
+
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from .models import Ventas
+from .serializers import VentasSerializer
+
+class RegistrarVentaAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        data = request.data
+        cliente_id = data.get('Cliente_id')
+        carrito = data.get('carrito')
+
+        if not cliente_id or not carrito:
+            return Response({"error": "Datos incompletos"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Registrar cada producto del carrito como una venta
+        for item in carrito:
+            try:
+                producto_id = item['id_producto']['id']  # Extraer solo el ID
+                producto = Productos.objects.get(id=producto_id)  # Obtener producto de la BD
+                Ventas.objects.create(
+                    id_producto=producto,
+                    id_promociones=item.get('id_promociones'),
+                    Cantidad_venta=item['cantidad'],
+                    Fecha_venta=date.today(),
+                    Total=item['cantidad'] * item['Precio_total'],
+                    Cliente_id=cliente_id  # Asignar el ID del cliente
+                )
+            except Productos.DoesNotExist:
+                return Response({"error": f"Producto con ID {producto_id} no encontrado"},
+                                status=status.HTTP_404_NOT_FOUND)
+
+        return Response({"mensaje": "Compra registrada con éxito"}, status=status.HTTP_201_CREATED)
+
+
+    # def get(self, request):
+    #     ventas = Ventas.objects.all()  # Obtiene todas las ventas
+    #     serializer = VentasSerializer(ventas, many=True)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)

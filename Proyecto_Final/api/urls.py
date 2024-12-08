@@ -47,9 +47,9 @@ urlpatterns = [
     
     path('group/', views.gruopListacreate.as_view(), name='Categoria-List'),
     
+ 
     
-    
-
+    path('rventa/', views.RegistrarVentaAPIView.as_view(), name='Cliente-List'),
     
     
 ]
