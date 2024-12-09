@@ -39,6 +39,7 @@ function Confirmar() {
         alert('Compra registrada con éxito');
         localStorage.removeItem('CarritoSeleccionado');
         navigate('/visualizacion/promociones'); // Redirige a la página principal
+   
       } else {
         alert('Error al registrar la compra');
       }

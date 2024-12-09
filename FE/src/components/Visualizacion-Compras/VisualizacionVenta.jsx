@@ -22,6 +22,8 @@ function VisualizacionVenta() {
     
   }
 
+  
+
  
   return (
     <div className="dashboard">
@@ -47,7 +49,6 @@ function VisualizacionVenta() {
         <tr>
           
           <th>Nombre Cliente</th>
-          <th>Telefono</th>
           <th>Nombre Producto</th>
           <th>Cantidad</th>
           <th>Precio sin descuento</th>
@@ -58,8 +59,7 @@ function VisualizacionVenta() {
 
           {ListaVentas.map((Vent)=>(
             <tr key={Vent.id}>
-            <td>{Vent.cliente.Nombre_cliente || 'Sin nombre'}</td>
-            <td>{Vent.cliente.Numero_telefono || 'Sin nombre'}</td>
+            <td>{Vent.Cliente.first_name || 'Sin nombre'}</td>
             <td>{Vent.id_producto.Nombre_producto|| 'Sin nombre'}</td>
             <td>{Vent.Cantidad_venta|| 'Sin nombre'}</td>
             <td>{Vent.id_producto.Precio|| 'Sin nombre'}</td>

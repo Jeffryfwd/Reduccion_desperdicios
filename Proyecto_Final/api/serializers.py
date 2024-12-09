@@ -224,8 +224,8 @@ from rest_framework import serializers
 from .models import Ventas
 
 class VentasSerializer(serializers.ModelSerializer):
- 
-    id_User= User()
+    id_producto= ProductoSerializer()
+    Cliente= UsuarioSerializer()
     class Meta:
        
         model = Ventas

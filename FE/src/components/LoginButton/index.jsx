@@ -18,6 +18,9 @@ const IniciarSesion=async(e)=>{
   e.preventDefault()
   await token(username, password)
   alert('Inicio de sesion existoso')
+  setTimeout(() => {
+    window.location.reload();
+  }, 2000);
 }
 
   return (

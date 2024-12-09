@@ -430,7 +430,9 @@ from .models import Ventas
 from .serializers import VentasSerializer
 
 class RegistrarVentaAPIView(APIView):
+    queryset= Ventas.objects.all()
     permission_classes = [AllowAny]
+    
 
     def post(self, request):
         data = request.data
@@ -460,7 +462,7 @@ class RegistrarVentaAPIView(APIView):
         return Response({"mensaje": "Compra registrada con éxito"}, status=status.HTTP_201_CREATED)
 
 
-    # def get(self, request):
-    #     ventas = Ventas.objects.all()  # Obtiene todas las ventas
-    #     serializer = VentasSerializer(ventas, many=True)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        ventas = Ventas.objects.all()  # Obtiene todas las ventas
+        serializer = VentasSerializer(ventas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -30,7 +30,6 @@ useEffect(()=>{
   }
   try {
     const tokenDecifrado= jwtDecode(TokenCodigo)
-    console.log('Este es el token decifrado', tokenDecifrado );+
     localStorage.setItem('Id_user',tokenDecifrado.user_id)
     
   if (!TokenCodigo) {
@@ -44,7 +43,10 @@ useEffect(()=>{
   }
   const EliminarLocal=()=>{
     setTimeout(() => {
-      localStorage.removeItem('CarritoSelecccionado')
+      localStorage.clear()
+     
+      
+
     }, 60000);
    
   }
@@ -74,7 +76,9 @@ if (carritoGuardado) {
             ? { ...item, cantidad: item.cantidad + 1 }//'...' es para crear una copia del objeto producto y le añado una propiedad cantidad que va aunmentar en uno
             : item
         );
-      } else {
+      } 
+      
+      else {
         // Si no está, agrégalo al carrito con cantidad inicial 1
         return [...prevCarrito, { ...producto, cantidad: 1 }];//  ([...]) para crear un nuevo arreglo que incluye todos los datos de los productos anteriores
       }
@@ -103,6 +107,12 @@ if (carritoGuardado) {
 
 
 const ManejarCarrito=()=>{
+  
+  const id_cliente= localStorage.getItem('Id_user')
+ 
+  if (!id_cliente) {
+    return alert('Debe iniciar sesion para confirmar su compra')
+  }
   localStorage.setItem('CarritoSelecccionado', JSON.stringify(carrito))
   navigate('/confirmar/compra')
 
