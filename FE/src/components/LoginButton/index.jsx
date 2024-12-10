@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import token from '../../services/token'
+import { Link } from 'react-router-dom'
 
 
 function LoginButton() {
@@ -42,12 +43,7 @@ const IniciarSesion=async(e)=>{
         onChange={CargarPassword}/>
       </div>
       <div class="mb-3">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="dropdownCheck2"/>
-          <label class="form-check-label" for="dropdownCheck2">
-            Remember me
-          </label>
-        </div>
+      <p>Si no tienes cuenta registrate<Link to='/registro'><button>Aqui</button></Link></p>
       </div>
       <button type="submit" class="btn btn-primary">Sign in</button>
     </form>

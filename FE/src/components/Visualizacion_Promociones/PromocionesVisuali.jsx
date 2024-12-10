@@ -3,9 +3,12 @@ import '../../css/VisualizacionPromociones.css'
 import Modal from "../Modal/Modal";
 import { json, Link, useNavigate } from 'react-router-dom';
 import GetPromociones from '../../services/Promociones/GetPromociones'
+import GetCategoria from '../../services/GetCategoria';
 import LoginButton from '../LoginButton';
 import {jwtDecode}  from 'jwt-decode';
-
+import Enlatados from '../../img/Enlatados.png'
+import Carnes from '../../img/Carnes.png'
+import Lacteos from '../../img/Lacteos.png'
 
 
 
@@ -14,7 +17,8 @@ const [LitaPromociones, setListaPromociones]= useState([])
 const [abrirModal, setAbrirModal] = useState(false);
 const [carrito, setCarrito] = useState([]); // Estado del carrito
 const navigate= useNavigate();
-const [isLogin, setIsLogin] = useState(true);
+const [isLogin, setIsLogin] = useState(false);
+const [ListaCategoria, setCategoria]= useState([])
 
 useEffect(()=>{
   async function ObtenerPromociones() {
@@ -29,6 +33,9 @@ useEffect(()=>{
     
   }
   try {
+    if (TokenCodigo) {
+      setIsLogin(true);
+    }
     const tokenDecifrado= jwtDecode(TokenCodigo)
     localStorage.setItem('Id_user',tokenDecifrado.user_id)
     
@@ -47,8 +54,12 @@ useEffect(()=>{
      
       
 
-    }, 60000);
+    }, 200000);
    
+  }
+  const ObtenerCategoria=async()=>{
+ const CategoriaL= await GetCategoria()
+ setCategoria(CategoriaL)
   }
 
 const carritoGuardado= JSON.parse(localStorage.getItem("CarritoSelecccionado"))
@@ -113,27 +124,19 @@ const ManejarCarrito=()=>{
   if (!id_cliente) {
     return alert('Debe iniciar sesion para confirmar su compra')
   }
-  localStorage.setItem('CarritoSelecccionado', JSON.stringify(carrito))
+  localStorage.setItem('CarritoSelecccionado', JSON.stringify(carrito, subtotal))
   navigate('/confirmar/compra')
 
 }
 
 
 
+function CerrarSesion() {
+  localStorage.clear()
+}
 
 
-const categoriasDestacadas = [
-  { nombre: "Abarrotes", imagen: "ruta/a/abarrotes.png" },
-  { nombre: "Carnes y Pescados", imagen: "ruta/a/carnes-pescados.png" },
-  { nombre: "Frutas y Verduras", imagen: "ruta/a/frutas-verduras.png" },
-  { nombre: "Lácteos y Huevos", imagen: "ruta/a/lacteos-huevos.png" },
-  { nombre: "Jugos y Bebidas", imagen: "ruta/a/jugos-bebidas.png" },
-  { nombre: "Licores y Cerveza", imagen: "ruta/a/licores-cerveza.png" },
-  { nombre: "Cuidado Personal", imagen: "ruta/a/cuidado-personal.png" },
-  { nombre: "Limpieza del hogar", imagen: "ruta/a/limpieza-hogar.png" },
-  { nombre: "Mascotas", imagen: "ruta/a/mascotas.png" },
-  { nombre: "Panadería", imagen: "ruta/a/panaderia.png" },
-];
+
   return (
     <div>
 
@@ -178,7 +181,7 @@ const categoriasDestacadas = [
       </div>
 
 
-{isLogin && <LoginButton/>}
+{isLogin ? <button onClick={CerrarSesion}>Cerrar Sesion</button> :<LoginButton/>}
 
 
 
@@ -250,14 +253,34 @@ const categoriasDestacadas = [
       <div className="highlighted-categories">
         <h2>Categorías destacadas</h2>
         <div className="categories-container">
-          {categoriasDestacadas.map((categoria, index) => (
-            <div className="category-card" key={index}>
+          
+            <div className="category-card">
               <div className="category-icon">
-                <img src={categoria.imagen} alt={categoria.nombre} />
+                <img src='https://info.megasuper.com/categorias/Abarrotes.png' alt="" />
               </div>
-              <p className="category-name">{categoria.nombre}</p>
-            </div>
-          ))}
+              <Link to='/abarrotes'><p className="category-name">Abarrotes</p></Link> 
+              </div>
+
+              <div className="category-card">
+              <div className="category-icon">
+              <img src={Enlatados} alt="" />
+              </div>
+              <Link to='/enlatados'><p className="category-name">Enlatados</p></Link> 
+              </div>
+
+              <div className="category-card">
+              <div className="category-icon">
+                <img src={Carnes} alt="" />
+              </div>
+              <Link to='/carnes'><p className="category-name">Carnes</p></Link> 
+              </div>
+              <div className="category-card">
+              <div className="category-icon">
+                <img src={Lacteos} alt="" />
+              </div>
+              <Link to='/lacteos'><p className="category-name">Lacteos</p></Link> 
+              </div>
+         
         </div>
       </div>
 

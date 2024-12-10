@@ -12,6 +12,7 @@ class Categoria(models.Model):
 
 class Productos(models.Model):
     Nombre_producto = models.CharField(max_length=100, null=False, blank=False)
+    Imagen_Producto= models.URLField()
     Categoria = models.ForeignKey(Categoria, null=False, blank=False, on_delete=models.CASCADE)
     Fecha_vencimiento = models.DateField(null=False, blank=False)
     Cantidad = models.IntegerField()

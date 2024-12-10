@@ -4,6 +4,7 @@ import { Postproducts } from '../../services/GetProducts';
 import { useEffect } from 'react';
 import GetCategoria from '../../services/GetCategoria';
 import Autenticacion from '../Autenticacion';
+import { UploadFile } from '../../Firebase/config';
 
 function AñadirProducto() {
   Autenticacion()
@@ -14,6 +15,7 @@ function AñadirProducto() {
     const[Precio, setPrecio]=useState("")
     const[Estado, setEstado]= useState("")
     const[ListaCategoria, SetListaCategoria]=useState([])
+    const [Imagen_Producto, setFile]= useState("")
     const navigate= useNavigate();
     
 
@@ -52,6 +54,15 @@ function AñadirProducto() {
       
     } 
 
+    const CargarImagen=async(e)=>{
+      const file= e.target.files[0]
+      setFile(file)
+      if (file) {
+        const resultado= await UploadFile(file);
+        setFile(resultado)
+      }
+    }
+
     const Agregar = async (e) => {
       e.preventDefault();
       
@@ -68,7 +79,7 @@ function AñadirProducto() {
       console.log(datosProducto, "Estos son los datos enviados"); // Aquí registras los datos correctamente
   
       try {
-          await Postproducts(Nombre_producto, Fecha_vencimiento, Cantidad, Estado, Precio, Categoria);
+          await Postproducts(Nombre_producto, Fecha_vencimiento, Cantidad, Estado, Precio, Categoria, Imagen_Producto);
           alert("Producto agregado con éxito");
       } catch (error) {
           console.error("Hubo un error al agregar el producto:", error.message);
@@ -83,10 +94,11 @@ function AñadirProducto() {
         <h2 className="sidebar-title">Sistema de Gestión de Inventario</h2>
         <nav className="sidebar-nav">
           <Link  className="sidebar-link" to='/principal'>Lista de productos</Link>
-          <a href="#category" className="sidebar-link">Categoria</a>
+          <Link to='/addcategoria' className="sidebar-link">Categoria</Link>
           <Link  className="sidebar-link" to='/añadir' >Añadir productos</Link>
           <Link  className="sidebar-link" to='/principal/adminV' >Productos a Vencer</Link>
           <Link  to="/promociones" className="sidebar-link">Promociones</Link>
+          <Link  to='/visualizacion/venta' className="sidebar-link">Pedidos</Link>
           <a href="#reports" className="sidebar-link">Reports</a>
           <a className="sidebar-link"><button onClick={CerrarSesion}>Cerrar Sesion</button></a>
           <a href="#systemManagement" className="sidebar-link">System Management</a>
@@ -160,6 +172,16 @@ function AñadirProducto() {
             onChange={CargarEstado}
           />
         </div>
+        <div className="mb-3">
+                  <label htmlFor="modalPrecio" className="form-label">Imagen Producto</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="modalPrecio"
+                    
+                    onChange={CargarImagen}
+                  />
+                </div>
         <button type="submit" className="form-submit">Guardar Producto</button>
       </form>
     </div>

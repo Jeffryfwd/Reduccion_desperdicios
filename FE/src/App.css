@@ -718,3 +718,12 @@ margin-left: 200px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
+
+/* FormCategoria */
+.form-container-añadir-Cat{
+  border: 1px solid;
+  width: 300px;
+  margin-left: 500px;
+  margin-top: -500px;
+}

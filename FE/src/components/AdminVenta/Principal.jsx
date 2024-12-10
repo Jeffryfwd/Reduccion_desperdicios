@@ -121,11 +121,11 @@ function Principal() {
         <h2 className="sidebar-title">Sistema de Gestión de Inventario</h2>
         <nav className="sidebar-nav">
         <Link  className="sidebar-link" to='/principal'>Lista de productos</Link>
-          <a  href="#category" className="sidebar-link">Categoria</a>
+        <Link to='/addcategoria' className="sidebar-link">Categoria</Link>
           <Link  className="sidebar-link" to='/añadir' >Añadir productos</Link>
           <Link  className="sidebar-link" to='/principal/adminV'>Productos a vencer</Link>
           <Link  to="/promociones" className="sidebar-link">Promociones</Link>
-          
+          <Link  to='/visualizacion/venta' className="sidebar-link">Pedidos</Link>
 
           <a href="#reports" className="sidebar-link">Reports</a>
           <p className="sidebar-link" ><button onClick={CerrarSesion}>Cerrar Sesion</button></p>

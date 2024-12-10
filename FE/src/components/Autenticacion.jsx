@@ -35,7 +35,7 @@ const Autenticacion = () => {
     // Función para borrar el token y redirigir al login
     const redirigirLogin = () => {
       localStorage.clear(); // Borrar el token
-      navigate('/'); // Redirigir al login
+      navigate('/login'); // Redirigir al login
     };
 
     // Llamar a la función de verificación al montar el componente

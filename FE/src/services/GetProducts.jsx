@@ -86,7 +86,7 @@ async function PutProduct(id, Nombre_producto, Fecha_vencimiento, Cantidad, Prec
  
 }
 
-async function Postproducts(Nombre_producto, Fecha_vencimiento,Cantidad,Estado,Precio,Categoria) {
+async function Postproducts(Nombre_producto, Fecha_vencimiento,Cantidad,Estado,Precio,Categoria, Imagen_Producto) {
     const token = localStorage.getItem('access-token');
     const tokenBearer = 'Bearer ' + token;
     try {
@@ -96,8 +96,8 @@ async function Postproducts(Nombre_producto, Fecha_vencimiento,Cantidad,Estado,P
              Cantidad,
              Estado,
              Precio,
-             Categoria//: { Categoria: Categoria.Categoria }
-            
+             Categoria,//: { Categoria: Categoria.Categoria }
+            Imagen_Producto
         };
         console.log(userData.Categoria);
         const response = await fetch("http://127.0.0.1:8000/api/productos/", {

@@ -428,6 +428,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from .models import Ventas
 from .serializers import VentasSerializer
+from decimal import Decimal
 
 class RegistrarVentaAPIView(APIView):
     queryset= Ventas.objects.all()
@@ -447,12 +448,14 @@ class RegistrarVentaAPIView(APIView):
             try:
                 producto_id = item['id_producto']['id']  # Extraer solo el ID
                 producto = Productos.objects.get(id=producto_id)  # Obtener producto de la BD
+                precio_total = Decimal(item['Precio_total'])
+                cantidad = item['cantidad']  
                 Ventas.objects.create(
                     id_producto=producto,
                     id_promociones=item.get('id_promociones'),
-                    Cantidad_venta=item['cantidad'],
+                    Cantidad_venta=cantidad,
                     Fecha_venta=date.today(),
-                    Total=item['cantidad'] * item['Precio_total'],
+                    Total=cantidad * precio_total,
                     Cliente_id=cliente_id  # Asignar el ID del cliente
                 )
             except Productos.DoesNotExist:
