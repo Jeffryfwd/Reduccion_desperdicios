@@ -145,6 +145,7 @@ class InventarioSerializer(serializers.ModelSerializer):
 #------------------------------------------------------------------------------------------------#
 
 class PromocionesSerializer(serializers.ModelSerializer):
+    id_producto= ProductoSerializer()
     class Meta:
         model = Promociones
         fields = '__all__'
@@ -225,6 +226,7 @@ from .models import Ventas
 
 class VentasSerializer(serializers.ModelSerializer):
     id_producto= ProductoSerializer()
+    id_promociones= PromocionesSerializer()
     Cliente= UsuarioSerializer()
     class Meta:
        

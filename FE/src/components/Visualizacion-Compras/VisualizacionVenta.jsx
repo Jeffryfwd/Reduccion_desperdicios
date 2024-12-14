@@ -62,9 +62,14 @@ function VisualizacionVenta() {
           {ListaVentas.map((Vent)=>(
             <tr key={Vent.id}>
             <td>{Vent.Cliente.first_name || 'Sin nombre'}</td>
-            <td>{Vent.id_producto.Nombre_producto|| 'Sin nombre'}</td>
-            <td>{Vent.Cantidad_venta|| 'Sin nombre'}</td>
-            <td>{Vent.id_producto.Precio|| 'Sin nombre'}</td>
+            <td>
+  {Vent.id_promociones && Vent.id_promociones.id_producto
+    ? Vent.id_promociones.id_producto.Nombre_producto
+    :  Vent.id_producto.Nombre_producto}
+</td>
+
+             <td>{Vent.Cantidad_venta|| 'Sin nombre'}</td>
+            <td>{Vent.id_promociones && Vent.id_promociones.id_producto ? Vent.id_promociones.id_producto.Precio : Vent.id_producto.Precio}</td>
             <td>{Vent.Total|| 'Sin nombre'}</td>
             
               

@@ -6,7 +6,7 @@ function ProtectAdmin({children}) {
     const EstaAutenticado= localStorage.getItem('Autenticado')=== 'Admin';
 
     if (!EstaAutenticado) {
-        return <Navigate to='/'/>;
+        return <Navigate to='/login'/>;
         
         
     }

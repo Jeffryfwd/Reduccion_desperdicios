@@ -23,7 +23,7 @@ useEffect(()=>{
 
 const CerrarSesion=()=>{
   localStorage.clear()
-  navigate('/')
+  navigate('/login')
   
 }
 async function EliminarPromociones(id) {

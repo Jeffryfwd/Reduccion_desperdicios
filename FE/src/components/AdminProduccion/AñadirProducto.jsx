@@ -50,7 +50,7 @@ function AñadirProducto() {
 
     const CerrarSesion=()=>{
       localStorage.removeItem('Autenticado', 'Admin')
-      navigate('/')
+      navigate('/login')
       
     } 
 

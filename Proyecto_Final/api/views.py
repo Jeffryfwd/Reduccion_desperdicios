@@ -315,6 +315,7 @@ class InventarioDetail(generics.RetrieveUpdateDestroyAPIView):
     
     
 ############################################################################
+#Creacion de Productos
 class ProductosListCreate(generics.ListCreateAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductoSerializer
@@ -379,12 +380,12 @@ class Registro_userListCreate(generics.ListCreateAPIView):
         )
   
   ################################################}
-
+#Para obtener los productos
 class ProductosApiView(generics.ListAPIView):
       queryset= Productos.objects.all()
       serializer_class= ProductoSerializer2
      
-      permission_classes= [IsAdminUser]
+      permission_classes= [AllowAny]
       
 ##################################################
 from datetime import timedelta
@@ -404,7 +405,7 @@ class ProductoVencimientoView(APIView):
 class PromocionesApiViews(generics.ListAPIView):
     queryset= Promociones.objects.all()
     serializer_class= SerializerPromocionesGet
-    permission_classes=[AllowAny]
+    permission_classes = [AllowAny]
     
     
 #-------------------------------------------------#
@@ -416,24 +417,18 @@ class gruopListacreate(generics.ListCreateAPIView):
     
     
 #---------------------------------------------------------------#
-from datetime import date
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework import status
-
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
-from .models import Ventas
-from .serializers import VentasSerializer
 from decimal import Decimal
+from datetime import date
+from rest_framework import status
+from .models import Ventas, Productos
+from .serializers import VentasSerializer
 
 class RegistrarVentaAPIView(APIView):
-    queryset= Ventas.objects.all()
+    queryset = Ventas.objects.all()
     permission_classes = [AllowAny]
-    
 
     def post(self, request):
         data = request.data
@@ -446,24 +441,41 @@ class RegistrarVentaAPIView(APIView):
         # Registrar cada producto del carrito como una venta
         for item in carrito:
             try:
-                producto_id = item['id_producto']['id']  # Extraer solo el ID
-                producto = Productos.objects.get(id=producto_id)  # Obtener producto de la BD
-                precio_total = Decimal(item['Precio_total'])
-                cantidad = item['cantidad']  
-                Ventas.objects.create(
-                    id_producto=producto,
-                    id_promociones=item.get('id_promociones'),
-                    Cantidad_venta=cantidad,
-                    Fecha_venta=date.today(),
-                    Total=cantidad * precio_total,
-                    Cliente_id=cliente_id  # Asignar el ID del cliente
-                )
+                id_producto = item.get('id_producto')
+                id_promocion = item.get('id')
+                precio_total = Decimal(item.get('Precio_total', 0))
+                precio_raw = item.get('Precio', 0)
+                precio = Decimal(precio_raw)
+                cantidad = item.get('cantidad', 1)
+
+                if id_producto:
+                    # Si es una promoción
+                    producto = Productos.objects.get(id=id_producto['id'])
+                    promocion = Promociones.objects.get(id_producto=producto)
+                    Ventas.objects.create(
+                        id_producto=None,
+                        id_promociones=promocion,
+                        Cantidad_venta=cantidad,
+                        Fecha_venta=date.today(),
+                        Total=cantidad * precio_total or cantidad * precio,
+                        Cliente_id=cliente_id
+                    )
+                else:
+                    # Si es un producto normal
+                    producto = Productos.objects.get(id=id_promocion)
+                    Ventas.objects.create(
+                        id_producto=producto,
+                        id_promociones=None,
+                        Cantidad_venta=cantidad,
+                        Fecha_venta=date.today(),
+                        Total=cantidad * precio_total or cantidad * precio,
+                        Cliente_id=cliente_id
+                    )
             except Productos.DoesNotExist:
-                return Response({"error": f"Producto con ID {producto_id} no encontrado"},
+                return Response({"error": f"Producto con ID {id_promocion or id_producto} no encontrado"},
                                 status=status.HTTP_404_NOT_FOUND)
 
         return Response({"mensaje": "Compra registrada con éxito"}, status=status.HTTP_201_CREATED)
-
 
     def get(self, request):
         ventas = Ventas.objects.all()  # Obtiene todas las ventas

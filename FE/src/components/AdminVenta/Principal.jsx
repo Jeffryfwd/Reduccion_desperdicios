@@ -103,7 +103,7 @@ function Principal() {
 
     const CerrarSesion=()=>{
       localStorage.clear()
-      navigate('/')
+      navigate('/login')
       
     }
     const CargarImagen= async(e)=>{

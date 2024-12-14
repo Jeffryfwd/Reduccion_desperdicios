@@ -9,6 +9,7 @@ import {jwtDecode}  from 'jwt-decode';
 import Enlatados from '../../img/Enlatados.png'
 import Carnes from '../../img/Carnes.png'
 import Lacteos from '../../img/Lacteos.png'
+import { GetProducts } from '../../services/GetProducts'
 
 
 
@@ -18,7 +19,7 @@ const [abrirModal, setAbrirModal] = useState(false);
 const [carrito, setCarrito] = useState([]); // Estado del carrito
 const navigate= useNavigate();
 const [isLogin, setIsLogin] = useState(false);
-const [ListaCategoria, setCategoria]= useState([])
+const [ListaProductos, setProducto]=useState([])
 
 useEffect(()=>{
   async function ObtenerPromociones() {
@@ -26,10 +27,14 @@ useEffect(()=>{
     setListaPromociones(Promociones)
 
   }
+  const ObtenerProductos=async()=>{
+    const Productos= await GetProducts()
+    setProducto(Productos)
+    }
   const TokenCodigo= localStorage.getItem('access-token')
   if (!TokenCodigo) {
     console.log('No se encontro token en la sesion');
-    return
+    
     
   }
   try {
@@ -39,10 +44,7 @@ useEffect(()=>{
     const tokenDecifrado= jwtDecode(TokenCodigo)
     localStorage.setItem('Id_user',tokenDecifrado.user_id)
     
-  if (!TokenCodigo) {
-  console.log('No se encontró token en la sesión');
-  return;
-}
+
     
   } catch (error) {
     console.log('ERROR al decodificar el token', error);
@@ -57,10 +59,7 @@ useEffect(()=>{
     }, 200000);
    
   }
-  const ObtenerCategoria=async()=>{
- const CategoriaL= await GetCategoria()
- setCategoria(CategoriaL)
-  }
+
 
 const carritoGuardado= JSON.parse(localStorage.getItem("CarritoSelecccionado"))
 if (carritoGuardado) {
@@ -68,6 +67,7 @@ if (carritoGuardado) {
 }
   ObtenerPromociones()
   EliminarLocal()
+  ObtenerProductos()
 
 
 },[])
@@ -79,11 +79,11 @@ if (carritoGuardado) {
   // Función para agregar producto al carrito
   const agregarAlCarrito = (producto) => { //producto es un objeto que trae la informacion de producto que queremos agregar
     setCarrito((prevCarrito) => { //Seteo el estado de setCarrito y prevCarrito es el producto actual antes de agregar otro producto
-      const existe = prevCarrito.find((item) => item.id === producto.id); //Buscamos si el productos que queremos agregar esta en el carrito
+      const existe = prevCarrito.find((item) => item.id === producto.id && item.tipo === producto.tipo); //Buscamos si el productos que queremos agregar esta en el carrito
       if (existe) {
         // Y si el producto ya está en el carrito, incrementa la cantidad
         return prevCarrito.map((item) => //uso el map para recorrer el producto del carrito y verifica si el id es igual al producto que esta en el carrito y si es igual se incremnta
-          item.id === producto.id
+          item.id === producto.id && item.tipo === producto.tipo
             ? { ...item, cantidad: item.cantidad + 1 }//'...' es para crear una copia del objeto producto y le añado una propiedad cantidad que va aunmentar en uno
             : item
         );
@@ -95,6 +95,7 @@ if (carritoGuardado) {
       }
     });
   };
+console.log(carrito);
 
    // Función para eliminar un producto del carrito
    const eliminarDelCarrito = (id) => {
@@ -112,7 +113,7 @@ if (carritoGuardado) {
 
     // Calcular el subtotal y total
     const subtotal = carrito.reduce(
-      (acc, item) => acc + item.cantidad * item.Precio_total,
+      (acc, item) => acc + item.cantidad * item.Precio_total || acc + item.cantidad * item.Precio,
       0
     );
 
@@ -133,6 +134,7 @@ const ManejarCarrito=()=>{
 
 function CerrarSesion() {
   localStorage.clear()
+  navigate('/')
 }
 
 
@@ -197,16 +199,16 @@ function CerrarSesion() {
               <p className="empty-cart-message">¡Tu carrito está vacío!</p>
           ):(
             carrito.map((item)=>(
-              <div key={item.id} className="carrito-item">
-                     {item.url_imagen && (
+              <div key={`${item.id}-${item.tipo}`} className="carrito-item">
                   <img
-                    src={item.url_imagen}
-                   
+                    src={item.url_imagen || item.Imagen_Producto}
                     className="promotion-image"
+
                   />
-                )}
-                   <p className="cart-item-name">{item.id_producto.Nombre_producto}</p>
-                   <p className="cart-item-price">₡ {item.Precio_total}</p>
+                   <p className="cart-item-name">{item.tipo === 'promocion' ? 'Promocion': 'Producto'}
+                    {item.Nombre_producto || item.id_producto.Nombre_producto}
+                   </p>
+                   <p className="cart-item-price">₡ {item.Precio_total || item.Precio}</p>
                    <div className="cart-quantity-control">
                   <button
                      className="quantity-button decrease"
@@ -223,9 +225,10 @@ function CerrarSesion() {
                       actualizarCantidad(item.id, item.cantidad + 1)
                     }
                   >
-                    +
+                    
                   </button>
                 </div>
+                {console.log(item)}
                 <button   className="remove-item-button" onClick={() => eliminarDelCarrito(item.id)}>🗑️</button>
               </div>
             ))
@@ -314,7 +317,7 @@ function CerrarSesion() {
                   <span className="current-price">CRC {Promo.Precio_total}</span>
                   <span className="old-price">CRC {Promo.id_producto.Precio}</span>
                 </p>
-                <button className="add-to-cart"  onClick={() => agregarAlCarrito(Promo)}
+                <button className="add-to-cart"  onClick={() => agregarAlCarrito({...Promo, tipo: 'promocion'})}
                 >Agregar 🛒</button>
               </div>
             </div>
@@ -325,6 +328,37 @@ function CerrarSesion() {
   
 
 </div>
+<div className="promotions-container">
+      <h1 className="promotions-title">Productos de la categoria abarrotes</h1>
+      <div className="promotions-sections">
+        {ListaProductos.map((prod)=>(
+          <div className='promotion-item' key={prod.id}>
+            <div className="promocion-card2">
+              <div className="promocion-card-header">
+                {prod.Imagen_Producto && (
+                  <img 
+                  src={prod.Imagen_Producto} 
+                  alt={prod.Nombre_producto}
+                  className='promotion-image'
+                  />
+                  )}
+                  </div>
+                  <div className='promotion-card-body'>
+                  <p className="promotion-name">{prod.Nombre_producto}</p>
+                  <p className="promotion-price">
+                  <span className="current-price">CRC {prod.Precio}</span>
+                </p>
+                <button className="add-to-cart"  onClick={() => agregarAlCarrito({...prod, tipo: 'producto'})}
+                >Agregar 🛒</button>
+                  </div>
+
+            </div>
+         </div>
+
+        ))}
+
+      </div>
+      </div>
 
         
     </div>

@@ -14,8 +14,8 @@ async function  Getpromociones() {
             throw new Error('Error fetching users');
         }
     
-        const users = await response.json();
-        return users;
+        return await response.json();
+        
     } catch (error) {
         console.error('Error fetching users:', error);
         throw error;

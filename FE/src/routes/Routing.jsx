@@ -19,6 +19,7 @@ import PLacteos from '../pages/CategoriasP/PLacteos'
 import PCarnes from '../pages/CategoriasP/PCarnes'
 import PEnlatados from '../pages/CategoriasP/PEnlatados'
 import PAbarrotes from '../pages/CategoriasP/PAbarrotes'
+import Autenticacion from '../components/Autenticacion';
 
 function Routing() {
   return (

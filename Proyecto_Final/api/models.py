@@ -61,8 +61,8 @@ class Promociones(models.Model):
     
     
 class Ventas(models.Model):
-    id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
-    id_promociones = models.ForeignKey(Promociones, on_delete=models.SET_NULL, null=True, blank=True)
+    id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE, null=True, blank=True)
+    id_promociones = models.ForeignKey(Promociones, on_delete=models.CASCADE, null=True, blank=True)
     Cantidad_venta = models.IntegerField(null=False, blank=False)
     Fecha_venta = models.DateField(null=False, blank=False)
     Total = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)

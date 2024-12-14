@@ -26,7 +26,7 @@ async function token(username, password) {
         const respuesta = await response.json();
         console.log(respuesta)
         localStorage.setItem('access-token', respuesta.access)
-        localStorage.setItem('Token-refresh',respuesta.refresh);
+        // localStorage.setItem('Token-refresh',respuesta.refresh);
         return respuesta;
         
 
