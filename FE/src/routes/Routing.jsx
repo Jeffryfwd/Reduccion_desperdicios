@@ -20,7 +20,7 @@ import PCarnes from '../pages/CategoriasP/PCarnes'
 import PEnlatados from '../pages/CategoriasP/PEnlatados'
 import PAbarrotes from '../pages/CategoriasP/PAbarrotes'
 import Autenticacion from '../components/Autenticacion';
-
+import PPayPal from '../pages/PPayPal/PPayPal';
 function Routing() {
   return (
     <div>
@@ -37,6 +37,8 @@ function Routing() {
                 <Route path='/principal/adminV' element={<ProtectAdmin><PprincipalAdminVenta/></ProtectAdmin>}></Route>
                 <Route path='/visualizacion/venta' element={<PVisualizacionVenta/>}></Route>
                 <Route path='/addcategoria' element={<ProtectAdmin><PAñadirCategoria/></ProtectAdmin>}></Route>
+
+                <Route path='/paypal' element={<PPayPal/>}></Route>
 
                 
                 <Route path='/carrito' element={<Carrito/>}></Route>

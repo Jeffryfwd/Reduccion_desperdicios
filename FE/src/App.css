@@ -190,70 +190,118 @@
 
 
 .form-container-añadir {
-  max-width: 400px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  background-color: #f9fafc; /* Pastel light blue-gray */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 700px;
-  height: 700px;
+  
 }
 
 .product-form {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.form-title {
-  text-align: center;
-  font-size: 1.5rem;
-  color: #4a5568; /* Muted dark gray */
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  max-width: 800px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 calc(33.33% - 20px); /* Tres columnas con espacio entre ellas */
+  min-width: 200px;
 }
 
-.form-label {
-  display: block;
-  font-size: 1rem;
-  color: #2d3748; /* Dark gray-blue */
-  margin-bottom: 5px;
-}
-
-.form-input {
+.form-input, .form-label, select {
   width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #cbd5e0; /* Light gray */
-  border-radius: 5px;
-  background-color: #edf2f7; /* Soft pastel gray */
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #63b3ed; /* Light blue */
-  background-color: #ffffff;
 }
 
 .form-submit {
-  padding: 10px 20px;
-  font-size: 1rem;
-  color: #ffffff;
-  background-color:#2c3e50; /* Vibrant blue */
+  width: 100%;
+  margin-top: 20px;
+}
+/* Contenedor principal del formulario */
+.form-container-añadir {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ocupa toda la pantalla vertical */
+  background-color: #f8f9fa; /* Fondo suave */
+  padding: 20px;
+}
+
+/* Estilo del formulario */
+.product-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Espaciado entre campos */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  background: #ffffff; /* Fondo blanco */
+  max-width: 900px; /* Ancho máximo */
+  width: 100%;
+}
+
+/* Título */
+.form-title {
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Estilo para cada grupo de campo */
+.form-group {
+  flex: 1 1 calc(33.33% - 20px); /* Distribución en 3 columnas */
+  min-width: 200px;
+}
+
+/* Etiquetas */
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #495057;
+}
+
+/* Inputs y selects */
+.form-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #f1f3f5;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-color: #007bff; /* Borde azul al enfocar */
+  outline: none;
+}
+
+/* Botón */
+.form-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s;
 }
 
 .form-submit:hover {
-  background-color:#2c3e50 /* Darker blue */
+  background-color: #0056b3;
 }
 
+
+  
 
 
 

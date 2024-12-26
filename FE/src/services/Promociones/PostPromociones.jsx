@@ -3,7 +3,7 @@ async function Postpromociones(id_producto, Fecha_inicio, Fecha_fin, Descuento, 
     const tokenBearer = 'Bearer ' + token;
     try {
         const userData = { 
-             id_producto,
+             id_producto, 
              Fecha_inicio,
              Fecha_fin, 
              Descuento,
@@ -11,6 +11,10 @@ async function Postpromociones(id_producto, Fecha_inicio, Fecha_fin, Descuento, 
              url_imagen
             
         };
+        console.log('Datos enviad al bakend', userData);
+        
+       
+        
         
         const response = await fetch("http://127.0.0.1:8000/api/promociones/", {
             method: 'POST',

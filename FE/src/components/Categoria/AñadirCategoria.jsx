@@ -1,9 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PostCategoria from '../../services/SCategoria/PostCategoria'
-
+import GetCategoria from '../../services/GetCategoria'
+import DeleteCategoria from '../../services/DeleteCategoria'
 function AñadirCategoria() {
     const [Categoria, sertCategoria]= useState("")
+    const [ListaCategoria, setListaCategoria]=useState([])
+
+
+
+useEffect(()=>{
+const ObtenerCategorias=async()=>{
+const Categorias= await GetCategoria()
+setListaCategoria(Categorias)
+}
+ObtenerCategorias()
+
+},[])
 
     const CargarCategoria=(e)=>{
         sertCategoria(e.target.value)
@@ -26,6 +39,13 @@ function AñadirCategoria() {
         localStorage.clear()
         navigate('/')
         
+      }
+  
+      async function Eliminar(id) {
+        await DeleteCategoria(id)
+        alert('Categoria eliminada')
+        const ListaActualizada= await GetCategoria()
+        setListaCategoria(ListaActualizada)
       }
   return (
     <div>
@@ -57,6 +77,33 @@ function AñadirCategoria() {
 
         <button type='submit' className="form-submit">Añadir Categoria</button>
       </form>
+      </div>
+      <div className='Contenedor-Categoria'>
+      <table className='table-Categoria'>
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Categoria</th>
+      <th scope="col">Accion</th>
+
+      
+    </tr>
+  </thead>
+  <tbody>
+    {ListaCategoria.map((Cate)=>(
+    <tr key={Cate.id}>
+      
+      <td>{Cate.id}</td>
+      <td>{Cate.Categoria}</td>
+      <td> 
+        <button >EDITAR</button>
+        <button onClick={()=>Eliminar(Cate.id)}>Eliminar</button>      
+      </td>
+    </tr>
+   ))}
+    
+  </tbody>
+</table>
       </div>
     </div>
   )

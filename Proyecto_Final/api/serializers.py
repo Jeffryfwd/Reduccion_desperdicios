@@ -145,7 +145,7 @@ class InventarioSerializer(serializers.ModelSerializer):
 #------------------------------------------------------------------------------------------------#
 
 class PromocionesSerializer(serializers.ModelSerializer):
-    id_producto= ProductoSerializer()
+    id_producto=  serializers.PrimaryKeyRelatedField(queryset=Productos.objects.all())
     class Meta:
         model = Promociones
         fields = '__all__'

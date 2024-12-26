@@ -37,24 +37,8 @@ class CategoriaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
 
-    def put(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Categoría actualizada exitosamente", "data": serializer.data},
-                status=status.HTTP_200_OK
-            )
-        return Response(
-            {"message": "Error al actualizar la categoría", "data": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
 
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.delete()
-        return Response({"message": "Categoría eliminada exitosamente"}, status=status.HTTP_204_NO_CONTENT)
+ 
     
  
 ###########################################################################
@@ -434,6 +418,7 @@ class RegistrarVentaAPIView(APIView):
         data = request.data
         cliente_id = data.get('Cliente_id')
         carrito = data.get('carrito')
+        comprobante= data.get('Comprobante')
 
         if not cliente_id or not carrito:
             return Response({"error": "Datos incompletos"}, status=status.HTTP_400_BAD_REQUEST)
@@ -458,7 +443,8 @@ class RegistrarVentaAPIView(APIView):
                         Cantidad_venta=cantidad,
                         Fecha_venta=date.today(),
                         Total=cantidad * precio_total or cantidad * precio,
-                        Cliente_id=cliente_id
+                        Cliente_id=cliente_id,
+                        Comprobante= comprobante
                     )
                 else:
                     # Si es un producto normal
@@ -469,7 +455,8 @@ class RegistrarVentaAPIView(APIView):
                         Cantidad_venta=cantidad,
                         Fecha_venta=date.today(),
                         Total=cantidad * precio_total or cantidad * precio,
-                        Cliente_id=cliente_id
+                        Cliente_id=cliente_id,
+                        Comprobante= comprobante
                     )
             except Productos.DoesNotExist:
                 return Response({"error": f"Producto con ID {id_promocion or id_producto} no encontrado"},

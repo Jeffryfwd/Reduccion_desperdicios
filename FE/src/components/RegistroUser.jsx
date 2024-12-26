@@ -55,16 +55,16 @@ const Registrar = async (e) => {
             alert('Por favor llena todos los espacios')
 
         }
-        if (password>= 8) {
-            return alert('La contraseña debe ser mayor a 8 digitos')
-        }
+        // if (password>= 8) {
+        //     return alert('La contraseña debe ser mayor a 8 digitos')
+        // }
         // if (UsuarioExiste) {
         //     alert('Ya te has registrado anteriormente')
         // }
         const Registro = await PostUsuarios(first_name, last_name, username, email, password, is_staff);
         alert("Se registró con éxito");
         setTimeout(() => {
-            Navigate("/");
+            Navigate("/login");
            }, 2500); 
         console.log("Exitoso", Registro);
     } catch (error) {
@@ -139,7 +139,7 @@ const Registrar = async (e) => {
         */}
      <p className="sign-up-label">
         ¿Ya tienes una cuenta?{' '}
-        <span className="sign-up-link" onClick={() => Navigate('/')}>
+        <span className="sign-up-link" onClick={() => Navigate('/login')}>
             Login
         </span>
     </p>

@@ -1,4 +1,4 @@
-async function  GetCategoria() {
+    async function  GetCategoria() {
     try {
         const token = localStorage.getItem('access-token');
         const tokenBearer = 'Bearer ' + token
@@ -21,5 +21,6 @@ async function  GetCategoria() {
         throw error;
     }
 }
+
 
 export default GetCategoria

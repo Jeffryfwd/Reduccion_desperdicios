@@ -21,7 +21,7 @@ const IniciarSesion=async(e)=>{
   alert('Inicio de sesion existoso')
   setTimeout(() => {
     window.location.reload();
-  }, 2000);
+  }, 500);
 }
 
   return (

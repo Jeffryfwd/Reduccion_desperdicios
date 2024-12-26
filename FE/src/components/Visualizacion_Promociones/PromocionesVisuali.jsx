@@ -3,7 +3,7 @@ import '../../css/VisualizacionPromociones.css'
 import Modal from "../Modal/Modal";
 import { json, Link, useNavigate } from 'react-router-dom';
 import GetPromociones from '../../services/Promociones/GetPromociones'
-import GetCategoria from '../../services/GetCategoria';
+
 import LoginButton from '../LoginButton';
 import {jwtDecode}  from 'jwt-decode';
 import Enlatados from '../../img/Enlatados.png'
@@ -43,6 +43,7 @@ useEffect(()=>{
     }
     const tokenDecifrado= jwtDecode(TokenCodigo)
     localStorage.setItem('Id_user',tokenDecifrado.user_id)
+    console.log(tokenDecifrado);
     
 
     
@@ -50,6 +51,8 @@ useEffect(()=>{
     console.log('ERROR al decodificar el token', error);
     
   }
+  
+  
   const EliminarLocal=()=>{
     setTimeout(() => {
       localStorage.clear()
@@ -102,10 +105,12 @@ console.log(carrito);
     setCarrito((prevCarrito) => prevCarrito.filter((item) => item.id !== id));
   };
 
-  const actualizarCantidad = (id, cantidad) => {
+  const actualizarCantidad = (id, tipo ,nuevaCantidad ) => {
     setCarrito((prevCarrito) =>
       prevCarrito.map((item) =>
-        item.id === id ? { ...item, cantidad: Math.max(1, cantidad) } : item
+        item.id === id && item.tipo === tipo
+    ? { ...item, cantidad: nuevaCantidad > 0 ? nuevaCantidad : 0 }
+    : item
       )
     );
   };
@@ -213,7 +218,7 @@ function CerrarSesion() {
                   <button
                      className="quantity-button decrease"
                     onClick={() =>
-                      actualizarCantidad(item.id, item.cantidad - 1)
+                      actualizarCantidad(item.id,item.tipo ,item.cantidad - 1)
                     }
                   >
                     -
@@ -222,7 +227,7 @@ function CerrarSesion() {
                   <button
                    className="quantity-button increase"
                     onClick={() =>
-                      actualizarCantidad(item.id, item.cantidad + 1)
+                      actualizarCantidad(item.id, item.tipo, item.cantidad + 1)
                     }
                   >
                     

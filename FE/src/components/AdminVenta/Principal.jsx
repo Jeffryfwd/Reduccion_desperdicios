@@ -54,6 +54,8 @@ function Principal() {
     //   const Id = await GetVencer()
     //   setIdproducto(Id)
     // }
+    console.log('este es el id del producto',id_producto);
+    
 
     function AbrirModal(product) {
       setModal(product);
@@ -93,6 +95,8 @@ function Principal() {
       try {
         await Postpromociones(id_producto, Fecha_inicio, Fecha_fin, descuento, Precio_total, url_imagen)
         alert('Promocion creada existosamente')
+        
+        
       } catch (error) {
         console.log('Error al crear la promocion', error);
         
