@@ -468,3 +468,45 @@ class RegistrarVentaAPIView(APIView):
         ventas = Ventas.objects.all()  # Obtiene todas las ventas
         serializer = VentasSerializer(ventas, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+#---------------------------------------------------------------------#
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from .models import Ventas
+from datetime import datetime, timedelta
+from django.db.models import Sum
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # Permitir acceso sin autenticación
+def obtener_reportes(request):
+    try:
+        # Obtener la fecha actual
+        hoy = datetime.now().date()
+        
+        # Rango de 15 días
+        hace_15_dias = hoy - timedelta(days=15)
+        ventas_15_dias = Ventas.objects.filter(Fecha_venta__range=[hace_15_dias, hoy]) \
+                                       .aggregate(total=Sum('Total'))
+
+        # Rango mensual
+        inicio_mes = hoy.replace(day=1)
+        ventas_mensuales = Ventas.objects.filter(Fecha_venta__range=[inicio_mes, hoy]) \
+                                         .aggregate(total=Sum('Total'))
+
+        # Retornar los reportes
+        return Response({
+            "ventas_15_dias": ventas_15_dias['total'] or 0,
+            "ventas_mensuales": ventas_mensuales['total'] or 0
+        }, status=200)
+    
+    except Exception as e:
+        # En caso de error, retornamos un mensaje
+        return Response({
+            "error": str(e)
+        }, status=500)
+
+
+
+#______________________________________________________________________#

@@ -36,8 +36,7 @@ function VisualizacionVenta() {
           <Link  className="sidebar-link" to='/principal/adminV' >Productos a Vencer</Link>
           <Link  to="/promociones" className="sidebar-link">Promociones</Link>
           <Link  to='/visualizacion/venta' className="sidebar-link">Pedidos</Link>
-
-          <a href="#reports" className="sidebar-link">Reports</a>
+          <Link to="/reportes" className="sidebar-link">Reports</Link>
           <p className="sidebar-link" ><button onClick={CerrarSesion}>Cerrar Sesion</button></p>
           <a href="#systemManagement" className="sidebar-link">System Management</a>
           
@@ -54,6 +53,7 @@ function VisualizacionVenta() {
           <th>Nombre Producto</th>
           <th>Cantidad</th>
           <th>Precio sin descuento</th>
+          <th>Fecha Venta</th>
           <th>Total</th>
         </tr>
         </thead>
@@ -70,6 +70,7 @@ function VisualizacionVenta() {
 
              <td>{Vent.Cantidad_venta|| 'Sin nombre'}</td>
             <td>{Vent.id_promociones && Vent.id_promociones.id_producto ? Vent.id_promociones.id_producto.Precio : Vent.id_producto.Precio}</td>
+            <td>{Vent.Fecha_venta}</td>
             <td>{Vent.Total|| 'Sin nombre'}</td>
             
               

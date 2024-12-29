@@ -10,6 +10,7 @@ import Enlatados from '../../img/Enlatados.png'
 import Carnes from '../../img/Carnes.png'
 import Lacteos from '../../img/Lacteos.png'
 import { GetProducts } from '../../services/GetProducts'
+import BotonPerfil from '../BotonPerfil/BotonPerfil';
 
 
 
@@ -19,6 +20,7 @@ const [abrirModal, setAbrirModal] = useState(false);
 const [carrito, setCarrito] = useState([]); // Estado del carrito
 const navigate= useNavigate();
 const [isLogin, setIsLogin] = useState(false);
+
 const [ListaProductos, setProducto]=useState([])
 
 useEffect(()=>{
@@ -189,7 +191,7 @@ function CerrarSesion() {
 
 
 {isLogin ? <button onClick={CerrarSesion}>Cerrar Sesion</button> :<LoginButton/>}
-
+{<BotonPerfil/>}
 
 
       {/* Modal que se abre al hacer clic */}

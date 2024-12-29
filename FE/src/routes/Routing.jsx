@@ -14,6 +14,7 @@ import PVisualizacionPromociones from '../pages/Visualizacion_Promociones/PVisua
 import PConfirmar from '../pages/Confirmar_CompraPage/PConfirmar';
 import PVisualizacionVenta from '../pages/PVisualizacion-Compras/PVisualizacionVenta';
 import PAñadirCategoria from '../pages/PCategoria/PAñadirCategoria';
+import PReportes from '../pages/PReportes/PReportes';
 
 import PLacteos from '../pages/CategoriasP/PLacteos'
 import PCarnes from '../pages/CategoriasP/PCarnes'
@@ -37,6 +38,8 @@ function Routing() {
                 <Route path='/principal/adminV' element={<ProtectAdmin><PprincipalAdminVenta/></ProtectAdmin>}></Route>
                 <Route path='/visualizacion/venta' element={<PVisualizacionVenta/>}></Route>
                 <Route path='/addcategoria' element={<ProtectAdmin><PAñadirCategoria/></ProtectAdmin>}></Route>
+                <Route path='/reportes' element={<ProtectAdmin><PReportes/></ProtectAdmin>}></Route>
+
 
                 <Route path='/paypal' element={<PPayPal/>}></Route>
 

@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^8.7.0",
+    "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.7",
     "cors": "^2.8.5",
     "firebase": "^11.0.2",
     "jspdf": "^2.5.2",
@@ -21,6 +23,7 @@
     "paypal": "^1.0.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.7",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
     "uuid": "^11.0.3"

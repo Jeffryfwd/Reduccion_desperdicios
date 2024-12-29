@@ -168,6 +168,11 @@ class VentaSerializers(serializers.ModelSerializer):
 
 
 class ReporteSerializer(serializers.ModelSerializer):
+    Ventas_asociadas= serializers.PrimaryKeyRelatedField(
+        many= True,
+        
+        queryset = Ventas.objects.all())
+    
     class Meta:
         model = Reporte
         fields = '__all__'

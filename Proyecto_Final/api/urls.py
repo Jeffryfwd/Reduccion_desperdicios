@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views 
+from .views import obtener_reportes
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
@@ -44,8 +45,12 @@ urlpatterns = [
     path('productosvenci/', views.ProductoVencimientoView.as_view(), name='Categoria-List'),
     
     path('promocionesget/', views.PromocionesApiViews.as_view(), name='Categoria-List'),
-    
     path('group/', views.gruopListacreate.as_view(), name='Categoria-List'),
+    
+    
+    
+
+    path('reportes2/',obtener_reportes, name='Categoria-List'),
     
  
     

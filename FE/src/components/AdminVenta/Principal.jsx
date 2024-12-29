@@ -131,7 +131,7 @@ function Principal() {
           <Link  to="/promociones" className="sidebar-link">Promociones</Link>
           <Link  to='/visualizacion/venta' className="sidebar-link">Pedidos</Link>
 
-          <a href="#reports" className="sidebar-link">Reports</a>
+           <Link to="/reportes" className="sidebar-link">Reports</Link>
           <p className="sidebar-link" ><button onClick={CerrarSesion}>Cerrar Sesion</button></p>
 
           <a href="#systemManagement" className="sidebar-link">System Management</a>

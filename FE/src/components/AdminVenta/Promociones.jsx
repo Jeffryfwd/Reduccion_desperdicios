@@ -10,9 +10,11 @@ import Autenticacion from '../Autenticacion';
 function Promociones() {
   Autenticacion()
 const [LitaPromociones, setListaPromociones]= useState([])
-const [DatosPromocion, SetDatosPromocion]= useState([])
- const [abrirModal, setAbrirModal] = useState(false);
 
+const [DatosPromocion, SetDatosPromocion]= useState([])
+const [abrirModal, setAbrirModal] = useState(false);
+const [Precio, setPrecio]= useState(0)
+const[descuento, setDescuento]= useState(0)
 const navigate= useNavigate();
 
 useEffect(()=>{
@@ -39,16 +41,43 @@ async function EliminarPromociones(id) {
 function AbrirModal(product) {
   SetDatosPromocion(product);
   setAbrirModal(true);
+  setPrecioTotal(product.Precio)
+  setPrecio(Precio_total)
+  setDescuento(product.Descuento )
+  
+}
+//Calcula el descuento
+function calcularDescuento(descuento, precio) {
+  if (isNaN(precio)) {
+    console.error("Valores inválidos:", { descuento, precio });
+    SetDatosPromocion(prev => ({ ...prev, Precio_total: 0 }));
+    return;
+  }
+  const descuentoPorcentaje = descuento / 100;
+  const PrecioConDescuento = precio - (precio * descuentoPorcentaje);
+  SetDatosPromocion(prev => ({
+    ...prev,
+    Precio_total: PrecioConDescuento > 0 ? PrecioConDescuento.toFixed(2) : 0
+  }));
+}
+
+//Devuelve el precio total con el descuento calculado
+function descuentoCalculado(event){
+  const nuevoDescuento = parseFloat(event.target.value);
+  setDescuento(nuevoDescuento);
+  calcularDescuento(nuevoDescuento, parseFloat(DatosPromocion.id_producto.Precio));
 }
 
 async function EditarPromocion() {
-  const {id_producto,url_imagen, Descuento, Fecha_inicio, Fecha_fin, Precio_total} = DatosPromocion;
+  const {id,id_producto,url_imagen, Fecha_inicio, Fecha_fin, Precio_total} = DatosPromocion;
   try {
-    await PutPromociones(id_producto,url_imagen,Descuento,Fecha_inicio,Fecha_fin, Precio_total)
-    const PromocionActualizada= GetPromociones()
+    await PutPromociones(id,id_producto.id,url_imagen,descuento,Fecha_inicio,Fecha_fin, Precio_total)
+    const PromocionActualizada= await GetPromociones()
     setListaPromociones(PromocionActualizada)
     alert('Promocion editada con exito')
+    setAbrirModal(false); // Cerrar modal después de guardar
   } catch (error) {
+    console.log('Hubo un error al editar la promocion', error);
     
   }
 
@@ -68,7 +97,7 @@ async function EditarPromocion() {
           <Link  className="sidebar-link" to='/principal/adminV'>Productos a vencer</Link>
           <Link  to="/promociones" className="sidebar-link">Promociones</Link>
           <Link  to='/visualizacion/venta' className="sidebar-link">Pedidos</Link>
-          <a href="#reports" className="sidebar-link">Reports</a>
+           <Link to="/reportes" className="sidebar-link">Reports</Link>
           <p className="sidebar-link" ><button onClick={CerrarSesion}>Cerrar Sesion</button></p>
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
@@ -133,8 +162,9 @@ async function EditarPromocion() {
                     type="text"
                     className="form-control"
                     id="modalNombre"
+                    readOnly 
                     value={DatosPromocion.id_producto.id || ''}
-                    // onChange={(e) => SetDatosPromocion({ ...DatosPromocion, Nombre_producto: e.target.value })}
+                     onChange={(e) => SetDatosPromocion({ ...DatosPromocion, id_producto: e.target.value })}
                   />
                 </div>
               
@@ -145,7 +175,7 @@ async function EditarPromocion() {
                     className="form-control"
                     id=""
                     value={DatosPromocion.Fecha_inicio || ''}
-                    // onChange={(e) => setModal({ ...datosModal, Cantidad: e.target.value })}
+                    onChange={(e) => SetDatosPromocion({ ...DatosPromocion, Fecha_inicio: e.target.value })}
                   />
                 </div>
                 <div className="mb-3">
@@ -155,27 +185,39 @@ async function EditarPromocion() {
                     className="form-control"
                     id="modalPrecio"
                      value={DatosPromocion.Fecha_fin || ''}
-                    // onChange={(e) => setModal({ ...datosModal, Precio: e.target.value })}
+                    onChange={(e) => SetDatosPromocion({ ...DatosPromocion, Fecha_fin: e.target.value })}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="modalPrecio" className="form-label">Precio Original</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="modalPrecio"
+                    value={DatosPromocion.id_producto.Precio||''}
+                    // onChange={descuentoCalculado}
+                    readOnly
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="modalPrecio" className="form-label">Descuento</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     id="modalPrecio"
-                    value={DatosPromocion.Descuento|| ''}
-                    // onChange={(e) => setModal({ ...datosModal, Estado: e.target.value })}
+                    value={descuento || ''}
+                    onChange={descuentoCalculado}
                   />
                 </div>
+              
                 <div className="mb-3">
                   <label htmlFor="modalPrecio" className="form-label">Precio Total</label>
                   <input
                     type="text"
                     className="form-control"
                     id="modalPrecio"
-                    value={DatosPromocion.Precio_total || ''}
-                    // onChange={(e) => setModal({ ...datosModal, Categoria: e.target.value })}
+                    value={DatosPromocion.Precio_total|| ''}
+                    readOnly
                   />
                 </div>
                 <div className="mb-3">
@@ -185,7 +227,7 @@ async function EditarPromocion() {
                     className="form-control"
                     id="modalPrecio"
                     value={DatosPromocion.url_imagen|| ''}
-                    // onChange={(e) => setModal({ ...datosModal, Categoria: e.target.value })}
+                    onChange={(e) => SetDatosPromocion({ ...DatosPromocion, url_imagen: e.target.value })}
                   />
                 </div>
               

@@ -78,7 +78,8 @@ class Ventas(models.Model):
 class Reporte(models.Model):
     Fecha_reporte= models.DateField(null=False, blank=False)
     Mes_reporte= models.CharField(max_length=100, null=False, blank=False)
-    Total_ventas= models.ForeignKey(Ventas, on_delete=models.CASCADE)
+    Total_ventas= models.DecimalField(max_digits=15, decimal_places=2, null=False,blank=False)
+    Ventas_asociadas= models.ManyToManyField('Ventas')
     
     
     def __str__(self):
