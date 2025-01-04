@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views 
 from .views import obtener_reportes
+from .views import RegistroUserRetrieve
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
@@ -9,6 +10,8 @@ urlpatterns = [
     
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
+    path('ventas/cliente/<int:Cliente_id>/', views.VentaPorusuarioId.as_view(), name='Usuario-List'),
     
     
     path('usuario/', views.UsuarioListCreate.as_view(), name='Usuario-List'),
@@ -39,6 +42,10 @@ urlpatterns = [
     path('categoria/<int:pk>', views.CategoriaDetail.as_view(), name='Categoria-Detail'),
     
     path('registro/user/', views.Registro_userListCreate.as_view(), name='Categoria-List'),
+    path('registro/user/<int:pk>/', views.RegistroUserRetrieve.as_view(), name='user-retrieve'),
+    
+    path('regist/user/', views.PostUserListCreate.as_view(), name='Categoria-List'),
+    
     
     path('produc2/', views.ProductosApiView.as_view(), name='Categoria-List'),
     

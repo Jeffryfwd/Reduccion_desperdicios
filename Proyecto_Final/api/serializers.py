@@ -145,7 +145,7 @@ class InventarioSerializer(serializers.ModelSerializer):
 #------------------------------------------------------------------------------------------------#
 
 class PromocionesSerializer(serializers.ModelSerializer):
-    id_producto=  serializers.PrimaryKeyRelatedField(queryset=Productos.objects.all())
+    id_producto= ProductoSerializer()
     class Meta:
         model = Promociones
         fields = '__all__'
@@ -157,6 +157,9 @@ class PromocionesSerializer(serializers.ModelSerializer):
 
 
 class VentaSerializers(serializers.ModelSerializer):
+    id_producto= ProductoSerializer()
+    Cliente= UsuarioSerializer()
+    id_promociones= PromocionesSerializer()
     class Meta:
         model = Ventas
         fields = '__all__'
@@ -185,15 +188,20 @@ class ReporteSerializer(serializers.ModelSerializer):
         return data
 
 
-class RegistroUser_Empresa(serializers.ModelSerializer):
+class RegistroUser(serializers.ModelSerializer):
+    user= UsuarioSerializer()
     class Meta:
         model = Usuarios
         fields = '__all__'
 
-    def validate(self, data):
-        if not data.get("empresa"):
-            raise serializers.ValidationError("El usuario debe estar asociado a una empresa.")
-        return data
+#__________________________________
+#Serializer para hacer un post de Usuario
+class PostUser(serializers.ModelSerializer):
+    
+    class Meta:
+        model= Usuarios
+        fields= '__all__'
+   
     
 #---------------------------------------------------------------#
 

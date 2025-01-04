@@ -15,6 +15,8 @@ import PConfirmar from '../pages/Confirmar_CompraPage/PConfirmar';
 import PVisualizacionVenta from '../pages/PVisualizacion-Compras/PVisualizacionVenta';
 import PAñadirCategoria from '../pages/PCategoria/PAñadirCategoria';
 import PReportes from '../pages/PReportes/PReportes';
+import PPerfil from '../pages/PVisualizacionPerfil/PPerfil';
+import PHistorialCompras from '../pages/PHistorialCompras/PHistorialCompras';
 
 import PLacteos from '../pages/CategoriasP/PLacteos'
 import PCarnes from '../pages/CategoriasP/PCarnes'
@@ -51,6 +53,10 @@ function Routing() {
                 <Route path='/abarrotes' element={<PAbarrotes/>}></Route>
                 <Route path='/lacteos' element={<PLacteos/>}></Route>
                 <Route path='/carnes' element={<PCarnes/>}></Route>
+                <Route path='/perfil' element={<PPerfil/>}></Route>
+                <Route path='/historial/compras' element={<PHistorialCompras/>}></Route>
+
+
 
 
 

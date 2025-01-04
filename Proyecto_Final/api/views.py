@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser, BasePermission
 
 from .models import Categoria, Productos, Promociones, Alerta, Ventas, Reporte, Usuarios, Empresa, Inventario
-from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser_Empresa, ProductoSerializer2, SerializerPromocionesGet,Serializergroup
+from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser, ProductoSerializer2, SerializerPromocionesGet,Serializergroup,PostUser
 # Create your views here.
 class IsAdminUser(BasePermission):
     def has_permission(self, request, view):
@@ -144,6 +144,15 @@ class VentasDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes= [AllowAny]
     
 ##########################################################################
+#Vista para obtener la venta mediante el id de usuario
+class VentaPorusuarioId(generics.ListAPIView):
+    serializer_class= VentaSerializers
+    permission_classes= [AllowAny]
+    
+    def get_queryset(self):
+        cliente_id= self.kwargs['Cliente_id']    
+        return  Ventas.objects.filter(Cliente_id= cliente_id).select_related('id_producto', 'id_promociones__id_producto')
+    
 
     
 ##########################################################################
@@ -344,10 +353,20 @@ class ProductoDetail(generics.RetrieveUpdateDestroyAPIView):
         return Response({"message": "Producto eliminado exitosamente"}, status=status.HTTP_204_NO_CONTENT)
     
 ###########################################################################    
+class PostUserListCreate(generics.ListCreateAPIView):
+    queryset = Usuarios.objects.all()
+    serializer_class= PostUser
+    permission_classes= [AllowAny]
+
+#----------------------------------------
+#Vista para editar los datos de usuario
+
     
+    
+ #___________________________________________________   
 class Registro_userListCreate(generics.ListCreateAPIView):
     queryset = Usuarios.objects.all()
-    serializer_class = RegistroUser_Empresa
+    serializer_class = RegistroUser
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -362,6 +381,12 @@ class Registro_userListCreate(generics.ListCreateAPIView):
             {"message": "Error al registrar el usuario", "data": serializer.errors},
             status=status.HTTP_400_BAD_REQUEST
         )
+class RegistroUserRetrieve(generics.RetrieveAPIView):
+    queryset = Usuarios.objects.all()
+    serializer_class = RegistroUser
+    permission_classes = [AllowAny]    
+    
+     
   
   ################################################}
 #Para obtener los productos

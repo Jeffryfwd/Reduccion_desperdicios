@@ -105,10 +105,12 @@ class Empresa(models.Model):
 
 class Usuarios(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    Numero_telefono= models.CharField(max_length=100, null=False, blank=False)
+    Direccion_envio= models.CharField(max_length=100, null=False, blank=False)
+    Foto_perfil= models.URLField()
 
     def __str__(self):  
-        return f"{self.user.username} - {self.empresa.Nombre_empresa}"  # Ahora es un string.
+        return f"{self.user.username} - {self.Numero_telefono}- {self.Direccion_envio}- {self.Foto_perfil}"  # Ahora es un string.
 
     
 
