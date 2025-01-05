@@ -1,12 +1,11 @@
 import React from 'react'
 
-async function PostInforUser(user, Direccion_envio, Foto_perfil, Numero_telefono) {
+async function PostInforUser(user, Direccion_envio, Numero_telefono) {
     try {
         const PostData={
             user,
             Direccion_envio,
-            Foto_perfil,
-            Numero_telefono
+             Numero_telefono
         }
 
     const response = await fetch("http://127.0.0.1:8000/api/regist/user/", {

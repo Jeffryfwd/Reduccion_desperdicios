@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views 
 from .views import obtener_reportes
-from .views import RegistroUserRetrieve
+from .views import RegistroUserRetrieve, EditarUsuarioView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
@@ -16,6 +16,8 @@ urlpatterns = [
     
     path('usuario/', views.UsuarioListCreate.as_view(), name='Usuario-List'),
     path('usuario/<int:pk>', views.UsuarioDetail.as_view(), name='Usuario-Detail'),
+    path('editar/usuario/', views.EditarUsuarioView.as_view(), name='Usuario-Detail'),
+    
     
     path('promociones/', views.PromocionesListCreate.as_view(), name='Promociones-List'),
     path('promociones/<int:pk>', views.PromocionesDetail.as_view(), name='Promociones-Detail'),

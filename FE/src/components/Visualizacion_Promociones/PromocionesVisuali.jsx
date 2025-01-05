@@ -11,6 +11,7 @@ import Carnes from '../../img/Carnes.png'
 import Lacteos from '../../img/Lacteos.png'
 import { GetProducts } from '../../services/GetProducts'
 import BotonPerfil from '../BotonPerfil/BotonPerfil';
+import Footer from '../Footer/Footer';
 
 
 
@@ -154,17 +155,12 @@ function CerrarSesion() {
 
 
 <div className="navbar-categories">
-  <ul className="categories-list">
+  <ul className="categories-list">{<BotonPerfil/>}
+
     <li className="category-item">
-      <button className="category-button">Todas las categorías</button>
+      <button className="category-button">Pagina Principal</button>
     </li>
-    <li className="category-item">
-      <button className="category-button active">SuperOfertas</button>
-    </li>
-  
-    <li className="category-item">
-      <button className="category-button">Nuevo</button>
-    </li>
+   
     <div className="navbar-categories">
         <ul className="categories-list">
           <li className="category-item">
@@ -190,9 +186,15 @@ function CerrarSesion() {
       </div>
 
 
-{isLogin ? <button onClick={CerrarSesion}>Cerrar Sesion</button> :<LoginButton/>}
-{<BotonPerfil/>}
 
+
+<li className="category-item">
+      <button className="category-button">Contactneos</button>
+    </li>
+    {isLogin ? <button className='Boton-cerrar-sesion' onClick={CerrarSesion}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+  <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+</svg></button> :<LoginButton/>}
 
       {/* Modal que se abre al hacer clic */}
       <Modal
@@ -301,12 +303,12 @@ function CerrarSesion() {
  
  
   <div className="promotions-container">
-      <h1 className="promotions-title">Ofertas de hoy</h1>
-      <div className="promotions-sections">
+      <h1 className="promotions-title">Promociones</h1>
+      <div className="promotions-sections1">
         {LitaPromociones.map((Promo) => (
-          <div className="promotion-item" key={Promo.id}>
-            <div className="promocion-card2">
-              <div className="promocion-card-header">
+          <div className="promotion-item1" key={Promo.id}>
+            <div className="promocion-card21">
+              <div className="promocion-card-header1">
                 {Promo.url_imagen && (
                   <img
                     src={Promo.url_imagen}
@@ -315,16 +317,17 @@ function CerrarSesion() {
                   />
                 )}
               </div>
-              <div className="promotion-card-body">
+              <div className="promocion-card-body">
                 <p className="promotion-name">{Promo.id_producto.Nombre_producto}</p>
                 <p className="promotion-discount">
                   Ahorro: <span className="discount-percentage">{Promo.Descuento}%</span>
-                </p>
+                </p>  
+                <span className="old-price">CRC {Promo.id_producto.Precio}</span>
+
                 <p className="promotion-price">
                   <span className="current-price">CRC {Promo.Precio_total}</span>
-                  <span className="old-price">CRC {Promo.id_producto.Precio}</span>
                 </p>
-                <button className="add-to-cart"  onClick={() => agregarAlCarrito({...Promo, tipo: 'promocion'})}
+                <button className="add-to-cart-promocion"  onClick={() => agregarAlCarrito({...Promo, tipo: 'promocion'})}
                 >Agregar 🛒</button>
               </div>
             </div>
@@ -336,12 +339,12 @@ function CerrarSesion() {
 
 </div>
 <div className="promotions-container">
-      <h1 className="promotions-title">Productos de la categoria abarrotes</h1>
-      <div className="promotions-sections">
+      <h1 className="promotions-title">Productos Disponibles</h1>
+      <div className="productos-sections">
         {ListaProductos.map((prod)=>(
-          <div className='promotion-item' key={prod.id}>
-            <div className="promocion-card2">
-              <div className="promocion-card-header">
+          <div className='productos-item' key={prod.id}>
+            <div className="producto-card2">
+              <div className="producto-card2-header">
                 {prod.Imagen_Producto && (
                   <img 
                   src={prod.Imagen_Producto} 
@@ -351,11 +354,11 @@ function CerrarSesion() {
                   )}
                   </div>
                   <div className='promotion-card-body'>
-                  <p className="promotion-name">{prod.Nombre_producto}</p>
+                  <p className="producto-card2-name">{prod.Nombre_producto}</p>
                   <p className="promotion-price">
                   <span className="current-price">CRC {prod.Precio}</span>
                 </p>
-                <button className="add-to-cart"  onClick={() => agregarAlCarrito({...prod, tipo: 'producto'})}
+                <button className="add-to-cart-product"  onClick={() => agregarAlCarrito({...prod, tipo: 'producto'})}
                 >Agregar 🛒</button>
                   </div>
 
@@ -367,7 +370,9 @@ function CerrarSesion() {
       </div>
       </div>
 
-        
+     
+        <Footer/>
+     
     </div>
   )
 }

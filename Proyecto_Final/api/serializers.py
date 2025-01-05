@@ -86,12 +86,12 @@ class UsuarioSerializer(serializers.ModelSerializer):
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Este correo electronico ya esta registrado.")
         return value
-    def validate_password(self, value):
-        if len(value)> 8:
-            raise serializers.ValidationError("La contraseña debe contener minimo 8 caracteres")
-        if not any(char.isdigit() for char in value ):
-            raise serializers.ValidationError("La contraseña debe contener al menos un numero")
-        return value
+    # def validate_password(self, value):
+    #     if len(value)> 8:
+    #         raise serializers.ValidationError("La contraseña debe contener minimo 8 caracteres")
+    #     if not any(char.isdigit() for char in value ):
+    #         raise serializers.ValidationError("La contraseña debe contener al menos un numero")
+    #     return value
     def validate_username(self, value):
         if ' ' in value:
             raise serializers.ValidationError("El nombre de usuario no debe contener espacios")
@@ -145,7 +145,7 @@ class InventarioSerializer(serializers.ModelSerializer):
 #------------------------------------------------------------------------------------------------#
 
 class PromocionesSerializer(serializers.ModelSerializer):
-    id_producto= ProductoSerializer()
+    
     class Meta:
         model = Promociones
         fields = '__all__'

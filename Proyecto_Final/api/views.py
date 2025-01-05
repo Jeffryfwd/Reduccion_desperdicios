@@ -46,6 +46,7 @@ class CategoriaDetail(generics.RetrieveUpdateDestroyAPIView):
 class PromocionesListCreate(generics.ListCreateAPIView):
     queryset = Promociones.objects.all()
     serializer_class = PromocionesSerializer
+    
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -217,6 +218,79 @@ class UsuarioDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class= UsuarioSerializer
     permission_classes= [AllowAny]
     
+    
+    
+#-------------------------------------#
+#vista para editar usuario   
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.views import View
+from .models import Usuarios
+import json
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EditarUsuarioView(View):
+    def post(self, request):
+        try:
+            # Obtener los datos enviados en el cuerpo de la solicitud
+            data = json.loads(request.body)
+
+            # Obtener el ID del usuario desde los datos enviados
+            user_id = data.get('user_id')
+
+            # Validar si el ID del usuario fue enviado
+            if not user_id:
+                return JsonResponse({'success': False, 'error': 'ID de usuario no proporcionado.'}, status=400)
+
+            # Buscar el usuario en ambas tablas
+            user = User.objects.get(id=user_id)
+            usuario = Usuarios.objects.get(user=user)
+
+            # Validar y actualizar los campos de la tabla User
+            first_name = data.get('first_name', user.first_name).strip()
+            email = data.get('email', user.email).strip()
+
+            # Validaciones antes de actualizar
+            if len(first_name) > 100:  # Ajusta el límite según la base de datos
+                return JsonResponse({'success': False, 'error': 'El nombre no puede exceder los 100 caracteres.'}, status=400)
+            if len(email) > 100:
+                return JsonResponse({'success': False, 'error': 'El correo no puede exceder los 100 caracteres.'}, status=400)
+
+            user.first_name = first_name
+            user.email = email
+            user.save()
+
+            # Validar y actualizar los campos de la tabla Usuarios
+            direccion_envio = data.get('Direccion_envio', usuario.Direccion_envio).strip()
+            numero_telefono = data.get('Numero_telefono', usuario.Numero_telefono).strip()
+
+            if len(direccion_envio) > 100:
+                return JsonResponse({'success': False, 'error': 'La dirección no puede exceder los 100 caracteres.'}, status=400)
+            if len(numero_telefono) > 15:  # Ajusta el límite según el modelo
+                return JsonResponse({'success': False, 'error': 'El teléfono no puede exceder los 15 caracteres.'}, status=400)
+
+            usuario.Direccion_envio = direccion_envio
+            usuario.Numero_telefono = numero_telefono
+            usuario.save()
+
+            # Respuesta exitosa
+            return JsonResponse({'success': True, 'message': 'Usuario actualizado correctamente.'})
+
+        except User.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Usuario no encontrado.'}, status=404)
+
+        except Usuarios.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Datos adicionales del usuario no encontrados.'}, status=404)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Datos JSON inválidos.'}, status=400)
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
 ##########################################################################
 
 

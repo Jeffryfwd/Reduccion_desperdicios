@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GetInfoUsuario, GetUserInfo } from '../../services/InfoUsuario/GetInfoUusuario';
 import PostInforUser from '../../services/InfoUsuario/PostInforUser'
 import { Link } from 'react-router-dom';
-import { UploadFile } from '../../Firebase/config';
+import ModalEditarInfoUsuario from '../Modal/ModalEditarInfoUsuario';
 
 function Perfil() {
     const [usuarios, setUsuario] = useState(null); // Datos completos
@@ -10,12 +10,25 @@ function Perfil() {
     const [loading, setLoading] = useState(true);  // Estado de carga
     const [error, setError] = useState(null);      // Estado de error
     const [form, setForm] = useState(false);       // Controlar el modal emergente
+    const [abriModal, setAbrirModal]= useState(false)
+    const[Direccion_envio, setDireccionEnvio]= useState("")
+    const [Numero_telefono, setNumeroTelefono]=useState("")
+
+
+    const [userId, setUserId] = useState('');
+    const [formState, setFormState] = useState({
+        firstName: '',
+        email: '',
+        Direccion_envio: '',
+        Numero_telefono: ''
+    });
+
+    
 
     // Campos del formulario
-    const [Direccion_envio, setDireccionEnvio] = useState('');
-    const [Numero_telefono, setNumeroTelefono] = useState('');
-    const [user, setID]= useState("")
-    const [Foto_perfil, setFile] = useState("");
+  
+  
+    
 
     useEffect(() => {
         const ObtenerInfo = async () => {
@@ -23,6 +36,16 @@ function Perfil() {
                 // Intentar obtener datos del usuario principal
                 const data = await GetInfoUsuario();
                 setUsuario(data);
+               
+                setFormState({
+                    firstName: data.user.first_name,
+                    email: data.user.email,
+                    Direccion_envio: data.Direccion_envio,
+                    Numero_telefono: data.Numero_telefono
+                });
+                 // Obtener y establecer el ID del usuario
+                 const id = localStorage.getItem('Id_user') || data.user.id;
+                 setUserId(id);
             } catch (err) {
                 console.warn('Fallo la consulta principal, intentando consulta alternativa...');
                 setForm(true); // Mostrar modal del formulario
@@ -39,26 +62,54 @@ function Perfil() {
         ObtenerInfo();
         function SetearId() {
             const id = localStorage.getItem('Id_user');
-            setForm(id)
+            setUserId(id)
         }
-        SetearId
+        SetearId()
     }, []); // Ejecutar solo al cargar el componente
-    const CargarImagen=async(e)=>{
-          const file= e.target.files[0]
-          setFile(file)
-          if (file) {
-            const resultado= await UploadFile(file);
-            setFile(resultado)
-          }
-        }
+   
     // Manejar envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await PostInforUser(user, Direccion_envio, Foto_perfil, Numero_telefono)
+        await PostInforUser(userId, Direccion_envio, Numero_telefono)
         setForm(false)
         alert('Informacion')
      
     };
+    const EditarUsuario = async (e) => {
+        e.preventDefault();
+        // Recupera el ID desde localStorage
+        try {
+            const userData = {
+                user_id: userId, // Aquí se envía el ID del usuario
+                first_name: formState.firstName.trim(),
+                email: formState.email.trim(),
+                Direccion_envio: formState.Direccion_envio.trim(),
+                Numero_telefono: formState.Numero_telefono.trim(),
+            };
+               const response = await fetch('http://127.0.0.1:8000/api/editar/usuario/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+    
+            const result = await response.json();
+    
+            if (result.success) {
+                alert('Usuario actualizado correctamente');
+            } else {
+                alert('Error al actualizar el usuario: ' + result.error);
+            }
+    
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al actualizar el usuario.');
+        }
+      
+    };
+    
+    
 
     // Mostrar mientras carga
     if (loading) return <p>Cargando información...</p>;
@@ -78,8 +129,9 @@ function Perfil() {
                                 <label>Id</label>
                                 <input
                                     type="text"
-                                    value={user}
-                                     onChange={(e) => setID(e.target.value)}
+                                    value={userId}
+                                     onChange={(e) => setUserId(e.target.value)}
+                                     readOnly
                                     
                                 />
                             </div>
@@ -102,19 +154,50 @@ function Perfil() {
                                     required
                                 />
                             </div>
-                            <div>
-                                <label>Foto de Perfil:</label>
-                                <input
-                                    type="file"
-                                    
-                                    onChange={CargarImagen}
-                                />
-                            </div>
+                          
                             <button type="submit">Enviar</button>
                         </form>
                     </div>
                 </div>
             )}
+       <ModalEditarInfoUsuario isOpen={abriModal} onClose={() => setAbrirModal(false)}>
+    <form onSubmit={EditarUsuario}>
+        <label htmlFor="firstName">Nombre:</label>
+        <input
+            type="text"
+            id="firstName"
+            value={formState.firstName}
+            onChange={(e) => setFormState({ ...formState, firstName: e.target.value })}
+        />
+
+        <label htmlFor="email">Correo Electrónico:</label>
+        <input
+            type="email"
+            id="email"
+            value={formState.email}
+            onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+        />
+
+        <label htmlFor="direccionEnvio">Dirección de Envío:</label>
+        <input
+            type="text"
+            id="direccionEnvio"
+            value={formState.Direccion_envio}
+            onChange={(e) => setFormState({ ...formState, Direccion_envio: e.target.value })}
+        />
+
+        <label htmlFor="numeroTelefono">Número de Teléfono:</label>
+        <input
+            type="text"
+            id="numeroTelefono"
+            value={formState.Numero_telefono}
+            onChange={(e) => setFormState({ ...formState, Numero_telefono: e.target.value })}
+        />
+
+        <button type="submit">Guardar Cambios</button>
+    </form>
+</ModalEditarInfoUsuario>
+
 
             {/* Menú Lateral */}
             <aside className="sidebar">
@@ -127,7 +210,7 @@ function Perfil() {
                 )}
                 <nav>
                     <ul>
-                        <li className="active">Información de la cuenta</li>
+                       <Link to='/perfil'> <li className="active">Información de la cuenta</li></Link>
                         <Link to='/historial/compras'><li className='active'>Historial de órdenes</li></Link>
                         <li>Direcciones guardadas</li>
                         <li>Favoritos</li>
@@ -148,14 +231,15 @@ function Perfil() {
                             <p><strong>Teléfono:</strong> {usuarios.Numero_telefono}</p>
                             <p><strong>Direccion de envio:</strong> {usuarios.Direccion_envio}</p>
                          
-                            <button className="editar">Editar</button>
+                            <button className="editar" onClick={()=> setAbrirModal(true)} >Editar</button>
                         </div>
                     ) : userAlt ? (
                         <div className="info-card">
                             <p><strong>Nombre:</strong> {userAlt.first_name} {userAlt.last_name}</p>
                             <p><strong>Email:</strong> {userAlt.email}</p>
                             
-                            <button className="editar">Editar</button>
+                            <button className="editar" >Editar</button>
+                           
                         </div>
                     ) : (
                         <p>No se pudo cargar la información del usuario.</p>

@@ -4,7 +4,7 @@ import { GetVencer } from '../../services/GetProducts';
 import Postpromociones from '../../services/Promociones/PostPromociones'
 import Autenticacion from '../Autenticacion';
 import { UploadFile } from '../../Firebase/config';
-//import { UploadFile } from '../Firebase/config'
+
 
 
 
@@ -99,7 +99,7 @@ function Principal() {
         
       } catch (error) {
         console.log('Error al crear la promocion', error);
-        
+        alert(`Error al crear la promoción: ${error.message}`);
         
       }
    
@@ -139,6 +139,7 @@ function Principal() {
       </aside>
       <div className="productos-vencer">
     <h1 className="titulo">Productos disponibles para promociones</h1>
+    <div className='tabla-contenedor-vencer'>
 
     <table className="tabla-productos-vencer">
         <thead>
@@ -179,6 +180,7 @@ function Principal() {
             })} 
         </tbody>
     </table>
+    </div>
 </div>
 {abrirModal && (
         <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">

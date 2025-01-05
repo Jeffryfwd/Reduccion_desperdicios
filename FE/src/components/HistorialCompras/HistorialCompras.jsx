@@ -10,7 +10,9 @@ function HistorialCompras() {
   const [userAlt, setUserAlt] = useState(null);  // Datos alternativos
   const [loading, setLoading] = useState(true);  // Estado de carga
   const [error, setError] = useState(null);      // Estado de error
+
   // Función para agrupar compras por fecha
+  //Estudiarlo
   const agruparComprasPorFecha = (compras) => {
     const agrupadas = compras.reduce((acc, compra) => {
         const { Fecha_venta, Total, Cantidad_venta, id_producto, id_promociones } = compra;
@@ -102,7 +104,7 @@ ObtenerCompras()
       )}
                   <nav>
                       <ul>
-                          <li className="active">Información de la cuenta</li>
+                           <Link to='/perfil'> <li className="active">Información de la cuenta</li></Link>
                           <Link to='/historial/compras'><li className='active'>Historial de órdenes</li></Link>
                           <li>Direcciones guardadas</li>
                           <li>Favoritos</li>

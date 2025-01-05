@@ -5,6 +5,9 @@ import ModalMetodoPago from '../Modal/ModalMetodoPago';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import FormPaypal from '../Paypal/FormPaypal';
+import { Link } from 'react-router-dom';
+import BotonPerfil from '../BotonPerfil/BotonPerfil';
+import Footer from '../Footer/Footer';
 
 function Confirmar() {
   const [CarritoSeleccionado, setCarritoSeleccionado] = useState([]);
@@ -127,6 +130,18 @@ function Confirmar() {
 
   return (
     <div className="carrito-container">
+         <div className="navbar-categories">
+         <li className="category-item">
+         <Link><button className="category-button">Pagina Principal</button></Link>
+         </li> 
+         <li className="category-item">
+         <Link><button className="category-button">Contactenos</button></Link>
+         </li> 
+         <li className="category-item">
+         <BotonPerfil/>
+         </li> 
+         </div>
+     
       <h1 className="titulo-carrito">Resumen de tu compra</h1>
 
       <div className="carrito-contenido">
@@ -223,13 +238,10 @@ function Confirmar() {
           
         
         </div>
-
-        
-       
-       
-
-         
-       
+      </div>
+      <br /><br /><br />  
+      <div>
+      <Footer/>
       </div>
     </div>
   );

@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'Proyecto_Final.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Reduccion_de_desperdicios',  # El nombre de tu base de datos en MySQL
+        'NAME': 'reduccion_de_desperdicios',  # El nombre de tu base de datos en MySQL
         'USER': 'jeffry',  # Tu usuario de MySQL
         'PASSWORD': 'Jffry.1126',  # La contraseña de tu usuario MySQL
         'HOST': '127.0.0.1',  # Si estás ejecutando MySQL localmente

@@ -63,7 +63,7 @@
   }
   
   .form-submit {
-    background-color: #007bff;
+    background-color:#031b33;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -73,7 +73,7 @@
   }
   
   .form-submit:hover {
-    background-color: #0056b3;
+    background-color: #031b33;
   }
   
   /* Estilos de la tabla */
@@ -100,7 +100,7 @@
   }
   
   .table-categoria th {
-    background-color: #007bff;
+    background-color: #031b33;
     color: white;
     font-weight: bold;
   }
@@ -123,12 +123,12 @@
   }
   
   .edit-button {
-    background-color: #ffc107;
+    background-color: #031b33;
     color: #fff;
   }
   
   .edit-button:hover {
-    background-color: #e0a800;
+    background-color: #031b33;
   }
   
   .delete-button {
