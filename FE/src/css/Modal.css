@@ -31,6 +31,10 @@
     color: white;
     
   }
+  .modal-header3{
+    background-color: transparent;
+    color: black;
+  }
   
   .modal-title {
     margin: 0;
@@ -330,7 +334,7 @@ form button:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 440px;
   max-height: 300px;
-  display: flex;
+ 
   flex-direction: column;
   overflow-y: auto; /* Agrega scroll vertical */
 }
@@ -338,7 +342,7 @@ form button:hover {
 .modal-header1-mostrar-producto {
   padding: 16px;
   border-bottom: 1px solid #e0e0e0;
-  background-color: #007BFF;
+  background-color:#031b35;
   color: white;
   display: flex;
   justify-content: space-between;

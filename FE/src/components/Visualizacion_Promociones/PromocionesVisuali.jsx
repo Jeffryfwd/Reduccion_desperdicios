@@ -165,7 +165,7 @@ function CerrarSesion() {
   <ul className="categories-list">{<BotonPerfil/>}
 
     <li className="category-item">
-      <Link to='/visualizacion/promociones'><button className="category-button">Pagina Principal</button></Link>
+      <Link to='/'><button className="category-button">Pagina Principal</button></Link>
     </li>
     <li className="category-item">
       <Link to='/acercade'><button className="category-button">Acerca de nosotros</button></Link>

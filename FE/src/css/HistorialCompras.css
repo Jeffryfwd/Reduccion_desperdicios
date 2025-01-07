@@ -15,10 +15,11 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    overflow-x: hidden;
 }
 
 .tabla-encabezado {
-    background-color: #4CAF50; /* Color principal */
+    background-color: #031b33; /* Color principal */
     color: white;
     padding: 10px;
     text-align: left;
@@ -39,7 +40,7 @@
 }
 
 .ver-productos-btn {
-    background-color: #4CAF50; /* Botón en color principal */
+    background-color: #031b33; /* Botón en color principal */
     color: white;
     border: none;
     padding: 8px 12px;
@@ -49,7 +50,7 @@
 }
 
 .ver-productos-btn:hover {
-    background-color: #45a049; /* Ligero cambio al pasar el mouse */
+    background-color: #444; /* Ligero cambio al pasar el mouse */
 }
 
 .tabla-mensaje {

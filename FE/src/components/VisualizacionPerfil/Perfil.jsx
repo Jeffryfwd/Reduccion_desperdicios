@@ -6,6 +6,7 @@ import ModalEditarInfoUsuario from '../Modal/ModalEditarInfoUsuario';
 import '../../css/Perfil.css'
 import Footer from '../Footer/Footer';
 import BotonPerfil from '../BotonPerfil/BotonPerfil';
+import { useNavigate } from 'react-router-dom';
 
 function Perfil() {
     const [usuarios, setUsuario] = useState(null); // Datos completos
@@ -14,6 +15,7 @@ function Perfil() {
     const [error, setError] = useState(null);      // Estado de error
     const [form, setForm] = useState(false);       // Controlar el modal emergente
     const [abriModal, setAbrirModal]= useState(false)
+    const navigate= useNavigate()
     const[Direccion_envio, setDireccionEnvio]= useState("")
     const [Numero_telefono, setNumeroTelefono]=useState("")
 
@@ -115,7 +117,10 @@ function Perfil() {
         }
       
     };
-    
+    function CerrarSesion() {
+        localStorage.clear()
+        navigate('/')
+      }
     
 
     // Mostrar mientras carga
@@ -126,18 +131,23 @@ function Perfil() {
 
     return (
         <div>
-             <div className="navbar-categories">
-             <li className="category-item">
-         <BotonPerfil/>
-         </li> 
-         <li className="category-item">
-         <Link to={'/'}><button className="category-button">Pagina Principal</button></Link>
-         </li> 
-         <li className="category-item">
-         <Link to='/contactenos'><button className="category-button">Contactenos</button></Link>
-         </li> 
-         
-         </div>
+                 <div className="navbar-categories">
+  <ul className="categories-list">{<BotonPerfil/>}
+
+    <li className="category-item">
+      <Link to='/'><button className="category-button">Pagina Principal</button></Link>
+    </li>
+ <li className="category-item">
+      <Link to='/acercade'><button className="category-button">Acerca de nosotros</button></Link>
+    </li>
+<li className="category-item">
+      <Link to='/contactenos'><button className="category-button">Contactenos</button></Link>
+    </li>
+    
+   
+<li className="carrito-item"></li>
+</ul>
+</div>
          <br />
         <div className="perfil-layout">
        
@@ -233,8 +243,8 @@ function Perfil() {
                 <nav>
                     <ul>
                        <Link to='/perfil' className='link'> <li className="link">Información de la cuenta</li></Link>
-                        <Link to='/historial/compras' className='link'><li className='link'>Historial de órdenes</li></Link>
-                       <li className="logout">Cerrar Sesión</li>
+                        <Link to='/historial/compras' className='link'><li className='link'>Historial de Compras</li></Link>
+                       <li className="logout" onClick={()=> CerrarSesion()}>Cerrar Sesión</li>
                     </ul>
                 </nav>
             </aside>

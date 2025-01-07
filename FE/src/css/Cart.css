@@ -149,27 +149,27 @@
 
 .tabla-productos th,
 .tabla-productos td {
-  border: 1px solid #ddd;
+  border: 1px solid ;
   padding: 10px;
   text-align: left;
 }
 
-.tabla-productos th {
-  background-color: #f4f4f4;
+.tabla-productos tr{
+ 
   font-weight: bold;
 }
 
 .tabla-productos td {
   font-size: 0.9rem;
+
+}
+.y{
+  color: #fff;
 }
 
-.tabla-productos tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
 
-.tabla-productos tr:hover {
-  background-color: #f1f1f1;
-}
+
+
 
 /* Panel lateral */
 .panel-lateral {
@@ -217,13 +217,13 @@
 }
 
 .boton:hover {
-  background-color: #0056b3;
+  background-color: #031b33;
 }
 
 .boton-finalizar {
   width: 100%;
   padding: 15px;
-  background-color: #28a745;
+  background-color: #031b33;
   color: #fff;
   font-size: 1.2rem;
   border: none;
@@ -232,5 +232,5 @@
 }
 
 .boton-finalizar:hover {
-  background-color: #218838;
+  background-color: #031b33;
 }

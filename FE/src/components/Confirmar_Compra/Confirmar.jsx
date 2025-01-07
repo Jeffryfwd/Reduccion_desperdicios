@@ -58,7 +58,9 @@ function Confirmar() {
 
     console.log(datosCompra);
     
-
+    if (!Comprobante) {
+      return setAlert({show: true, message: '¡Debes realizar el pago para Efectuar tu compra!'})
+    }
     try {
       const response = await fetch('http://127.0.0.1:8000/api/rventa/', {
         method: 'POST',
@@ -68,9 +70,12 @@ function Confirmar() {
 
       if (response.ok) {
         setAlert({show: true, message: '¡Compra realizada exitosamente!'})
+        generarFactura()
         localStorage.removeItem('CarritoSeleccionado');
-        navigate('/visualizacion/promociones'); // Redirige a la página principal
-   
+        setTimeout(() => {
+          navigate('/'); // Redirige a la página principal
+        }, 3000);
+       
       } else {
         setAlert({show: true, message: '¡Hubo un error al realizar la compra!'})
         
@@ -137,17 +142,23 @@ function Confirmar() {
 
   return (
     <div className="carrito-container">
-         <div className="navbar-categories">
-         <li className="category-item">
-         <Link><button className="category-button">Pagina Principal</button></Link>
-         </li> 
-         <li className="category-item">
-         <Link><button className="category-button">Contactenos</button></Link>
-         </li> 
-         <li className="category-item">
-         <BotonPerfil/>
-         </li> 
-         </div>
+                 <div className="navbar-categories">
+  <ul className="categories-list">{<BotonPerfil/>}
+
+    <li className="category-item">
+      <Link to='/'><button className="category-button">Pagina Principal</button></Link>
+    </li>
+ <li className="category-item">
+      <Link to='/acercade'><button className="category-button">Acerca de nosotros</button></Link>
+    </li>
+<li className="category-item">
+      <Link to='/contactenos'><button className="category-button">Contactenos</button></Link>
+    </li>
+    
+   
+<li className="carrito-item"></li>
+</ul>
+</div>
            <div className=' Alerta'>
                {alert.show && (
                    <Alert variant={alert.variant} onClose={() => setAlert({ ...alert, show: false })} dismissible>
@@ -155,19 +166,25 @@ function Confirmar() {
                    </Alert>
                  )}  
                </div>
-     
-      <h1 className="titulo-carrito">Resumen de tu compra</h1>
+      <div className="resumen-compra-container">
+  <h3 className="titulo-resumen">Resumen de tu compra</h3>
+  <p className="texto-resumen">
+    A continuación, se muestra un resumen detallado de los productos seleccionados, 
+    incluyendo precios, cantidades y el costo total de la compra.
+  </p>
+</div>
+
 
       <div className="carrito-contenido">
         {/* Tabla de productos */}
         <div className="tabla-productos-container">
           <table className="tabla-productos">
             <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Total</th>
+              <tr className='tr-table-confirmar'>
+                <th className='y'>Producto</th>
+                <th className='y'>Precio</th>
+                <th className='y'>Cantidad</th>
+                <th className='y'> Total</th>
               </tr>
             </thead>
             <tbody>
@@ -188,7 +205,15 @@ function Confirmar() {
           <div className="resumen-total">
           <div className="panel-lateral p-4 bg-light rounded shadow-sm">
   <div className="resumen-total mb-4">
-    <h3 className="text-center">Selecciona el método de compra</h3>
+  <h3 className="titulo-metod">Método de compra</h3>
+  <p className="texto-metodo">
+    Por favor, selecciona tu método de pago preferido para completar la transacción.
+  </p>
+
+  <ul className="lista-metodos">
+    <li>Sinpe Móvil - Pago seguro desde tu dispositivo móvil.</li>
+    <li>PayPal - Procesa pagos de forma rápida y segura.</li>
+  </ul>
     <hr />
   </div>
 
@@ -196,16 +221,7 @@ function Confirmar() {
     {/* Opción Sinpe Móvil */}
     <div className="form-check mb-3">
       <ModalMetodoPago/>
-      {/* <input
-        type="checkbox"
-        className="form-check-input"
-        id="sinpeCheckbox"
-        checked={mostrarInput}
-        onChange={() => setMostrarInput(!mostrarInput)} // Cambia el estado al hacer clic
-      />
-      <label className="form-check-label" htmlFor="sinpeCheckbox">
-        Sinpe Móvil
-      </label> */}
+   
 
     
     </div>
@@ -244,11 +260,15 @@ function Confirmar() {
             onClick={(e) => {
               e.preventDefault(); // Prevenir la recarga de la página
               confirmarCompra();
-              generarFactura()
+             
             }}
           >
             Finalizar Compra
           </button>
+          <hr />
+          <p className="nota-importante">
+    <strong>Nota importante:</strong> Asegúrate de verificar los detalles antes de proceder con el pago.
+  </p>
           
         
         </div>

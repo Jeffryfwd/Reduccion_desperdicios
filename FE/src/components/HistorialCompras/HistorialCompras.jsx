@@ -4,6 +4,7 @@ import { GetInfoUsuario, GetUserInfo } from '../../services/InfoUsuario/GetInfoU
 import { Link } from 'react-router-dom';
 import BotonPerfil from '../BotonPerfil/BotonPerfil';
 import ModalMostraProductos from '../Modal/ModalMostraProductos';
+import { useNavigate } from 'react-router-dom';
 import '../../css/HistorialCompras.css'
 
 function HistorialCompras() {
@@ -14,6 +15,7 @@ function HistorialCompras() {
   const [loading, setLoading] = useState(true);  // Estado de carga
   const [error, setError] = useState(null);      // Estado de error
   const [abriModal, setAbrirModal]=useState(false)
+  const navigate = useNavigate()
 
   // Función para agrupar compras por fecha
   //Estudiarlo
@@ -97,21 +99,31 @@ useEffect(()=>{
 ObtenerInfo()
 ObtenerCompras()
 }, [])
+function CerrarSesion() {
+    localStorage.clear()
+    navigate('/')
+  }
 
   return (
     <div>
         <div> 
         <div className="navbar-categories">
-         <li className="category-item">
-         <Link><button className="category-button">Pagina Principal</button></Link>
-         </li> 
-         <li className="category-item">
-         <Link><button className="category-button">Contactenos</button></Link>
-         </li> 
-         <li className="category-item">
-         <BotonPerfil/>
-         </li> 
-         </div>
+  <ul className="categories-list">{<BotonPerfil/>}
+
+    <li className="category-item">
+      <Link to='/'><button className="category-button">Pagina Principal</button></Link>
+    </li>
+ <li className="category-item">
+      <Link to='/acercade'><button className="category-button">Acerca de nosotros</button></Link>
+    </li>
+<li className="category-item">
+      <Link to='/contactenos'><button className="category-button">Contactenos</button></Link>
+    </li>
+    
+   
+<li className="carrito-item"></li>
+</ul>
+</div>
          <br /><br />
          <ModalMostraProductos isOpen={abriModal} onClose={()=> setAbrirModal(false)}>
         {comprasAgrupadas.map((compra, i)=>(
@@ -143,7 +155,7 @@ ObtenerCompras()
                            <ul>
                               <Link to='/perfil' className='link'> <li className="link">Información de la cuenta</li></Link>
                                <Link to='/historial/compras' className='link'><li className='link'>Historial de Compras</li></Link>
-                              <li className="logout">Cerrar Sesión</li>
+                              <li className="logout" onClick={()=> CerrarSesion()}>Cerrar Sesión</li>
                            </ul>
                        </nav>
                    </aside>

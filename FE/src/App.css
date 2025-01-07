@@ -337,7 +337,7 @@
   background-color: #f9f9f9;
 }
 
-.product-table tr:hover {
+.product-table tr:hover { 
   background-color: #f1f1f1;
 }
 
@@ -532,7 +532,7 @@ margin-left: 200px;
 .tabla-productos {
   width: 100%;
   border-collapse: collapse;
-  background-color: #f9f9f9;
+  
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid #dcdcdc;
@@ -948,11 +948,7 @@ margin-left: 200px;
   color: #ff0000; /* Color al pasar el cursor */
 }
 
-/* .carrito-item{
- position: absolute;
- 
-  margin-left: 750px;
-} */
+
  .Boton-cerrar-sesion{
   text-decoration: none;
   background-color: transparent;
@@ -1089,4 +1085,145 @@ color: #ffffff;
 .ubicacion{
   font-size: 20px;
   color: #ffffff  ;
+}
+
+.tr-table-confirmar{
+  background-color: #031b33;
+}
+/* Estilos para el resumen de compra */
+.resumen-compra-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.titulo-resumen {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.texto-resumen {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  text-align: center;
+}
+/* Estilo para el resumen del método de compra */
+
+
+.titulo-metod {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.texto-metodo {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.lista-metodos {
+  list-style: none;
+  padding: 0;
+}
+
+.lista-metodos li {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.lista-metodos li:before {
+  content: '\2022'; /* Punto personalizado */
+  color: #007bff;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+hr {
+  margin-top: 20px;
+  border: 0;
+  border-top: 1px solid #ddd;
+}.nota-importante{
+  color: red  ;
+}
+.dropdown-menu-login {
+  width: 300px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mb-3-login {
+  margin-bottom: 15px;
+}
+
+.form-label-login {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-control-login {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.form-control-login:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn-login3{
+  width: 100%;
+  background-color: #031b33;
+}
+.btn-login33{
+   background-color:transparent;
+   border: none;
+}
+
+.btn-login33:hover {
+  background-color: #444;
+}
+
+.btn-primary-login {
+  font-weight: bold;
+}
+
+p {
+  font-size: 12px;
+  margin: 0;
+  text-align: center;
+}
+.modal-title-login{
+  background-color: transparent;
 }
