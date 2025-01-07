@@ -5,7 +5,7 @@ import Postpromociones from '../../services/Promociones/PostPromociones'
 import Autenticacion from '../Autenticacion';
 import { UploadFile } from '../../Firebase/config';
 import { Alert } from 'react-bootstrap'
-
+import emailjs from '@emailjs/browser';
 
 
 
@@ -38,6 +38,9 @@ function Principal() {
                 const fechaVencimiento = new Date(producto.Fecha_vencimiento); // convierto la fecha de vencimiento en un objeto y le añado date para trabajar en el
                 const hoy = new Date();
                 const diasRestantes = (fechaVencimiento - hoy) / (1000 * 3600 * 24); //calculo la diferencia entre la fecha de vencimiento y la actual
+                if (diasRestantes <=0) {
+                  EnviarNotificacion(producto);
+                }
                 return { // Y creo un objeto alerta lo cual cada producto pronto a vencer crea un objeto con sus atributos
                     id: producto.id,
                     nombre: producto.Nombre_producto,
@@ -51,7 +54,25 @@ function Principal() {
         
         ObtenerProductos()
     },[])
+    async function EnviarNotificacion(producto) {
+      const templateParams = {
+        nombre_producto: producto.Nombre_producto,
+        fecha_vencimiento: producto.Fecha_vencimiento,
+        email_administrador: "jeffryandre1234@gmail.com" // pongo esto mi correo
+      };
     
+      try {
+        await emailjs.send(
+          'service_bflcyx9', // Reemplazo el Service ID
+          'template_x3ozmn8', // Reemplazo el Template ID
+          templateParams,
+          'tMD2iG4ioZstSyWsK' // Reemplazo el Public Key
+        );
+        console.log('Correo enviado con éxito!');
+      } catch (error) {
+        console.error('Error al enviar el correo:', error);
+      }
+    }
     // async function ObtenerId(id) {
     //   const Id = await GetVencer()
     //   setIdproducto(Id)
@@ -182,7 +203,7 @@ function Principal() {
                             )}
                         </td>
                         <td>
-                            <button onClick={() => AbrirModal(product)}>Crear promoción</button>
+                            <button className='' onClick={() => AbrirModal(product)}>Crear promoción</button>
                         </td>
                     </tr>
                 );

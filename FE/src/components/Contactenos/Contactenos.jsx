@@ -10,7 +10,7 @@ function Contactenos() {
     const SendEmail= (event)=>{
         event.preventDefault();
     
-        emailjs.sendForm('service_bflcyx9', 'template_x3ozmn8', event.target, 'tMD2iG4ioZstSyWsK')
+        emailjs.sendForm('service_bflcyx9', 'template_sqeloqb', event.target, 'tMD2iG4ioZstSyWsK')
       }
   return (
     <div>

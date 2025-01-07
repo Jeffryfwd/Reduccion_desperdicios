@@ -86,6 +86,14 @@ function AñadirProducto() {
   
       try {
           await Postproducts(Nombre_producto, Fecha_vencimiento, Cantidad, Estado, Precio, Categoria, Imagen_Producto);
+        // Limpiar los inputs estableciendo los estados a valores vacíos
+        setNombre('');
+        setFecha('');
+        setCantidad('');
+        setCategoria('');
+        setPrecio('');
+        setEstado('');
+        setFile('');
           setAlert({show: true, message: 'Producto Agregado con exito'})
       } catch (error) {
           console.error("Hubo un error al agregar el producto:", error.message);
