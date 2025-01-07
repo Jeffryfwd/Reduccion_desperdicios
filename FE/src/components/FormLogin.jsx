@@ -4,10 +4,13 @@ import token from '../services/token'
 import GetUsuario2 from '../services/GetUsuario'
 import { useNavigate } from 'react-router-dom'
 import '../css/Login.css'
+import { Alert } from 'react-bootstrap'
 
 function FormLogin() {
     const[username, setUsername]= useState("")
     const[password, setPassword]= useState("")
+    const [alert, setAlert]= useState({show: false, message: '', variant: ''})
+    
     const Navigate= useNavigate();
 
     const CargarUsername=(event)=>{
@@ -45,25 +48,40 @@ function FormLogin() {
         event.preventDefault()
 
         try {
-            if (username === '' || password==='') {
-               return alert('Rellene todos lo espacios')
+            if (username === '' || password === '') {
+                setAlert({ 
+                    show: true, 
+                    message: '¡Rellena todos los espacios!', 
+                    variant: 'danger' 
+                });
+                console.log('alerta', alert);
+                return; // Detenemos la ejecución aquí
             }
+            
 
             const esAdmin = await BuscarAdmin(username, password)
             if (!esAdmin) {
-                
                 await token(username, password)
-               Navigate('/visualizacion/promociones')
-               return alert('bienvenido cliente')
+                setAlert({show: true, message: '¡Bienvenido cliente!'})
+               setTimeout(() => {
+                Navigate('/visualizacion/promociones')
+               }, 2000);
+                
+
             }else{
                 await token(username, password)
-                Navigate("/principal")
-                alert('Bienvenido')
+                 setAlert({show: true, message: '¡Bienvenido Administrador!'})
+                    setTimeout(() => {
+                    Navigate("/principal")
+                }, 2000);
+                
+                
             }
          
         } catch (error) {
             console.log('Ocurrio un error',error);
-            alert(error)
+            setAlert({show: true, message: '¡No se econtro Usuario registrado!', variant: 'danger'})
+            
             
             
         }
@@ -71,7 +89,14 @@ function FormLogin() {
     }
 
   return (
-    <div className="form-container">
+    <div className="form-container-iniciosesion">
+            <div className=' Alerta-login'>
+              {alert.show && (
+                  <Alert variant={alert.variant} onClose={() => setAlert({ ...alert, show: false })} dismissible>
+                    {alert.message}
+                  </Alert>
+                )}  
+              </div>
     <h1 className="title">Iniciar Sesión</h1>
     <form className="form" onSubmit={IniciarSesion}>
         <label htmlFor="username" className="page-link-label">Nombre Usuario</label>

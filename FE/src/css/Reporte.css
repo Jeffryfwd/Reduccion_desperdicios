@@ -1,0 +1,35 @@
+/* Contenedor principal */
+.reporte-container {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: -600px;
+  }
+  
+  /* Título */
+  .reporte-titulo {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Gráfico reducido */
+  .reporte-grafico-pequeno {
+    width: 400px; /* Ancho reducido */
+    height: 300px; /* Altura reducida */
+    margin: 0 auto; /* Centrado */
+  }
+  
+  /* Mensaje de carga */
+  .reporte-cargando {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+    margin-top: 20px;
+  }
+  

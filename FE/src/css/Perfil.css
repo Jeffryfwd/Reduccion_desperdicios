@@ -1,0 +1,150 @@
+.perfil-contenido {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.perfil-seccion {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.info-titulo {
+    color: #28a745;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.info-card-perfil-sesion,
+.info-card-alternativa {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.info-detalle p {
+    margin: 10px 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.info-detalle i {
+    margin-right: 10px;
+    color: #031b33;
+    font-size: 1.2rem;
+}
+
+.editar-perfil,
+.editar-alternativa {
+    background-color: #031b33;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.editar-perfil:hover,
+.editar-alternativa:hover {
+    background-color: #031b33;
+}
+.sidebar-Perfil {
+    background-color: #f8f9fa;
+    width: 250px;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    height: 100vh;
+}
+
+.sidebar-Perfil h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.sidebar-Perfil ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-Perfil ul li {
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.sidebar-Perfil ul li.active,
+.sidebar-Perfil ul li:hover {
+    background-color: #e9f7ef;
+    color:#031b33;
+    font-weight: bold;
+}
+
+.sidebar-Perfil ul li.logout {
+    color: red;
+    font-weight: bold;
+}
+
+.perfil-contenido {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.perfil-seccion {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.perfil-seccion h2 {
+    color: #031b33;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.info-card-perfil-sesion,
+.info-card-alternativa {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.info-card-perfil-sesion p,
+.info-card-alternativa p {
+    margin: 10px 0;
+    font-size: 1rem;
+}
+
+.editar-perfil,
+.editar-alternativa {
+ color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.editar-perfil:hover,
+.editar-alternativa:hover {
+    background-color: #031b33;
+}
+.link{
+    text-decoration: none;
+    color: #031b33;
+}

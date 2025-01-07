@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import GetCategoria from '../../services/GetCategoria';
 import Autenticacion from '../Autenticacion';
 import { UploadFile } from '../../Firebase/config';
+import { Alert } from 'react-bootstrap'
 
 function AñadirProducto() {
   Autenticacion()
@@ -16,6 +17,7 @@ function AñadirProducto() {
     const[Estado, setEstado]= useState("")
     const[ListaCategoria, SetListaCategoria]=useState([])
     const [Imagen_Producto, setFile]= useState("")
+    const [alert, setAlert]= useState({show: false, message: '', variant: ''})
     const navigate= useNavigate();
     
 
@@ -27,6 +29,7 @@ function AñadirProducto() {
         ObtenerCategoria();
       }, []);
     
+      //Manejamos eventos, para entradas de input cuando el usuario escriba en se actulice el estado
     const CargarNombreProduct=(e)=>{
         setNombre(e.target.value)
     }
@@ -48,23 +51,26 @@ function AñadirProducto() {
         setEstado(e.target.value)
     }
 
+    //Creamos la funcion cerrar sesion, que efectua un remove item, de los atributos en el local
     const CerrarSesion=()=>{
       localStorage.removeItem('Autenticado', 'Admin')
       navigate('/login')
       
     } 
-
+ 
+    //Funcion para cargar imaganes
+    //Manejo de evento para cargar un archivo seleccionado
     const CargarImagen=async(e)=>{
-      const file= e.target.files[0]
-      setFile(file)
+      const file= e.target.files[0] //obtengo el primer archivo seleccionado
+      setFile(file) //seteo en el estado de setFile
       if (file) {
-        const resultado= await UploadFile(file);
-        setFile(resultado)
+        const resultado= await UploadFile(file); // Llamamos la funcion que maneja la carga del archivo
+        setFile(resultado) //Actualizo de nuevo el estado de setFile que me devuelve la respuesta del funcion anterior
       }
     }
 
     const Agregar = async (e) => {
-      e.preventDefault();
+      e.preventDefault(); //evita que la pagina se recargue sola
       
       // Crear un objeto con los datos que enviarás para asegurarte de que son correctos
       const datosProducto = {
@@ -80,9 +86,10 @@ function AñadirProducto() {
   
       try {
           await Postproducts(Nombre_producto, Fecha_vencimiento, Cantidad, Estado, Precio, Categoria, Imagen_Producto);
-          alert("Producto agregado con éxito");
+          setAlert({show: true, message: 'Producto Agregado con exito'})
       } catch (error) {
           console.error("Hubo un error al agregar el producto:", error.message);
+          setAlert({show: true, message: 'Hubo error en registar el producto', variant: 'danger'})
       }
   };
   
@@ -104,6 +111,13 @@ function AñadirProducto() {
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
       </aside>
+      <div className=' Alerta'>
+      {alert.show && (
+          <Alert variant={alert.variant} onClose={() => setAlert({ ...alert, show: false })} dismissible>
+            {alert.message}
+          </Alert>
+        )}  
+      </div>
       <div className="form-container-añadir">
       <form className="product-form" onSubmit={Agregar}>
         <h2 className="form-title">Agregar Producto</h2>

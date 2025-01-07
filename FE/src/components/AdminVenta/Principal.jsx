@@ -4,7 +4,7 @@ import { GetVencer } from '../../services/GetProducts';
 import Postpromociones from '../../services/Promociones/PostPromociones'
 import Autenticacion from '../Autenticacion';
 import { UploadFile } from '../../Firebase/config';
-
+import { Alert } from 'react-bootstrap'
 
 
 
@@ -25,6 +25,8 @@ function Principal() {
     const [Precio, setPrecio]= useState(0)
     const [Precio_total, setPrecioTotal]= useState("")
     const [url_imagen, setFile]= useState("")
+    const [alert, setAlert]= useState({show: false, message: '', variant: ''})
+    
     const navigate= useNavigate();
 
     useEffect(()=>{
@@ -36,7 +38,7 @@ function Principal() {
                 const fechaVencimiento = new Date(producto.Fecha_vencimiento); // convierto la fecha de vencimiento en un objeto y le añado date para trabajar en el
                 const hoy = new Date();
                 const diasRestantes = (fechaVencimiento - hoy) / (1000 * 3600 * 24); //calculo la diferencia entre la fecha de vencimiento y la actual
-                return { // Y creo un objeto alerta lo cual cada p  roducto pronto a vencer crea un objeto con sus atributos
+                return { // Y creo un objeto alerta lo cual cada producto pronto a vencer crea un objeto con sus atributos
                     id: producto.id,
                     nombre: producto.Nombre_producto,
                     diasRestantes,
@@ -94,12 +96,12 @@ function Principal() {
     async function AñadirPromocion() {
       try {
         await Postpromociones(id_producto, Fecha_inicio, Fecha_fin, descuento, Precio_total, url_imagen)
-        alert('Promocion creada existosamente')
+        setAlert({show: true, message: '¡Promocion creada exitosamente!'})
         
         
       } catch (error) {
         console.log('Error al crear la promocion', error);
-        alert(`Error al crear la promoción: ${error.message}`);
+        setAlert({show: true, message: 'Error al crear la promocion', variant: 'danger'})
         
       }
    
@@ -137,6 +139,13 @@ function Principal() {
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
       </aside>
+        <div className=' Alerta'>
+            {alert.show && (
+                <Alert variant={alert.variant} onClose={() => setAlert({ ...alert, show: false })} dismissible>
+                  {alert.message}
+                </Alert>
+              )}  
+            </div>
       <div className="productos-vencer">
     <h1 className="titulo">Productos disponibles para promociones</h1>
     <div className='tabla-contenedor-vencer'>

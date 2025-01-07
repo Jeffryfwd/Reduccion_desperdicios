@@ -88,7 +88,6 @@
   /* Resumen */
   .cart-summary {
     flex: 1;
-    border: 1px solid #ccc;
     padding: 20px;
   }
   

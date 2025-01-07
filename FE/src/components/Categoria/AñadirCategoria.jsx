@@ -5,18 +5,25 @@ import GetCategoria from '../../services/GetCategoria'
 import DeleteCategoria from '../../services/DeleteCategoria'
 import PutCategoria from '../../services/SCategoria/PutCategoria'
 import '../../css/Categoria.css'
+import { Alert } from 'react-bootstrap'
 function AñadirCategoria() {
     const [Categoria, setCategoria]= useState("")
     const [ListaCategoria, setListaCategoria]=useState([])
     const [DatoCategoria, setDatoCategoria]= useState([])
+    const [alert, setAlert]= useState({show: false, message: '', variant: ''})
 
 
 
 useEffect(()=>{
-const ObtenerCategorias=async()=>{
-const Categorias= await GetCategoria()
-setListaCategoria(Categorias)
-}
+const ObtenerCategorias = async () => {
+  try {
+    const Categorias = await GetCategoria();
+    setListaCategoria(Categorias);
+  } catch (error) {
+    console.error("Error al obtener categorías:", error);
+  } 
+};
+
 ObtenerCategorias()
 
 },[])
@@ -61,16 +68,33 @@ ObtenerCategorias()
       }
   
       async function Eliminar(id) {
-        await DeleteCategoria(id)
-        alert('Categoria eliminada')
-        const ListaActualizada= await GetCategoria()
-        setListaCategoria(ListaActualizada)
+        try {
+          await DeleteCategoria(id)
+          const ListaActualizada= await GetCategoria()
+          setListaCategoria(ListaActualizada)
+          setAlert({show: true, message: '¡Categoria Eliminada exitosamente!'})
+
+        } catch (error) {
+          setAlert({show: true, message: 'Hubo error en eliminar la categoria', variant: 'danger'})
+        
+          
+        }
+       
       }
       async function EditarCategoria() {
         const {id, Categoria} = DatoCategoria;
-        await PutCategoria(id, Categoria)
-        const CategriaActulizada= GetCategoria()
-        setListaCategoria(CategriaActulizada)
+        try {
+          await PutCategoria(id, Categoria)
+          
+          const CategriaActulizada= GetCategoria()
+          setListaCategoria(CategriaActulizada)
+          setAlert({show: true, message: 'Categoria acyualizada con exito'})
+
+        } catch (error) {
+          setAlert({show: true, message: 'Hubo error en actualizar la categoria', variant: 'danger'})
+          
+        }
+       
       }
     
   return (
@@ -89,6 +113,13 @@ ObtenerCategorias()
           <a href="#systemManagement" className="sidebar-link">System Management</a>
         </nav>
       </aside>
+        <div className=' Alerta'>
+            {alert.show && (
+                <Alert variant={alert.variant} onClose={() => setAlert({ ...alert, show: false })} dismissible>
+                  {alert.message}
+                </Alert>
+              )}  
+            </div>
       <div className="contenedor-principal">
   <div className="form-container">
     <form className="category-form" onSubmit={AddCategoria}>
@@ -102,7 +133,7 @@ ObtenerCategorias()
           onChange={CargarCategoria}
         />
       </div>
-      <button type="submit" className="form-submit">Añadir Categoría</button>
+      <button type="submit" className="form-submit" onClick={()=>EditarCategoria()}>Añadir Categoría</button>
     </form>
   </div>
   <div className="table-container">

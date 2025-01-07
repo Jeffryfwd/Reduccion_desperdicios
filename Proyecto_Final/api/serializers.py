@@ -65,21 +65,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])#luego aca codifica la contraseña ingresada
         user.save()# y la guarda
         return user  
-   #Funcion para actualizar los datos de usuario
-    # def update(self, instance, validate_data):
-    #     role= validate_data.pop('role', None)
-        
-    #     username= validate_data.get('username', instance.username)
-    #     email= validate_data.get('email', instance.email)
-    #     first_name= validate_data.get('first_name', instance.first_name)
-    #     last_name= validate_data.get('last_name', instance.last_name)
-    #     is_staff= validate_data.get('is_staff', instance.is_staff)
-        
-    #     #Si se hace una nueva contraseña nueva se encripta
-    #     if 'password' in validate_data:
-    #         instance.set_password(validate_data['password'])
-          
-    #     instance.save()
+
        
    
     def validate_email(self, value):
@@ -154,12 +140,21 @@ class PromocionesSerializer(serializers.ModelSerializer):
         if value < 0 or value > 100:
             raise serializers.ValidationError("El descuento debe estar entre 0 y 100.")
         return value
+#---------------------------------------------------------------#
+
+#Serializer para solo obtener los datos de promociones
+class SerializerPromocionesGet(serializers.ModelSerializer):
+    id_producto = ProductoSerializer() #Traigo todos los datos de Productos
+    
+    class Meta:
+        model= Promociones
+        fields= '__all__'    
 
 
 class VentaSerializers(serializers.ModelSerializer):
     id_producto= ProductoSerializer()
     Cliente= UsuarioSerializer()
-    id_promociones= PromocionesSerializer()
+    id_promociones= SerializerPromocionesGet()
     class Meta:
         model = Ventas
         fields = '__all__'
@@ -203,15 +198,7 @@ class PostUser(serializers.ModelSerializer):
         fields= '__all__'
    
     
-#---------------------------------------------------------------#
 
-#Serializer para solo obtener los datos de promociones
-class SerializerPromocionesGet(serializers.ModelSerializer):
-    id_producto = ProductoSerializer() #Traigo todos los datos de Productos
-    
-    class Meta:
-        model= Promociones
-        fields= '__all__'
 
 
 

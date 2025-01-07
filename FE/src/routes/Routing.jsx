@@ -22,8 +22,10 @@ import PLacteos from '../pages/CategoriasP/PLacteos'
 import PCarnes from '../pages/CategoriasP/PCarnes'
 import PEnlatados from '../pages/CategoriasP/PEnlatados'
 import PAbarrotes from '../pages/CategoriasP/PAbarrotes'
+import PContactenos from '../pages/PContactenos/PContactenos';
 import Autenticacion from '../components/Autenticacion';
 import PPayPal from '../pages/PPayPal/PPayPal';
+import AcercaNosotros from '../components/AcercaNosotros/AcercaNosotros';
 function Routing() {
   return (
     <div>
@@ -55,6 +57,9 @@ function Routing() {
                 <Route path='/carnes' element={<PCarnes/>}></Route>
                 <Route path='/perfil' element={<PPerfil/>}></Route>
                 <Route path='/historial/compras' element={<PHistorialCompras/>}></Route>
+                <Route path='/contactenos' element={<PContactenos/>}></Route>
+                <Route path='/acercade' element={<AcercaNosotros/>}></Route>
+
 
 
 

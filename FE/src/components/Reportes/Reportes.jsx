@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import GetReportes from '../../services/Reportes/GetReportes';
 import { Bar } from 'react-chartjs-2';
+import '../../css/Reporte.css'
 
 // Registro de componentes de Chart.js
 import {
@@ -74,14 +75,17 @@ function Reportes() {
           <Link to="/systemManagement" className="sidebar-link">System Management</Link>
         </nav>
       </aside>
-      <div>
-        <h2>Reporte de Ventas</h2>
-        {datosReportes.ventas_15_dias !== 0 || datosReportes.ventas_mensuales !== 0 ? (
-          <Bar data={data} options={options} />
-        ) : (
-          <p>Cargando datos...</p>
-        )}
-      </div>
+  <div className="reporte-container">
+  <h2 className="reporte-titulo">Reporte de Ventas</h2>
+  {datosReportes.ventas_15_dias !== 0 || datosReportes.ventas_mensuales !== 0 ? (
+    <div className="reporte-grafico">
+      <Bar data={data} options={options} />
+    </div>
+  ) : (
+    <p className="reporte-cargando">Cargando datos...</p>
+  )}
+</div>
+
     </div>
   );
 }

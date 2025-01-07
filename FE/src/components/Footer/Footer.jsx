@@ -4,61 +4,50 @@ import '../../css/Footer.css'
 function Footer() {
   return (
 <div>
-    <footer className="footer bg-dark text-white">
-        <div className="container-fluid text-center py-4">
-            {/* Sección de invitación */}
-            <h3 className="mb-3">ÚNETE A NUESTRA CULTURA DE COMPRAS</h3>
-            <p className="mb-4">
-                Mantente al día con nuestras ofertas exclusivas, nuevos productos y promociones especiales.
-            </p>
-
-            {/* Formulario de suscripción */}
-            <form className="d-flex justify-content-center align-items-center mb-4">
-                <input
-                    type="email"
-                    className="form-control me-2"
-                    placeholder="Ingresa tu correo electrónico"
-                    style={{ maxWidth: "300px" }}
-                    required
-                />
-                <button type="submit" className="btn btn-success">¡SUSCRÍBETE!</button>
-            </form>
-
-            {/* Redes sociales */}
-            <div className="social-icons mb-4">
-                <a href="#!" className="text-white me-3">
-                    <i className="fab fa-facebook fa-lg"></i>
-                </a>
-                <a href="#!" className="text-white me-3">
-                    <i className="fab fa-instagram fa-lg"></i>
-                </a>
-                <a href="#!" className="text-white me-3">
-                    <i className="fab fa-twitter fa-lg"></i>
-                </a>
-                <a href="#!" className="text-white">
-                    <i className="fab fa-whatsapp fa-lg"></i>
-                </a>
+  <hr />
+<div className="row gx-5 row-cols-2 row-cols-lg-4 py-5" id='Conter-footer'>
+            <div className="col">
+              <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3">
+                <i className="bi bi-chat-dots"></i>
+              </div>
+              <div className="h5 mb-2" id='Content-map'> 
+             
+            <iframe
+                src="https://maps.google.com/maps?q=fwd%20Costa%20Rica&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" 
+                width="200"
+                height="150"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+             ></iframe>
+             <div><h1 className='ubicacion'>NUESTRA UBICACIÓN</h1></div></div>
+             
             </div>
-
-            {/* Links del pie de página */}
-            <div className="footer-links mb-3">
-                <a href="#!" className="text-white text-decoration-none mx-2">Inicio</a>
-                <a href="#!" className="text-white text-decoration-none mx-2">Tienda</a>
-                <a href="#!" className="text-white text-decoration-none mx-2">Contacto</a>
-                <a href="#!" className="text-white text-decoration-none mx-2">Nosotros</a>
+            <div className="col">
+              <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3">
+                <i className="bi bi-people"></i>
+              </div>
+              <div className="h5">Pregúntele a la comunidad</div>
+              <p  id='Text-footer'>Explora nuestros foros comunitarios y comunícate con otros usuarios.</p>
             </div>
-
-            {/* Información adicional */}
-            <div className="footer-info">
-                <p className="mb-0">
-                    Tienda XYZ | Todo lo que necesitas, en un solo lugar.
-                </p>
-                <small className="text-muted">
-                    © 2025 Tienda XYZ | Todos los derechos reservados
-                </small>
+            <div className="col">
+              <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3">
+                <i className="bi bi-question-circle"></i>
+              </div>
+              <div className="h5">Centro de soporte</div>
+              <p  id='Text-footer'>Explore las preguntas frecuentes y los artículos de soporte para encontrar soluciones.</p>
             </div>
-        </div>
-    </footer>
+            <div className="col">
+              <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3">
+                <i className="bi bi-telephone"></i>
+              </div>
+              <div className="h5">Llamanos</div>
+              <p className="" id='Text-footer'>Llámenos durante el horario comercial normal al (506) 8879-4797.</p>
+              <p className="" id='Text-footer'>Estamos ubicados en</p>
+             
+
+            </div>
+          </div>
 </div>
 
 

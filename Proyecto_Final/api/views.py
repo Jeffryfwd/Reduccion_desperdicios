@@ -535,7 +535,7 @@ class RegistrarVentaAPIView(APIView):
                 if id_producto:
                     # Si es una promoción
                     producto = Productos.objects.get(id=id_producto['id'])
-                    promocion = Promociones.objects.get(id_producto=producto)
+                    promocion = Promociones.objects.filter(id_producto=producto).first()
                     Ventas.objects.create(
                         id_producto=None,
                         id_promociones=promocion,

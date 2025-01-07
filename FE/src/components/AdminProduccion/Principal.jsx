@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DeleteProducts, GetProducts, PutProduct } from '../../services/GetProducts'
 import { Link, useNavigate } from 'react-router-dom';
 import Autenticacion from '../Autenticacion';
+import { Alert } from 'react-bootstrap'
 
 
 function Principal() {
@@ -9,6 +10,7 @@ function Principal() {
   const [ListaProductos, setProductos] = useState([]); // Estado inicializado como array vacío.
   const [datosModal, setModal] = useState([]);
   const [abrirModal, setAbrirModal] = useState(false);
+  const [alert, setAlert]= useState({show: false, message: '', variant: ''})
   const navigate= useNavigate();
   
 
@@ -28,30 +30,45 @@ function Principal() {
   }
 
 
-
+//Creamos una funcion de editar productos
   async function EditarProducto() {
-    const { id, Nombre_producto, Fecha_vencimiento,Cantidad, Precio,Categoria,Estado} = datosModal;
-    await PutProduct(id, Nombre_producto, Fecha_vencimiento,Cantidad, Precio, Categoria,Estado);
-    const productoActualizado = await GetProducts();
-    setProductos(productoActualizado);
-    alert("Se a editado correctamente el producto")
-    setAbrirModal(false);
+    const { id, Nombre_producto, Fecha_vencimiento,Cantidad, Precio,Categoria,Estado} = datosModal; //Hago una destructuracion de datos
+    try {
+      await PutProduct(id, Nombre_producto, Fecha_vencimiento,Cantidad, Precio, Categoria,Estado); // llamamos esta operacion asincronica
+      const productoActualizado = await GetProducts();
+      setProductos(productoActualizado);
+      setAlert({show: true, message: '¡Producto Actualizado con exito!'})
+      setAbrirModal(false);
+    } catch (error) {
+      setAlert({show: true, message: '¡Hubo un error al actualizar el producto!', variant:'danger'})
+      
+    }
+   
    
     
   }
 
+  //Funcion de eliminar productos
   async function EliminarProductos(id) {
-    await DeleteProducts(id);
-    alert("Producto eliminado con exito")
-    const ListaActualizada= await GetProducts();
-    setProductos(ListaActualizada)
+    try {
+      await DeleteProducts(id); // operacion asincronica
+      const ListaActualizada= await GetProducts();
+      setAlert({show: true, message: '¡Producto Eliminado con exito!'})
+      setProductos(ListaActualizada) //Actulizamos el estado
+    } catch (error) {
+      setAlert({show: true, message: '¡Hubo un erro al eliminar el producto!', variant:'danger'})
+      
+    }
+   
     
     
   }
   console.log(ListaProductos);
 
+  //Funcion de cerrar sesion
   const CerrarSesion=()=>{
     localStorage.clear()
+    setAlert({show: true, message: '¡Cerrando sesion!', variant:'warning'})
     navigate('/login')
     
   }
@@ -75,6 +92,13 @@ function Principal() {
           
         </nav>
       </aside>
+      <div className=' Alerta'>
+            {alert.show && (
+                <Alert variant={alert.variant} onClose={() => setAlert({ ...alert, show: false })} dismissible>
+                  {alert.message}
+                </Alert>
+              )}  
+            </div>
 
       {/* Main Content */}
       <main className="main-content">
@@ -86,7 +110,7 @@ function Principal() {
             <button className="search-button">Search</button>
           </div>
         </header>
-
+        
         {/* Product Grid */}
         <section className="product-gridlist">
   {ListaProductos.length > 0 ? (
@@ -105,7 +129,8 @@ function Principal() {
       </thead>
       <tbody>
         {ListaProductos.map((Prod) => (
-          <tr key={Prod.id}>
+          //Key identificador unico para cada fila y Prod.id indenticador unico para cada producto
+          <tr key={Prod.id}>  
             
             <td>{Prod.Nombre_producto || 'Sin nombre'}</td>
             <td>{Prod.Fecha_vencimiento || 'No disponible'}</td>
@@ -115,7 +140,7 @@ function Principal() {
             <td>{Prod.Categoria.Categoria || 'No disponible'}</td>
             <td>
             <td>
-           <button className="btn-edit" onClick={() => AbrirModal(Prod)}>Editar</button>
+           <button className="btn-edit" onClick={() => AbrirModal(Prod)}>Editar</button> 
            <button className="btn-delete" onClick={() => EliminarProductos(Prod.id)}>Eliminar</button>
 </td>
             </td>

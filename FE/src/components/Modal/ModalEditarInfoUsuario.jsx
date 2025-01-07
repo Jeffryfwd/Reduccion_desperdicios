@@ -8,7 +8,7 @@ const ModalEditarInfoUsuario = ({ isOpen, onClose,children}) => {
     <div className="modal-overlay1">
     <div className="modal-side-panel1">
       <div className="modal-header1">
-        <h5 className="modal-title1">Mi carrito</h5>
+        <h5 className="modal-title1">Edita tu informacion personal</h5>
         <button className="close-button1" onClick={onClose}>
           &times;
         </button>

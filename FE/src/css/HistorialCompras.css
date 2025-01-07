@@ -1,0 +1,59 @@
+.compras-lista{
+    margin-left: 300px;
+    margin-top: -600px;
+    
+    
+}
+.compras-lista {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.compras-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tabla-encabezado {
+    background-color: #4CAF50; /* Color principal */
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.tabla-fila:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.tabla-fila:hover {
+    background-color: #e8f5e9; /* Color suave al pasar el mouse */
+}
+
+.tabla-celda {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.ver-productos-btn {
+    background-color: #4CAF50; /* Botón en color principal */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.ver-productos-btn:hover {
+    background-color: #45a049; /* Ligero cambio al pasar el mouse */
+}
+
+.tabla-mensaje {
+    color: #757575;
+    font-size: 16px;
+    text-align: center;
+}

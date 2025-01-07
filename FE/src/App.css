@@ -62,7 +62,7 @@
   padding: 20px;
   box-sizing: border-box;
   border: 1px solid;
-  margin-left: -60px;
+
 }
 
 .sidebar-title {
@@ -313,8 +313,12 @@
 
 
 .product-table {
+  max-height: 400px;
   width: 100%;
-  border-collapse: collapse;
+  
+  overflow-y: auto;  /* Scroll vertical */
+  overflow-x: auto;  /* Scroll horizontal */
+
 }
 
 .product-table th,
@@ -892,4 +896,197 @@ margin-left: 200px;
   padding: 20px;
   border-radius: 8px;
   width: 300px;
+}
+
+
+/* Alerta */
+.Alerta-login{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050; /* Asegura que la alerta esté por encima de otros elementos */
+  width: auto; /* Ajusta el ancho automáticamente */
+  max-width: 300px; /* Tamaño máximo opcional */
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
+}
+
+.Alerta-login  .alert {
+  margin: 0; /* Evita márgenes que afecten la posición */
+}
+
+.Alerta {
+  position: fixed; /* Fijo para que permanezca en la misma posición al hacer scroll */
+  top: 40px; /* Centrado verticalmente */
+  margin-left: 1150px; /* Centrado horizontalmente */
+  transform: translate(-50%, -50%); /* Ajusta el centro */
+  z-index: 1050; /* Asegura que esté encima de otros elementos */
+  width: 90%; /* Anchura adaptable para pantallas pequeñas */
+  max-width: 400px; /* Limita el tamaño en pantallas grandes */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+  border-radius: 10px; /* Bordes redondeados */
+  overflow: hidden; /* Oculta contenido desbordado */
+}
+
+.Alerta .alert {
+  margin: 0; /* Elimina márgenes internos */
+  padding: 15px 20px; /* Ajusta el espacio interno */
+  font-size: 1rem; /* Tamaño de texto estándar */
+}
+
+.Alerta .alert button.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #000;
+  cursor: pointer;
+}
+
+.Alerta .alert button.close:hover {
+  color: #ff0000; /* Color al pasar el cursor */
+}
+
+/* .carrito-item{
+ position: absolute;
+ 
+  margin-left: 750px;
+} */
+ .Boton-cerrar-sesion{
+  text-decoration: none;
+  background-color: transparent;
+ }
+
+#Fondo{
+  background-color: #031b33;
+  padding: 15px;
+
+}
+
+
+
+/* Foooter */
+#Conter-footer{
+  background-color: #031b33;
+  color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+#Text-footer{
+color: #ffffff;
+
+}
+
+
+/* Acerca de Nosotros */
+.acerca-nosotros {
+  display: flex; /* Usa Flexbox para organizar en fila */
+  align-items: center; /* Alinea verticalmente el contenido */
+  gap: 20px; /* Espaciado entre el texto y la imagen */
+  padding: 20px; /* Espaciado interno */
+}
+
+.Texto-Acerca {
+  flex: 1; /* Ocupa el espacio restante en el lado izquierdo */
+  text-align: justify; /* Justifica el texto */
+  padding-right: 20px; /* Espaciado a la derecha del texto */
+  font-size: 16px; /* Tamaño de fuente */
+  line-height: 1.6; /* Espaciado entre líneas */
+  color: #333; /* Color de texto oscuro */
+  border-right: 2px solid #ccc; /* Línea vertical entre el texto y la imagen */
+}
+
+.acerca-nosotros img {
+  flex: 1; /* Ocupa el espacio restante en el lado derecho */
+  width: 100%; /* Ajusta el ancho al contenedor */
+  max-width: 400px; /* Máximo tamaño de la imagen */
+  height: auto; /* Mantiene la proporción sin distorsionarse */
+  object-fit: cover; /* Asegura que no pierda calidad al ajustarse */
+  border-radius: 10px; /* Bordes redondeados para un diseño más elegante */
+}
+
+/* Vision acerca de */
+.vision-container {
+  display: flex;
+  justify-content: center; /* Centra el contenido */
+  align-items: center; /* Alinea verticalmente */
+  padding: 20px;
+  background-color: #f9f9f9; /* Fondo claro */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  margin: 20px;
+}
+
+.vision-content {
+  max-width: 800px; /* Ancho máximo del contenido */
+  text-align: justify; /* Texto justificado */
+  padding: 20px;
+}
+
+.vision-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333; /* Color oscuro */
+}
+
+.vision-text {
+  font-size: 16px;
+  line-height: 1.8; /* Espaciado entre líneas */
+  margin-bottom: 15px;
+  color: #555; /* Color gris oscuro */
+}
+
+.vision-highlight {
+  font-size: 18px;
+  font-weight: bold;
+  color: #28a745; /* Verde llamativo */
+  text-align: center; /* Centrado para destacar */
+  margin-top: 20px;
+}
+.testimonio-container {
+  display: flex;
+  justify-content: center; /* Centra el contenido */
+  align-items: center; /* Alinea verticalmente */
+  padding: 20px;
+  background-color: #f9f9f9; /* Fondo claro */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  margin: 20px;
+}
+
+.testimonio-content {
+  max-width: 800px; /* Ancho máximo del contenido */
+  text-align: justify; /* Texto justificado */
+  padding: 20px;
+}
+
+.testimonio-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333; /* Color oscuro */
+}
+
+.testimonio-text {
+  font-size: 16px;
+  line-height: 1.8; /* Espaciado entre líneas */
+  margin-bottom: 15px;
+  color: #555; /* Color gris oscuro */
+  font-style: italic; /* Texto en cursiva */
+}
+
+.testimonio-author {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right; /* Alinea el autor a la derecha */
+  margin-top: 10px;
+  color: #28a745; /* Verde llamativo */
+}
+#Content-map{
+  margin-top: -20PX;
+}
+.ubicacion{
+  font-size: 20px;
+  color: #ffffff  ;
 }

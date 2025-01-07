@@ -8,6 +8,8 @@ import FormPaypal from '../Paypal/FormPaypal';
 import { Link } from 'react-router-dom';
 import BotonPerfil from '../BotonPerfil/BotonPerfil';
 import Footer from '../Footer/Footer';
+import { Alert } from 'react-bootstrap'
+
 
 function Confirmar() {
   const [CarritoSeleccionado, setCarritoSeleccionado] = useState([]);
@@ -15,7 +17,11 @@ function Confirmar() {
   const [Comprobante, setComprobante]= useState("")
   const [NombreUsuario, setUserName]= useState("")
   const navigate = useNavigate();
- const [mostrarInput, setMostrarInput]=useState(false); 
+ const [mostrarInput, setMostrarInput]=useState(false);   
+ const [alert, setAlert]= useState({show: false, message: '', variant: ''})
+ 
+
+
   useEffect(() => {
     const DatosCarrito = localStorage.getItem('CarritoSelecccionado');
     const comprobante = localStorage.getItem('Comprobante')
@@ -61,12 +67,13 @@ function Confirmar() {
       });
 
       if (response.ok) {
-        alert('Compra registrada con éxito');
+        setAlert({show: true, message: '¡Compra realizada exitosamente!'})
         localStorage.removeItem('CarritoSeleccionado');
         navigate('/visualizacion/promociones'); // Redirige a la página principal
    
       } else {
-        alert('Error al registrar la compra');
+        setAlert({show: true, message: '¡Hubo un error al realizar la compra!'})
+        
       }
     } catch (error) {
       console.error('Error:', error);
@@ -141,6 +148,13 @@ function Confirmar() {
          <BotonPerfil/>
          </li> 
          </div>
+           <div className=' Alerta'>
+               {alert.show && (
+                   <Alert variant={alert.variant} onClose={() => setAlert({ ...alert, show: false })} dismissible>
+                     {alert.message}
+                   </Alert>
+                 )}  
+               </div>
      
       <h1 className="titulo-carrito">Resumen de tu compra</h1>
 

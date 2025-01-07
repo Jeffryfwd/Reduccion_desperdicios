@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import GetInfoCompras from '../../services/InfoUsuario/GetInfoCompras';
 import { GetInfoUsuario, GetUserInfo } from '../../services/InfoUsuario/GetInfoUusuario';
 import { Link } from 'react-router-dom';
+import BotonPerfil from '../BotonPerfil/BotonPerfil';
+import ModalMostraProductos from '../Modal/ModalMostraProductos';
+import '../../css/HistorialCompras.css'
 
 function HistorialCompras() {
    const [compras, setCompras] = useState([]);    // Compras realizadas
@@ -10,6 +13,7 @@ function HistorialCompras() {
   const [userAlt, setUserAlt] = useState(null);  // Datos alternativos
   const [loading, setLoading] = useState(true);  // Estado de carga
   const [error, setError] = useState(null);      // Estado de error
+  const [abriModal, setAbrirModal]=useState(false)
 
   // Función para agrupar compras por fecha
   //Estudiarlo
@@ -63,6 +67,8 @@ useEffect(()=>{
         // Obtener datos de compras
         const comprasRealizadas = await GetInfoCompras();
         setCompras(comprasRealizadas);
+        console.log('Esto es lo que trae compras',comprasRealizadas);
+        
 
         // Agrupar compras por fecha
         const agrupadas = agruparComprasPorFecha(comprasRealizadas);
@@ -94,73 +100,91 @@ ObtenerCompras()
 
   return (
     <div>
-        <aside className="sidebar">
-              {usuarios && usuarios.user ? (
-          <h2>¡Hola {usuarios.user.first_name} {usuarios.user.last_name}!</h2>
-      ) : userAlt ? (
-          <h2>¡Hola {userAlt.first_name} {userAlt.last_name}!</h2>
-      ) : (
-          <p>No se pudo cargar el nombre del usuario.</p>
-      )}
-                  <nav>
-                      <ul>
-                           <Link to='/perfil'> <li className="active">Información de la cuenta</li></Link>
-                          <Link to='/historial/compras'><li className='active'>Historial de órdenes</li></Link>
-                          <li>Direcciones guardadas</li>
-                          <li>Favoritos</li>
-                          <li className="logout">Cerrar Sesión</li>
-                      </ul>
-                  </nav>
-              </aside>
+        <div> 
+        <div className="navbar-categories">
+         <li className="category-item">
+         <Link><button className="category-button">Pagina Principal</button></Link>
+         </li> 
+         <li className="category-item">
+         <Link><button className="category-button">Contactenos</button></Link>
+         </li> 
+         <li className="category-item">
+         <BotonPerfil/>
+         </li> 
+         </div>
+         <br /><br />
+         <ModalMostraProductos isOpen={abriModal} onClose={()=> setAbrirModal(false)}>
+        {comprasAgrupadas.map((compra, i)=>(
+               <td>
+               {compra.Productos.map((producto, idx) => (
+                   <div key={idx} className="producto-item">
+                       <img 
+                           src={producto.Imagen} 
+                           alt={producto.Nombre} 
+                           style={{ width: '50px', height: '50px', marginRight: '10px' }}
+                       />
+                       <span>{producto.Nombre}</span>
+                       <span>(X{producto.Cantidad})</span>
+                   </div>
+               ))}
+           </td>
+        ))}
+
+         </ModalMostraProductos>
+        <aside className="sidebar-Perfil">
+                       {usuarios && usuarios.user ? (
+                           <h2>¡Hola {usuarios.user.first_name} {usuarios.user.last_name}!</h2>
+                       ) : userAlt ? (
+                           <h2>¡Hola {userAlt.first_name} {userAlt.last_name}!</h2>
+                       ) : (
+                           <p>No se pudo cargar el nombre del usuario.</p>
+                       )}
+                       <nav>
+                           <ul>
+                              <Link to='/perfil' className='link'> <li className="link">Información de la cuenta</li></Link>
+                               <Link to='/historial/compras' className='link'><li className='link'>Historial de Compras</li></Link>
+                              <li className="logout">Cerrar Sesión</li>
+                           </ul>
+                       </nav>
+                   </aside>
+             
+              <div className="compras-lista">
               <h2 className="compras-titulo">Compras Agrupadas por Fecha</h2>
-<div className="compras-lista">
     {comprasAgrupadas.length > 0 ? (
         <table className="compras-tabla">
             <thead>
                 <tr>
-                    <th>Fecha</th>
-                    <th>Cantidad Total</th>
-                    <th>Total</th>
-                    <th>Acción</th>
-                    <th>Productos</th>
+                    <th className="tabla-encabezado">Fecha</th>
+                    <th className="tabla-encabezado">Cantidad Total</th>
+                    <th className="tabla-encabezado">Total</th>
+                    <th className="tabla-encabezado">Acción</th>
                 </tr>
             </thead>
             <tbody>
                 {comprasAgrupadas.map((compra, index) => (
-                    <tr key={index}>
-                        <td>{compra.Fecha_venta}</td>
-                        <td>{compra.Cantidad}</td>
-                        <td>₡{compra.Total.toFixed(2)}</td>
-                        <td>
+                    <tr key={index} className="tabla-fila">
+                        <td className="tabla-celda">{compra.Fecha_venta}</td>
+                        <td className="tabla-celda">{compra.Cantidad}</td>
+                        <td className="tabla-celda">₡{compra.Total.toFixed(2)}</td>
+                        <td className="tabla-celda">
                             <button 
                                 className="ver-productos-btn"
-                                onClick={() => console.log(`Ver productos comprados en ${compra.Fecha_venta}`)}>
+                                onClick={() => setAbrirModal(true)}>
                                 Ver productos comprados
                             </button>
-                        </td>
-                        <td>
-                            {compra.Productos.map((producto, idx) => (
-                                <div key={idx} className="producto-item">
-                                    <img 
-                                        src={producto.Imagen} 
-                                        alt={producto.Nombre} 
-                                        style={{ width: '50px', height: '50px', marginRight: '10px' }}
-                                    />
-                                    <span>{producto.Nombre}</span>
-                                    <span>(X{producto.Cantidad})</span>
-                                </div>
-                            ))}
                         </td>
                     </tr>
                 ))}
             </tbody>
         </table>
     ) : (
-        <p>No hay compras registradas.</p>
+        <p className="tabla-mensaje">No hay compras registradas.</p>
     )}
 </div>
 
 
+
+    </div>
     </div>
   )
 }

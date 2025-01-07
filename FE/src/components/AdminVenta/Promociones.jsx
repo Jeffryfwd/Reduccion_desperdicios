@@ -4,7 +4,7 @@ import GetPromociones from '../../services/Promociones/GetPromociones'
 import DeletePromociones from '../../services/Promociones/DeletePromociones';
 import PutPromociones from '../../services/Promociones/PutPromociones';
 import Autenticacion from '../Autenticacion';
-
+import { Alert } from 'react-bootstrap'
 
 
 function Promociones() {
@@ -15,6 +15,8 @@ const [DatosPromocion, SetDatosPromocion]= useState([])
 const [abrirModal, setAbrirModal] = useState(false);
 const [Precio, setPrecio]= useState(0)
 const[descuento, setDescuento]= useState(0)
+const [alert, setAlert]= useState({show: false, message: '', variant: ''})
+
 const navigate= useNavigate();
 
 useEffect(()=>{
@@ -32,10 +34,17 @@ const CerrarSesion=()=>{
   
 }
 async function EliminarPromociones(id) {
-  await DeletePromociones(id);
-  alert("Producto eliminado con exito")
-  const ListaActualizada= await GetPromociones();
-  setListaPromociones(ListaActualizada)
+  try {
+    await DeletePromociones(id);
+    const ListaActualizada= await GetPromociones();
+    setListaPromociones(ListaActualizada)
+    setAlert({show: true, message: 'Promocion eliminada con exito'})
+
+  } catch (error) {
+    setAlert({show: true, message: 'Hubo error en eliminar la promocion', variant: 'danger'})
+    
+  }
+
 }
 
 function AbrirModal(product) {
@@ -74,11 +83,12 @@ async function EditarPromocion() {
     await PutPromociones(id,id_producto.id,url_imagen,descuento,Fecha_inicio,Fecha_fin, Precio_total)
     const PromocionActualizada= await GetPromociones()
     setListaPromociones(PromocionActualizada)
-    alert('Promocion editada con exito')
+    setAlert({show: true, message: '¡Promocion actualizada con exito!'})
+   
     setAbrirModal(false); // Cerrar modal después de guardar
   } catch (error) {
     console.log('Hubo un error al editar la promocion', error);
-    
+    setAlert({show: true, message: '¡Hubo un error al actualizar la promocion!', variant: 'danger'})
   }
 
   
@@ -103,6 +113,13 @@ async function EditarPromocion() {
         </nav>
         
       </aside>
+       <div className=' Alerta'>
+            {alert.show && (
+                <Alert variant={alert.variant} onClose={() => setAlert({ ...alert, show: false })} dismissible>
+                  {alert.message}
+                </Alert>
+              )}  
+            </div>
       <main className="main-content">
       <header className="header">
         <div className='header-title2'>
