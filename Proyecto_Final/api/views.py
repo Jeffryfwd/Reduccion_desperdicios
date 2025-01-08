@@ -6,24 +6,25 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser, BasePermission
 
-from .models import Categoria, Productos, Promociones, Alerta, Ventas, Reporte, Usuarios, Empresa, Inventario
-from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer, AlertaSerializer, ReporteSerializer,  UsuarioSerializer, EmpresaSerializer, InventarioSerializer, VentaSerializers, RegistroUser, ProductoSerializer2, SerializerPromocionesGet,Serializergroup,PostUser
+from .models import Categoria, Productos, Promociones, Ventas,  Usuarios
+from .serializers import CategoriaSerializer, ProductoSerializer, PromocionesSerializer,   UsuarioSerializer, VentaSerializers, RegistroUser, ProductoSerializer2, SerializerPromocionesGet,PostUser
 # Create your views here.
+
 class IsAdminUser(BasePermission):
     def has_permission(self, request, view):
         return request.user and request.user.is_staff
 
 
-class CategoriaListCreate(generics.ListCreateAPIView):
-    queryset = Categoria.objects.all()
-    serializer_class = CategoriaSerializer
-    permission_classes = [IsAdminUser]
+class CategoriaListCreate(generics.ListCreateAPIView): #Vista basada en clases 
+    queryset = Categoria.objects.all() #Defino el origen de los objetos que voy a usar en la vista
+    serializer_class = CategoriaSerializer #Especifico el serializer para convertir los daatos de la base de dato en formato json
+    permission_classes = [IsAdminUser] #Permiso para ejecutar
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
+    def post(self, request, *args, **kwargs): #Defino el metodo que maneja la vista
+        serializer = self.get_serializer(data=request.data) #Ibtengo el serializer asosiado a la vista
+        if serializer.is_valid(): #Valido si es valido
+            serializer.save() #Lo aguarda
+            return Response( #Y me da una respuesta
                 {"message": "Categoría creada exitosamente", "data": serializer.data},
                 status=status.HTTP_201_CREATED
             )
@@ -36,6 +37,58 @@ class CategoriaListCreate(generics.ListCreateAPIView):
 class CategoriaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+    
+    def retrieve(self, request, *args, **kwargs):
+        # Obtener el objeto Categoria
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        
+        # Respuesta personalizada para obtener el objeto
+        return Response(
+            {
+                "message": "Categoría encontrada",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+
+    def update(self, request, *args, **kwargs):
+        # Obtener el objeto Categoria y actualizarlo
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            # Respuesta personalizada para actualizar un objeto
+            return Response(
+                {
+                    "message": "Categoría actualizada exitosamente",
+                    "data": serializer.data
+                },
+                status=status.HTTP_200_OK
+            )
+        
+        # Si la validación falla
+        return Response(
+            {
+                "message": "Error al actualizar la categoría",
+                "errors": serializer.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    def destroy(self, request, *args, **kwargs):
+        # Obtener el objeto Categoria y eliminarlo
+        instance = self.get_object()
+        instance.delete()
+        
+        # Respuesta personalizada para eliminar un objeto
+        return Response(
+            {
+                "message": "Categoría eliminada exitosamente"
+            },
+            status=status.HTTP_204_NO_CONTENT
+        ) 
 
 
  
@@ -47,9 +100,8 @@ class PromocionesListCreate(generics.ListCreateAPIView):
     queryset = Promociones.objects.all()
     serializer_class = PromocionesSerializer
     
-
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data) #Obtengo el serializer asociado a la vista
         if serializer.is_valid():
             serializer.save()
             return Response(
@@ -63,13 +115,13 @@ class PromocionesListCreate(generics.ListCreateAPIView):
 
 
 class PromocionesDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Promociones.objects.all()
-    serializer_class = PromocionesSerializer
+    queryset = Promociones.objects.all() #Defino el origen del objeto que voy a usar en la vista
+    serializer_class = PromocionesSerializer #Especifico el serializeer para convertir los en formato json
 
-    def put(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
-        if serializer.is_valid():
+    def put(self, request, *args, **kwargs): #defino el metodo asociado a la vista
+        instance = self.get_object() #Obtengo el objeto
+        serializer = self.get_serializer(instance, data=request.data) #Obtengo el seriarlizer asociado a la vista para 
+        if serializer.is_valid(): 
             serializer.save()
             return Response(
                 {"message": "Promoción actualizada exitosamente", "data": serializer.data},
@@ -90,46 +142,7 @@ class PromocionesDetail(generics.RetrieveUpdateDestroyAPIView):
 ############################################################################
 
 
-class AlertaListCreate(generics.ListCreateAPIView):
-    queryset = Alerta.objects.all()
-    serializer_class = AlertaSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Alerta creada exitosamente", "data": serializer.data},
-                status=status.HTTP_201_CREATED
-            )
-        return Response(
-            {"message": "Error al crear la alerta", "data": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-
-class AlertaDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Alerta.objects.all()
-    serializer_class = AlertaSerializer
-
-    def put(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Alerta actualizada exitosamente", "data": serializer.data},
-                status=status.HTTP_200_OK
-            )
-        return Response(
-            {"message": "Error al actualizar la alerta", "data": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.delete()
-        return Response({"message": "Alerta eliminada exitosamente"}, status=status.HTTP_204_NO_CONTENT)
     
 ##########################################################################
 
@@ -137,24 +150,118 @@ class VentasListCreate(generics.ListCreateAPIView):
     queryset= Ventas.objects.all()
     serializer_class= VentaSerializers
     permission_classes=[AllowAny]
+    
+    def post(self, request, *args, **kwargs):
+        serializer= self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message: Venta creada con existo"})
+   
+#---------------------------------------------------------------#
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from decimal import Decimal
+from datetime import date
+from rest_framework import status
+from .models import Ventas, Productos
+from .serializers import VentasSerializer
 
+class RegistrarVentaAPIView(APIView):
+    queryset = Ventas.objects.all()
+    permission_classes = [AllowAny]
+
+    def post(self, request): #defino el metodo
+        data = request.data #Obtengo los datos de la solicitud
+        cliente_id = data.get('Cliente_id') #hago una consulta a la solicitud y obtengo el cliente id, lo guardo a la variable
+        carrito = data.get('carrito')
+        comprobante= data.get('Comprobante')
+
+        if not cliente_id or not carrito:
+            return Response({"error": "Datos incompletos"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Registrar cada producto del carrito como una venta
+        for item in carrito:
+            try:
+                id_producto = item.get('id_producto') #Hago una consulta a los producto del carrito y obtengo el id_producto
+                id_promocion = item.get('id')
+                precio_total = Decimal(item.get('Precio_total', 0))
+                precio_raw = item.get('Precio', 0)
+                precio = Decimal(precio_raw)
+                cantidad = item.get('cantidad', 1)
+
+                if id_producto:
+                    # Si es una promoción
+                    producto = Productos.objects.get(id=id_producto['id'])
+                    promocion = Promociones.objects.filter(id_producto=producto).first()
+                    Ventas.objects.create(
+                        id_producto=None,
+                        id_promociones=promocion,
+                        Cantidad_venta=cantidad,
+                        Fecha_venta=date.today(),
+                        Total=cantidad * precio_total or cantidad * precio,
+                        Cliente_id=cliente_id,
+                        Comprobante= comprobante
+                    )
+                else:
+                    # Si es un producto normal
+                    producto = Productos.objects.get(id=id_promocion)
+                    Ventas.objects.create(
+                        id_producto=producto,
+                        id_promociones=None,
+                        Cantidad_venta=cantidad,
+                        Fecha_venta=date.today(),
+                        Total=cantidad * precio_total or cantidad * precio,
+                        Cliente_id=cliente_id,
+                        Comprobante= comprobante
+                    )
+            except Productos.DoesNotExist:
+                return Response({"error": f"Producto con ID {id_promocion or id_producto} no encontrado"},
+                                status=status.HTTP_404_NOT_FOUND)
+
+        return Response({"mensaje": "Compra registrada con éxito"}, status=status.HTTP_201_CREATED)
+
+    def get(self, request):
+        ventas = Ventas.objects.all()  # Obtiene todas las ventas
+        serializer = VentasSerializer(ventas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+    
 
 class VentasDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset= Ventas.objects.all()
     serializer_class= VentaSerializers
     permission_classes= [AllowAny]
     
+    def put(self, request, *args, **kwargs):
+        instance= self.get_object() #Obtengo el objeto asociado a la vista
+        serializer = self.get_serializer(instance, data=request.data) #Obtener el serializer asosiado a la vista, y lo cual convertimos el objeto en un formato json
+        if is_valid():
+          serializer.save()
+          return Response({
+              "message: La venta fue actualizada con exito"
+          }) 
+          return Response({
+              "Message: Hubo al actualizar la venta"
+          })
+    def delete(self, request, *args, **kwargs):
+        instance= self.get_object()
+        instance.delete()
+        return Response({
+            "Message: Venta eliminada con exito"
+        })
+    
 ##########################################################################
 #Vista para obtener la venta mediante el id de usuario
-class VentaPorusuarioId(generics.ListAPIView):
-    serializer_class= VentaSerializers
+class VentaPorusuarioId(generics.ListAPIView): #Defino una vista basada en clase, que tiene metodo de get 
+    serializer_class= VentaSerializers #Especifico el origen del serializer que vamos a utilizar para convertir en formato json
     permission_classes= [AllowAny]
     
-    def get_queryset(self):
-        cliente_id= self.kwargs['Cliente_id']    
+    def get_queryset(self): #Defino el metodo asociado a la vista
+        cliente_id= self.kwargs['Cliente_id']#Extraigo el id_cliente y lo asigno a la variable dentro la url mediante kwargs
         return  Ventas.objects.filter(Cliente_id= cliente_id).select_related('id_producto', 'id_promociones__id_producto')
-    
-
+        #Filtro las instancias en la tabla venta, y si el Cliente-id coincide con el cliente_id que pase a la vista
+        #Lo cual me retorna todas las ventas asociadas a ese cliente uso, select_related para optimizar la consulta
     
 ##########################################################################
 #Vista para eliminar o editar
@@ -164,50 +271,17 @@ class VentaPorusuarioId(generics.ListAPIView):
 #-------------------------------------------------------------------#    
 
 
-class ReporteListCreate(generics.ListCreateAPIView):
-    queryset= Reporte.objects.all()
-    serializer_class= ReporteSerializer
-def post(self, request, *args, **kwargs):
-    serializer = self.get_serializer(data=request.data)
-    if serializer.is_valid():  
-        serializer.save()
-        return Response(
-            {
-               "message": "Reporte creado existosamente",
-               "data": serializer.data,
-            },
-             status=status.HTTP_201_CREATED
-            
-            )
-    print(serializer.errors)  
-    return Response(
-        {
-            "message": "Hubo un error al crear el reporte",
-            "data": serializer.errors
-        },
-        status=status.HTTP_400_BAD_REQUEST
-        
-        )
-
-        
-    
-class ReporteDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset= Reporte
-    serializer_class= ReporteSerializer
-    
-##########################################################################
-
 from rest_framework import status
 
-class UsuarioListCreate(generics.ListCreateAPIView):
-    queryset= User.objects.all()
-    serializer_class= UsuarioSerializer
+class UsuarioListCreate(generics.ListCreateAPIView): #Dedfino una vista basada en clases con manejo de metodos, put, delete,post
+    queryset= User.objects.all() # Objento el obejto que voy a usar
+    serializer_class= UsuarioSerializer #Defino el origen del serializer para covertir el objeto en un formato json
     permission_classes= [AllowAny]
     
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+    def post(self, request, *args, **kwargs): # defino el metodo asociado a la vista
+        serializer = self.get_serializer(data=request.data) #Obtengo el serializer asociado a la vista
+        if serializer.is_valid(): #Valido 
+            serializer.save()# Guardo
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         print(serializer.errors) 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -217,6 +291,13 @@ class UsuarioDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset= User.objects.all()
     serializer_class= UsuarioSerializer
     permission_classes= [AllowAny]
+    
+    def put(self, request, *args, **kwargs):#defino el metodo que maneja la vista
+        instance= self.get_object() #Obtengo el objeto asociado
+        serializer= self.get_serializer(instance, data=request.data)#obtengo el serializer asociado a la vista para convertir ese objeto en un formato json
+        return Response({
+            "message: Usuario Actualizado con exito"
+        })
     
     
     
@@ -246,11 +327,11 @@ class EditarUsuarioView(View):
                 return JsonResponse({'success': False, 'error': 'ID de usuario no proporcionado.'}, status=400)
 
             # Buscar el usuario en ambas tablas
-            user = User.objects.get(id=user_id)
-            usuario = Usuarios.objects.get(user=user)
+            user = User.objects.get(id=user_id) #Realizo una consulta a la base de datos de user
+            usuario = Usuarios.objects.get(user=user) #Realizo la consulta a la tabla que busca el objecto con coinicida con el id
 
             # Validar y actualizar los campos de la tabla User
-            first_name = data.get('first_name', user.first_name).strip()
+            first_name = data.get('first_name', user.first_name).strip()#extraigo los datos entrada y si no estan presentes uso, los datos que estan en la tabla user
             email = data.get('email', user.email).strip()
 
             # Validaciones antes de actualizar
@@ -259,7 +340,7 @@ class EditarUsuarioView(View):
             if len(email) > 100:
                 return JsonResponse({'success': False, 'error': 'El correo no puede exceder los 100 caracteres.'}, status=400)
 
-            user.first_name = first_name
+            user.first_name = first_name #El dato ingresado va a actualizarse en la tabla user, segun su respectivo campos
             user.email = email
             user.save()
 
@@ -291,94 +372,13 @@ class EditarUsuarioView(View):
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
-##########################################################################
 
 
-class EmpresaListCreate(generics.ListCreateAPIView):
-    queryset = Empresa.objects.all()
-    serializer_class = EmpresaSerializer
-    permission_classes = [AllowAny]
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Empresa creada exitosamente", "data": serializer.data},
-                status=status.HTTP_201_CREATED
-            )
-        return Response(
-            {"message": "Error al crear la empresa", "data": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
 
 
-class EmpresaDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Empresa.objects.all()
-    serializer_class = EmpresaSerializer
-
-    def put(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Empresa actualizada exitosamente", "data": serializer.data},
-                status=status.HTTP_200_OK
-            )
-        return Response(
-            {"message": "Error al actualizar la empresa", "data": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.delete()
-        return Response({"message": "Empresa eliminada exitosamente"}, status=status.HTTP_204_NO_CONTENT)
     
-###########################################################################
-
-class InventarioListCreate(generics.ListCreateAPIView):
-    queryset = Inventario.objects.all()
-    serializer_class = InventarioSerializer
-    permission_classes= [AllowAny]
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Inventario creado exitosamente", "data": serializer.data},
-                status=status.HTTP_201_CREATED
-            )
-        return Response(
-            {"message": "Error al crear el inventario", "data": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
 
 
-class InventarioDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Inventario.objects.all()
-    serializer_class = InventarioSerializer
-
-    def put(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Inventario actualizado exitosamente", "data": serializer.data},
-                status=status.HTTP_200_OK
-            )
-        return Response(
-            {"message": "Error al actualizar el inventario", "data": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.delete()
-        return Response({"message": "Inventario eliminado exitosamente"}, status=status.HTTP_204_NO_CONTENT)
     
     
 ############################################################################
@@ -491,83 +491,11 @@ class PromocionesApiViews(generics.ListAPIView):
     permission_classes = [AllowAny]
     
     
-#-------------------------------------------------#
-class gruopListacreate(generics.ListCreateAPIView):
-    queryset= Group.objects.all()
-    serializer_class= Serializergroup
-    permission_classes= [AllowAny]
+
+
     
     
-    
-#---------------------------------------------------------------#
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from decimal import Decimal
-from datetime import date
-from rest_framework import status
-from .models import Ventas, Productos
-from .serializers import VentasSerializer
-
-class RegistrarVentaAPIView(APIView):
-    queryset = Ventas.objects.all()
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        data = request.data
-        cliente_id = data.get('Cliente_id')
-        carrito = data.get('carrito')
-        comprobante= data.get('Comprobante')
-
-        if not cliente_id or not carrito:
-            return Response({"error": "Datos incompletos"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Registrar cada producto del carrito como una venta
-        for item in carrito:
-            try:
-                id_producto = item.get('id_producto')
-                id_promocion = item.get('id')
-                precio_total = Decimal(item.get('Precio_total', 0))
-                precio_raw = item.get('Precio', 0)
-                precio = Decimal(precio_raw)
-                cantidad = item.get('cantidad', 1)
-
-                if id_producto:
-                    # Si es una promoción
-                    producto = Productos.objects.get(id=id_producto['id'])
-                    promocion = Promociones.objects.filter(id_producto=producto).first()
-                    Ventas.objects.create(
-                        id_producto=None,
-                        id_promociones=promocion,
-                        Cantidad_venta=cantidad,
-                        Fecha_venta=date.today(),
-                        Total=cantidad * precio_total or cantidad * precio,
-                        Cliente_id=cliente_id,
-                        Comprobante= comprobante
-                    )
-                else:
-                    # Si es un producto normal
-                    producto = Productos.objects.get(id=id_promocion)
-                    Ventas.objects.create(
-                        id_producto=producto,
-                        id_promociones=None,
-                        Cantidad_venta=cantidad,
-                        Fecha_venta=date.today(),
-                        Total=cantidad * precio_total or cantidad * precio,
-                        Cliente_id=cliente_id,
-                        Comprobante= comprobante
-                    )
-            except Productos.DoesNotExist:
-                return Response({"error": f"Producto con ID {id_promocion or id_producto} no encontrado"},
-                                status=status.HTTP_404_NOT_FOUND)
-
-        return Response({"mensaje": "Compra registrada con éxito"}, status=status.HTTP_201_CREATED)
-
-    def get(self, request):
-        ventas = Ventas.objects.all()  # Obtiene todas las ventas
-        serializer = VentasSerializer(ventas, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
+ 
 
 #---------------------------------------------------------------------#
 from rest_framework.permissions import AllowAny

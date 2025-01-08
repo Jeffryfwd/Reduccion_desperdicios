@@ -1,24 +1,27 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from django.contrib.auth.models import Group
 
 
-from .models import Productos, Categoria, Usuarios, Empresa, Alerta, Inventario, Promociones, Ventas, Reporte, Usuarios
+
+from .models import Productos, Categoria, Usuarios,  Promociones, Ventas, Usuarios
 from datetime import date
 
-class CategoriaSerializer(serializers.ModelSerializer):
-    class Meta:
+#Un serializer lo que hace es convertir un objeto en un formato json
+class CategoriaSerializer(serializers.ModelSerializer): #Declaro la clase
+    class Meta: #Defino un clase interna
         model = Categoria
         fields = '__all__' #['Categoria']
         
+  #--------------------------------------------------------------------------------------------#
+  #Derializador de productos      
 class ProductoSerializer(serializers.ModelSerializer):
-    Categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all()) #serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all()) #CategoriaSerializer() #Obtener todos los campos del modelo categoria desde el serializer
+    Categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all()) #Hace referencia a la clave primaria, lo cual trae los datos de categoria
     
     class Meta:
         model = Productos
         fields = '__all__'
 
-    def validate_Fecha_vencimiento(self, value):
+    def validate_Fecha_vencimiento(self, value): #Definimos una validacion value=valor ingresado
         if value < date.today():
             raise serializers.ValidationError("La fecha de vencimiento no puede ser anterior a la fecha actual.")
         return value
@@ -33,25 +36,21 @@ class ProductoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("La cantidad debe ser mayor a 0")
         return value
     
-    #def validate_Nombre_producto(self, value):
-        """Validar que el nombre del producto sea único dentro de la categoría."""
-        # Obtener la categoría del contexto del serializador
-       #categoria = self.initial_data.get('Categoria')
-
-        #if Productos.objects.filter(Nombre_producto=value, Categoria=categoria).exists():
-         #   raise serializers.ValidationError("Ya existe un producto con este nombre en esta categoría.")
-        #return value
-
+    
+#------------------------------------------------------------------#
+#Serializador de productos para obtener sus datos
 class ProductoSerializer2(serializers.ModelSerializer):
     Categoria = CategoriaSerializer() #Obtener todos los campos del modelo categoria desde el serializer
     
     class Meta:
         model = Productos
         fields = '__all__'
-    
         
+    
+ #-----------------------------------------------#
+ #Serializador para Registar Usuarios       
 class UsuarioSerializer(serializers.ModelSerializer):
-    is_staff = serializers.BooleanField(default=False)
+    is_staff = serializers.BooleanField(default=False) #acepta valores booleano
     class Meta:
         model= User
         fields= ("first_name", "last_name" ,"username","email", "password","is_staff") #las filas donde se van a guardar la informacion
@@ -66,10 +65,8 @@ class UsuarioSerializer(serializers.ModelSerializer):
         user.save()# y la guarda
         return user  
 
-       
-   
     def validate_email(self, value):
-        if User.objects.filter(email=value).exists():
+        if User.objects.filter(email=value).exists(): #Usu el .filter para buscar si un email coinicide con el valor ingresado
             raise serializers.ValidationError("Este correo electronico ya esta registrado.")
         return value
     # def validate_password(self, value):
@@ -87,49 +84,8 @@ class UsuarioSerializer(serializers.ModelSerializer):
         
 
 
-class EmpresaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Empresa
-        fields = '__all__'
-
-    def validate_Telefono(self, value):
-        if len(str(value)) != 8 or not str(value).isdigit():
-            raise serializers.ValidationError("El número de teléfono debe contener exactamente 8 dígitos.")
-        return value
-
-    def validate_Email_empresa(self, value):
-        if "@" not in value or "." not in value:
-            raise serializers.ValidationError("Debe proporcionar un correo electrónico válido.")
-        return value
-
-
-class AlertaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Alerta
-        fields = '__all__'
-
-    def validate(self, data):
-        if data.get("fecha_inicio") >= data.get("fecha_fin"):
-            raise serializers.ValidationError("La fecha de inicio debe ser anterior a la fecha de fin.")
-        return data
-
-
-class InventarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Inventario
-        fields = '__all__'
-
-    def validate_cantidad(self, value):
-        if value < 0:
-            raise serializers.ValidationError("La cantidad no puede ser negativa.")
-        return value
-    
-#----------------------------------------------------------------------------------------------#   
-
-
-
 #------------------------------------------------------------------------------------------------#
-
+#Serializador de promociones
 class PromocionesSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -140,6 +96,29 @@ class PromocionesSerializer(serializers.ModelSerializer):
         if value < 0 or value > 100:
             raise serializers.ValidationError("El descuento debe estar entre 0 y 100.")
         return value
+    
+    def validate_fecha_promocion(self, data): #Validamos que la fecha de inicio no pueder despues a la de fin
+        if data['Fecha_inicio']>data['Fecha_fin']:
+          raise serializers.ValidationError('La fecha de inicio de la promocio no puede ser posterior a la fecha de fin')
+      
+        promociones_activas = Promociones.objects.filter( #Busacamos si la promocion si esta vigente  y guardamos en la variable
+            id_producto=data['id_producto'], Fecha_fin__gte=date.today()
+        ).exclude(id=self.instance.id if self.instance else None)  # Excluir la promoción actual si está editando
+
+        if promociones_activas.exists(): #Y validammos si existe 
+            raise serializers.ValidationError("Este producto ya tiene una promoción activa.")
+        return data
+    
+    def validate_fecha_inicio(self, value): #Validamo que la fecha de inicio no puede ser anterior a la actual
+         if value < date.today():
+             raise serializers.ValidationError("La fecha de inicio no puede ser anterior a hoy.")
+         return value
+     
+    def validate_Precio_total(self, value): #Validamos que el precio total debe ser mayor a 0
+         if value <= 0:
+          raise serializers.ValidationError("El precio final debe ser mayor que 0.")
+         return value
+
 #---------------------------------------------------------------#
 
 #Serializer para solo obtener los datos de promociones
@@ -150,7 +129,9 @@ class SerializerPromocionesGet(serializers.ModelSerializer):
         model= Promociones
         fields= '__all__'    
 
+#---------------------------------------------------------------------------#
 
+#Serializer ventas para obener la informacion de todas la fk
 class VentaSerializers(serializers.ModelSerializer):
     id_producto= ProductoSerializer()
     Cliente= UsuarioSerializer()
@@ -164,25 +145,8 @@ class VentaSerializers(serializers.ModelSerializer):
             raise serializers.ValidationError("El total debe ser mayor que cero.")
         return value
 
-
-class ReporteSerializer(serializers.ModelSerializer):
-    Ventas_asociadas= serializers.PrimaryKeyRelatedField(
-        many= True,
-        
-        queryset = Ventas.objects.all())
-    
-    class Meta:
-        model = Reporte
-        fields = '__all__'
-
-    def validate(self, data):
-        if data.get("productos_vendidos") < 0:
-            raise serializers.ValidationError("La cantidad de productos vendidos no puede ser negativa.")
-        if data.get("ganancias") < 0:
-            raise serializers.ValidationError("Las ganancias no pueden ser negativas.")
-        return data
-
-
+#---------------------------------------------------------------#
+#Serializer que utilizo para traer toda la info de un usuario
 class RegistroUser(serializers.ModelSerializer):
     user= UsuarioSerializer()
     class Meta:
@@ -192,25 +156,14 @@ class RegistroUser(serializers.ModelSerializer):
 #__________________________________
 #Serializer para hacer un post de Usuario
 class PostUser(serializers.ModelSerializer):
-    
     class Meta:
         model= Usuarios
         fields= '__all__'
    
-    
-
-
-
-
 
 #---------------------------------------------------------------------#
 
-#Tabla group
 
-class Serializergroup(serializers.ModelSerializer):
-    class Meta:
-        model= Group
-        fields= '__all__'
         
         
 #---------------------------------#

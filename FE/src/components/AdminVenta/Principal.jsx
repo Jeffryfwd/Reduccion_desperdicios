@@ -94,27 +94,28 @@ function Principal() {
     // },[descuento, Precio])
     
     //Calcula el descuento
-    function calcularDescuento(descuento, precio) {
-      if (isNaN(precio) || isNaN(descuento)) {
+    function calcularDescuento(descuento, precio) { //descuento representa el porcentaje de descuento a aplicar
+      if (isNaN(precio) || isNaN(descuento)) { //Valido si precio o descuento no son numeros validos
         console.error("Valores inválidos:", { descuento, precio });
         setPrecioTotal(0);
         return;
       }
-      const descuentoPorcentaje = descuento / 100;
-      const PrecioConDescuento = precio - (precio * descuentoPorcentaje);
+      const descuentoPorcentaje = descuento / 100; //Convierto el porcentaje del descuento en valor decimal
+      const PrecioConDescuento = precio - (precio * descuentoPorcentaje); //calculo el monto del descuento y resto el descuento
       setPrecioTotal(PrecioConDescuento > 0 ? PrecioConDescuento.toFixed(2) : 0); 
     }
 
     //Devuelve el precio total con el descuento calculado
     function descuentoCalculado(event){
-      const nuevoDescuento = parseFloat(event.target.value);
+      const nuevoDescuento = parseFloat(event.target.value); //obtengo los datos actual del campo y lo almaceno en la variable nuevo descuento
       setDescuento(nuevoDescuento);
-      calcularDescuento(nuevoDescuento, parseFloat(datosModal.Precio));
+      calcularDescuento(nuevoDescuento, parseFloat(datosModal.Precio)); //llamo la funcion calcular descuento, procesa los valores
+                                                                //Y da el resultado de precio total y actualiza el estado de precio total
     }
     
     console.log(datosModal.Precio);
     
-    async function AñadirPromocion() {
+    async function AñadirPromocion() {//Creo una funcion añadir promocion
       try {
         await Postpromociones(id_producto, Fecha_inicio, Fecha_fin, descuento, Precio_total, url_imagen)
         setAlert({show: true, message: '¡Promocion creada exitosamente!'})

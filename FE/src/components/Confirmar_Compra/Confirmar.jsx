@@ -12,133 +12,139 @@ import { Alert } from 'react-bootstrap'
 
 
 function Confirmar() {
-  const [CarritoSeleccionado, setCarritoSeleccionado] = useState([]);
-  const [Cliente_id, setCliente] = useState("");
-  const [Comprobante, setComprobante]= useState("")
-  const [NombreUsuario, setUserName]= useState("")
-  const navigate = useNavigate();
- const [mostrarInput, setMostrarInput]=useState(false);   
- const [alert, setAlert]= useState({show: false, message: '', variant: ''})
+  // Definición de estados
+  const [CarritoSeleccionado, setCarritoSeleccionado] = useState([]); 
+  const [Cliente_id, setCliente] = useState(""); 
+  const [Comprobante, setComprobante] = useState(""); 
+  const [NombreUsuario, setUserName] = useState(""); 
+  const navigate = useNavigate(); 
+  const [mostrarInput, setMostrarInput] = useState(false); 
+  const [alert, setAlert] = useState({ show: false, message: '', variant: '' }); 
+
  
-
-
   useEffect(() => {
-    const DatosCarrito = localStorage.getItem('CarritoSelecccionado');
-    const comprobante = localStorage.getItem('Comprobante')
-    const Id= localStorage.getItem('Id_user')
-    const UserName= localStorage.getItem("UserName")
+    // Recupera información del localStorage.
+    const DatosCarrito = localStorage.getItem('CarritoSelecccionado'); // Recupera el carrito seleccionado.
+    const comprobante = localStorage.getItem('Comprobante'); // Recupera el comprobante almacenado.
+    const Id = localStorage.getItem('Id_user'); // Recupera el ID del usuario.
+    const UserName = localStorage.getItem("UserName"); // Recupera el nombre de usuario.
+
+    // Asigna los datos recuperados al estado si están presentes.
     if (DatosCarrito) {
-      setCarritoSeleccionado(JSON.parse(DatosCarrito));
+      setCarritoSeleccionado(JSON.parse(DatosCarrito)); // Convierto el carrito en formato JSON.
     }
     if (Id) {
-      setCliente(Id)
+      setCliente(Id); // Asigno el ID del cliente.
     }
     if (comprobante) {
-      setComprobante(comprobante)
-      console.log(comprobante);
-      
+      setComprobante(comprobante); // Asigno el comprobante de pago.
+    
     }
     if (UserName) {
-      setUserName(UserName)
+      setUserName(UserName); // Asigno el nombre del usuario.
     }
-  }, []);
- 
-  
-  
+  }, []); // Se ejecuta solo una vez al cargar el componente.
 
-
+  // Función para confirmar la compra.
   const confirmarCompra = async () => {
-   
-
+    // Estructura los datos necesarios para la compra.
     const datosCompra = {
-      Cliente_id,
-      carrito: CarritoSeleccionado, 
-      Comprobante,
+      Cliente_id, // ID del cliente.
+      carrito: CarritoSeleccionado, // Productos seleccionados en el carrito.
+      Comprobante, // Comprobante de pago.
     };
 
-    console.log(datosCompra);
-    
+    console.log(datosCompra); // Muestra los datos de la compra en consola.
+
+    // Valida si hay comprobante antes de proceder.
     if (!Comprobante) {
-      return setAlert({show: true, message: '¡Debes realizar el pago para Efectuar tu compra!'})
+      return setAlert({ show: true, message: '¡Debes realizar el pago para Efectuar tu compra!' }); // Alerta si no hay comprobante.
     }
+
     try {
+      // Envía los datos de la compra al servidor.
       const response = await fetch('http://127.0.0.1:8000/api/rventa/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datosCompra),
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(datosCompra), 
       });
 
+      // Manejo la respuesta del servidor.
       if (response.ok) {
-        setAlert({show: true, message: '¡Compra realizada exitosamente!'})
-        generarFactura()
-        localStorage.removeItem('CarritoSeleccionado');
+        setAlert({ show: true, message: '¡Compra realizada exitosamente!' }); // Alerta de éxito.
+        generarFactura(); // Genera la factura en PDF.
+        localStorage.removeItem('CarritoSeleccionado'); // Elimina el carrito almacenado localmente.
         setTimeout(() => {
-          navigate('/'); // Redirige a la página principal
+          navigate('/'); // Redirige a la página principal después de 3 segundos.
         }, 3000);
-       
       } else {
-        setAlert({show: true, message: '¡Hubo un error al realizar la compra!'})
-        
+        setAlert({ show: true, message: '¡Hubo un error al realizar la compra!' }); // Alerta de error.
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error de red al registrar la compra');
+      console.error('Error:', error); // Muestra el error en consola.
+      alert('Error de red al registrar la compra'); // Alerta de error en red.
     }
   };
 
+  // Función para calcular el total del carrito.
   const CalcularTotal = () => {
+    // Si no hay productos en el carrito, retorna 0.
     if (!CarritoSeleccionado || CarritoSeleccionado.length === 0) {
-      return 0; // Si el carrito está vacío, el total es 0
+      return 0;
     }
+    // Calcula el total sumando el precio por la cantidad de cada producto.
     return CarritoSeleccionado.reduce((acc, item) => {
-      const precio = item.Precio_total || item.Precio || 0; 
-      const cantidad = item.cantidad || 0; 
-      return acc + precio * cantidad;
+      const precio = item.Precio_total || item.Precio || 0; // Precio del producto.
+      const cantidad = item.cantidad || 0; // Cantidad seleccionada.
+      return acc + precio * cantidad; // Acumula el total.
     }, 0);
   };
 
-
-
-  //Generar factura
+  // Función para generar la factura en formato PDF.
   const generarFactura = () => {
-    const doc = new jsPDF();
-  
-    // Encabezado de la factura
+    const doc = new jsPDF(); // Crea un nuevo documento PDF.
+
+    // Encabezado de la factura.
     doc.setFontSize(18);
-    doc.text('Factura de Compra', 20, 20);
-  
-    // Información del cliente y la compra
+    doc.text('Factura de Compra', 20, 20); // Título.
+
+    // Información del cliente y la fecha.
     doc.setFontSize(12);
-    doc.text(`Nombre Cliente: ${NombreUsuario}`, 20, 40);
-    doc.text(`Fecha: ${new Date().toLocaleString()}`, 20, 50);
-  
-    // Crear la tabla de productos
-    const columnas = ['Producto', 'Precio', 'Cantidad', 'Total'];
+    doc.text(`Nombre Cliente: ${NombreUsuario}`, 20, 40); // Nombre del cliente.
+    doc.text(`Fecha: ${new Date().toLocaleString()}`, 20, 50); // Fecha de la factura.
+
+    // Crea la tabla de productos.
+    const columnas = ['Producto', 'Precio', 'Cantidad', 'Total']; // Encabezados de tabla.
     const filas = CarritoSeleccionado.map((item) => [
-      item.id_producto?.Nombre_producto || item.Nombre_producto || 'Sin nombre',
-      `₡ ${(item.Precio_total || item.Precio || 0).toLocaleString()}`,
-      item.cantidad || 0,
-      `₡ ${((item.Precio_total || item.Precio || 0) * (item.cantidad || 0)).toLocaleString()}`,
+      // Filas de la tabla con información del carrito.
+      item.id_producto?.Nombre_producto || item.Nombre_producto || 'Sin nombre', // Nombre del producto.
+      `₡ ${(item.Precio_total || item.Precio || 0).toLocaleString()}`, // Precio.
+      item.cantidad || 0, // Cantidad.
+      `₡ ${((item.Precio_total || item.Precio || 0) * (item.cantidad || 0)).toLocaleString()}`, // Total.
     ]);
-  
+
+    // Usa autoTable para agregar la tabla al PDF.
     doc.autoTable({
       startY: 60,
       head: [columnas],
       body: filas,
     });
-  
-    // Total final      
+
+    // Muestra el total al final de la factura.
     doc.setFontSize(14);
     doc.text(`Total: ₡ ${CalcularTotal().toLocaleString()}`, 20, doc.lastAutoTable.finalY + 10);
-  
-    // Descargar el PDF
+
+    // Descarga el PDF con un nombre único basado en el tiempo.
     doc.save(`Factura_${new Date().getTime()}.pdf`);
   };
-  
-  const Total= CalcularTotal()
-  console.log('El total es', Total);
+
+  // Calcula el total del carrito en colones.
+  const Total = CalcularTotal();
+  console.log('El total es', Total); // Muestra el total en consola.
+
+  // Convierte el total a dólares (asumiendo un tipo de cambio fijo de 512).
   const TotalDolares = Total / 512;
-  
+
 
   return (
     <div className="carrito-container">

@@ -17,145 +17,137 @@ import Footer from '../Footer/Footer';
 
 
 
+
 function PromocionesVisuali() {
-const [LitaPromociones, setListaPromociones]= useState([])
-const [abrirModal, setAbrirModal] = useState(false);
-const [carrito, setCarrito] = useState([]); // Estado del carrito
-const navigate= useNavigate();
-const [isLogin, setIsLogin] = useState(false);
-const [ListaProductos, setProducto]=useState([])
-const [alert, setAlert]= useState({show: false, message: '', variant: ''})
+  // Definición de estados
+  const [LitaPromociones, setListaPromociones] = useState([]); // Almacena las promociones disponibles.
+  const [abrirModal, setAbrirModal] = useState(false); // Controla la apertura y cierre de un modal.
+  const [carrito, setCarrito] = useState([]); // Almacena los productos añadidos al carrito.
+  const navigate = useNavigate(); // Hook para la navegación entre rutas.
+  const [isLogin, setIsLogin] = useState(false); // Verifica si el usuario ha iniciado sesión.
+  const [ListaProductos, setProducto] = useState([]); // Almacena la lista de productos disponibles.
+  const [alert, setAlert] = useState({ show: false, message: '', variant: '' }); // Almacena información para mostrar alertas.
 
-useEffect(()=>{
-  async function ObtenerPromociones() {
-    const Promociones= await GetPromociones()
-    setListaPromociones(Promociones)
-
-  }
-  const ObtenerProductos=async()=>{
-    const Productos= await GetProducts()
-    setProducto(Productos)
+  // Hook useEffect que se ejecuta al montar el componente.
+  useEffect(() => {
+    // Función para obtener las promociones desde el backend.
+    async function ObtenerPromociones() {
+      const Promociones = await GetPromociones(); // Llama a la función GetPromociones.
+      setListaPromociones(Promociones); // Actualiza el estado con las promociones obtenidas.
     }
-  const TokenCodigo= localStorage.getItem('access-token')
-  if (!TokenCodigo) {
-    console.log('No se encontro token en la sesion');
-    
-    
-  }
-  try {
-    if (TokenCodigo) {
-      setIsLogin(true);
+
+    // Función para obtener los productos desde el backend.
+    const ObtenerProductos = async () => {
+      const Productos = await GetProducts(); // Llama a la función GetProducts.
+      setProducto(Productos); // Actualiza el estado con los productos obtenidos.
+    };
+
+    // Recupera el token almacenado en el localStorage.
+    const TokenCodigo = localStorage.getItem('access-token');
+
+    // Verifica si el token no está presente.
+    if (!TokenCodigo) {
+      console.log('No se encontró token en la sesión');
     }
-    const tokenDecifrado= jwtDecode(TokenCodigo)
-    localStorage.setItem('Id_user',tokenDecifrado.user_id)
-    console.log(tokenDecifrado);
-    
 
-    
-  } catch (error) {
-    console.log('ERROR al decodificar el token', error);
-    
-  }
-  
-  
-  const EliminarLocal=()=>{
-    setTimeout(() => {
-      localStorage.clear()
-     
-      
+    try {
+      // Si hay un token, se establece que el usuario ha iniciado sesión.
+      if (TokenCodigo) {
+        setIsLogin(true);
+      }
 
-    }, 200000);
-   
-  }
+      // Decodifica el token para obtener información del usuario.
+      const tokenDecifrado = jwtDecode(TokenCodigo);
+      localStorage.setItem('Id_user', tokenDecifrado.user_id); // Almacena el ID del usuario en el localStorage.
+      console.log(tokenDecifrado);
+    } catch (error) {
+      console.log('ERROR al decodificar el token', error); // Muestra un error si no se pudo decodificar el token.
+    }
 
+    // Función para limpiar el localStorage después de cierto tiempo.
+    const EliminarLocal = () => {
+      setTimeout(() => {
+        localStorage.clear(); // Limpia el almacenamiento local después de 200 segundos.
+      }, 200000);
+    };
 
-const carritoGuardado= JSON.parse(localStorage.getItem("CarritoSelecccionado"))
-if (carritoGuardado) {
-  setCarrito(carritoGuardado)
-}
-  ObtenerPromociones()
-  EliminarLocal()
-  ObtenerProductos()
+    // Recupera el carrito almacenado en el localStorage.
+    const carritoGuardado = JSON.parse(localStorage.getItem("CarritoSelecccionado"));
+    if (carritoGuardado) {
+      setCarrito(carritoGuardado); // Si hay un carrito guardado, se carga en el estado.
+    }
 
+    // Llamadas a las funciones para obtener datos y limpiar el localStorage.
+    ObtenerPromociones();
+    EliminarLocal();
+    ObtenerProductos();
+  }, []); // El array vacío asegura que se ejecute solo al montar el componente.
 
-},[])
-
-
-
-
-
-  // Función para agregar producto al carrito
-  const agregarAlCarrito = (producto) => { //producto es un objeto que trae la informacion de producto que queremos agregar
-    setCarrito((prevCarrito) => { //Seteo el estado de setCarrito y prevCarrito es el producto actual antes de agregar otro producto
-      const existe = prevCarrito.find((item) => item.id === producto.id && item.tipo === producto.tipo); //Buscamos si el productos que queremos agregar esta en el carrito
+  // Función para agregar un producto al carrito.
+  const agregarAlCarrito = (producto) => {
+    setCarrito((prevCarrito) => { // Actualiza el estado del carrito.
+      // Busca si el producto ya existe en el carrito.
+      const existe = prevCarrito.find((item) => item.id === producto.id && item.tipo === producto.tipo);
       if (existe) {
-        setAlert({show: true, message: 'Producto Agregado al carrito de compras'})
+        setAlert({ show: true, message: 'Producto Agregado al carrito de compras' });
 
-        // Y si el producto ya está en el carrito, incrementa la cantidad
-        return prevCarrito.map((item) => //uso el map para recorrer el producto del carrito y verifica si el id es igual al producto que esta en el carrito y si es igual se incremnta
+        // Si el producto ya existe, incrementa su cantidad.
+        return prevCarrito.map((item) =>
           item.id === producto.id && item.tipo === producto.tipo
-            ? { ...item, cantidad: item.cantidad + 1 }//'...' es para crear una copia del objeto producto y le añado una propiedad cantidad que va aunmentar en uno
+            ? { ...item, cantidad: item.cantidad + 1 } // Copia el objeto y aumenta la cantidad.
             : item
         );
-        
-      } 
-      
-      else {
-        setAlert({show: true, message: 'Producto Agregado al carrito de compras'})
-        // Si no está, agrégalo al carrito con cantidad inicial 1
-        return [...prevCarrito, { ...producto, cantidad: 1 }];//  ([...]) para crear un nuevo arreglo que incluye todos los datos de los productos anteriores
-      
+      } else {
+        setAlert({ show: true, message: 'Producto Agregado al carrito de compras' });
+        // Si no existe, lo agrega al carrito con cantidad inicial de 1.
+        return [...prevCarrito, { ...producto, cantidad: 1 }];
       }
-      
     });
   };
-console.log(carrito);
 
-   // Función para eliminar un producto del carrito
-   const eliminarDelCarrito = (id) => {
-    setCarrito((prevCarrito) => prevCarrito.filter((item) => item.id !== id));
-    setAlert({show: true, message: 'Producto Eliminado del carrito de compras', variant: 'warning'})
-    
+  console.log(carrito); // Muestra el contenido del carrito en consola.
+
+  // Función para eliminar un producto del carrito por su ID.
+  const eliminarDelCarrito = (id) => {
+    setCarrito((prevCarrito) => prevCarrito.filter((item) => item.id !== id)); // Filtra y elimina el producto con el ID especificado.
+    setAlert({ show: true, message: 'Producto Eliminado del carrito de compras', variant: 'warning' });
   };
 
-  const actualizarCantidad = (id, tipo ,nuevaCantidad ) => {
+  // Función para actualizar la cantidad de un producto en el carrito.
+  const actualizarCantidad = (id, tipo, nuevaCantidad) => {
     setCarrito((prevCarrito) =>
       prevCarrito.map((item) =>
         item.id === id && item.tipo === tipo
-    ? { ...item, cantidad: nuevaCantidad > 0 ? nuevaCantidad : 0 }
-    : item
+          ? { ...item, cantidad: nuevaCantidad > 0 ? nuevaCantidad : 0 } // Actualiza la cantidad si es mayor a 0.
+          : item
       )
     );
   };
 
+  // Calcula el subtotal del carrito.
+  const subtotal = carrito.reduce(
+    (acc, item) => acc + item.cantidad * item.Precio_total || acc + item.cantidad * item.Precio,
+    0
+  );
 
-    // Calcular el subtotal y total
-    const subtotal = carrito.reduce(
-      (acc, item) => acc + item.cantidad * item.Precio_total || acc + item.cantidad * item.Precio,
-      0
-    );
+  // Función para manejar el proceso de compra.
+  const ManejarCarrito = () => {
+    const id_cliente = localStorage.getItem('Id_user'); // Recupera el ID del usuario.
+    if (!id_cliente) {
+      setAlert({ show: true, message: 'Debes Iniciar sesión para continuar la compra', variant: 'warning' });
+      return; // Si no hay ID, muestra una alerta y detiene el proceso.
+    }
+    localStorage.setItem('CarritoSelecccionado', JSON.stringify(carrito, subtotal)); // Guarda el carrito en el localStorage.
+    navigate('/confirmar/compra'); // Redirige a la página de confirmación de compra.
+  };
 
-
-const ManejarCarrito=()=>{
-  
-  const id_cliente= localStorage.getItem('Id_user')
- 
-  if (!id_cliente) {
-    setAlert({show: true, message: 'Debes Iniciar sesion para continuar la compra', variant: 'warning'})
-    return 
+  // Función para cerrar sesión.
+  function CerrarSesion() {
+    localStorage.clear(); // Limpia el almacenamiento local.
+    window.location.reload(); // Recarga la página.
+    navigate('/'); // Redirige a la página principal.
   }
-  localStorage.setItem('CarritoSelecccionado', JSON.stringify(carrito, subtotal))
-  navigate('/confirmar/compra')
 
-}
-
-
-
-function CerrarSesion() {
-  localStorage.clear()
-  window.location.reload()
-  navigate('/')
-}
 
 
 

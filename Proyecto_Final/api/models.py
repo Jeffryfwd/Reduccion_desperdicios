@@ -4,12 +4,14 @@ from django.contrib.auth.models import User
 from datetime import date
 
 # Create your models here.
+#Modelo Categorias
 class Categoria(models.Model):
     Categoria=models.CharField(max_length=100)
     
     def __str__(self):
         return self.Categoria
 
+#Modelo productos
 class Productos(models.Model):
     Nombre_producto = models.CharField(max_length=100, null=False, blank=False)
     Imagen_Producto= models.URLField()
@@ -22,31 +24,8 @@ class Productos(models.Model):
     def __str__(self):
         return f"{self.Nombre_producto} - {self.Categoria} - {self.Fecha_vencimiento} - {self.Cantidad} - {self.Estado}"
 
-class Alerta(models.Model):
-    id_producto= models.ForeignKey(Productos, on_delete=models.CASCADE)
-    Fecha_alerta= models.DateField(null=False, blank=False)
-    Mensaje= models.CharField(max_length=100, null=False, blank=False)
-    
-    def __str__(self):
-        return self.id_producto, self.Fecha_alerta, self.Mensaje
-    
-    
 
-    
-    
-class Inventario(models.Model):
-    Nombre_producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
-    Cantidad_actual = models.IntegerField(null=False, blank=False)
-    Seccion = models.CharField(max_length=100, null=False, blank=False)
-    
-    def __str__(self):
-        return f"{self.Nombre_producto} - {self.Cantidad_actual} - {self.Seccion}"
-    
-  
-  
-
-    
-    
+#Modelo Promociones
 class Promociones(models.Model):
     id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
     url_imagen= models.URLField()
@@ -59,7 +38,7 @@ class Promociones(models.Model):
         return f"{self.id_producto.Nombre_producto} - {self.Descuento}% - {self.Precio_total}"
 
     
-    
+   #Modelo ventas 
 class Ventas(models.Model):
     id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE, null=True, blank=True)
     id_promociones = models.ForeignKey(Promociones, on_delete=models.CASCADE, null=True, blank=True)
@@ -73,36 +52,7 @@ class Ventas(models.Model):
         return f"{self.Cliente.first_name} - {self.id_producto.Nombre_producto}"
 
      
-     
-     
-class Reporte(models.Model):
-    Fecha_reporte= models.DateField(null=False, blank=False)
-    Mes_reporte= models.CharField(max_length=100, null=False, blank=False)
-    Total_ventas= models.DecimalField(max_digits=15, decimal_places=2, null=False,blank=False)
-    Ventas_asociadas= models.ManyToManyField('Ventas')
-    
-    
-    def __str__(self):
-        return self.Fecha_reporte, self.Mes_reporte, self.Total_ventas
-    
-    
-
-    
-    
-class Empresa(models.Model):
-    Nombre_empresa = models.CharField(max_length=100, null=False, blank=False, unique=False)
-    Ubicacion = models.CharField(max_length=100, blank=False, null=False)
-    Actividad_principal = models.CharField(max_length=100, null=False, blank=False)
-    Descripcion = models.CharField(max_length=100, null=False, blank=False)
-    Telefono = models.IntegerField(null=False, blank=False)
-    Email_empresa = models.EmailField(null=False, blank=False)
-    Fecha_fundacion = models.DateField(null=False, blank=False)
-    
-    def __str__(self):
-        # Formatea una cadena con la información más relevante
-        return f"{self.Nombre_empresa} - {self.Ubicacion} ({self.Actividad_principal})"
-
-
+   #Modelo Usuarios  
 class Usuarios(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     Numero_telefono= models.CharField(max_length=100, null=False, blank=False)

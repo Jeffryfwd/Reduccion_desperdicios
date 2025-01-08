@@ -33,7 +33,7 @@ const CerrarSesion=()=>{
   navigate('/login')
   
 }
-async function EliminarPromociones(id) {
+async function EliminarPromociones(id) { 
   try {
     await DeletePromociones(id);
     const ListaActualizada= await GetPromociones();
@@ -56,14 +56,14 @@ function AbrirModal(product) {
   
 }
 //Calcula el descuento
-function calcularDescuento(descuento, precio) {
+function calcularDescuento(descuento, precio) { //funcion de calcular descuento, precio
   if (isNaN(precio)) {
     console.error("Valores inválidos:", { descuento, precio });
     SetDatosPromocion(prev => ({ ...prev, Precio_total: 0 }));
     return;
   }
-  const descuentoPorcentaje = descuento / 100;
-  const PrecioConDescuento = precio - (precio * descuentoPorcentaje);
+  const descuentoPorcentaje = descuento / 100; //convierto el porcenta del descuento en decimal
+  const PrecioConDescuento = precio - (precio * descuentoPorcentaje); //Calculo el precio con descuento
   SetDatosPromocion(prev => ({
     ...prev,
     Precio_total: PrecioConDescuento > 0 ? PrecioConDescuento.toFixed(2) : 0

@@ -9,7 +9,8 @@ import { Alert } from 'react-bootstrap'
 
 function AñadirProducto() {
   Autenticacion()
-    const[Nombre_producto, setNombre]= useState("")
+  //Manejo el estado de los input
+    const[Nombre_producto, setNombre]= useState("") 
     const[Fecha_vencimiento, setFecha]= useState("")
     const[Cantidad, setCantidad]=useState("")
     const[Categoria, setCategoria]=useState("")
