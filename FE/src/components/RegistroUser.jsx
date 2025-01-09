@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import '../css/Register.css'
 
 function RegistroUser() {
+
 const [first_name, setPrimerNombre]= useState("")
 const[last_name, setApellido]= useState("")
 const [username, setNombre]= useState("")
@@ -31,9 +32,7 @@ const CargarCorreo=(event)=>{
 const CargarContra=(event)=>{
     setContraseña(event.target.value)
 }
-const CargarRol=(event)=>{
-    setRol(event.target.value)
-}
+
 
 
 
