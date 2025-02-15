@@ -22,7 +22,7 @@ function Principal() {
     ObtenerProductos();
   }, []);
 
-  console.log(datosModal)
+ 
 
   function AbrirModal(product) {
     setModal(product);
@@ -34,7 +34,7 @@ function Principal() {
   async function EditarProducto() {
     const { id, Nombre_producto, Fecha_vencimiento,Cantidad, Precio,Categoria,Estado} = datosModal; //Hago una destructuracion de datos
     try {
-      await PutProduct(id, Nombre_producto, Fecha_vencimiento,Cantidad, Precio, Categoria,Estado); // llamamos esta operacion asincronica
+      await PutProduct(id, Nombre_producto, Fecha_vencimiento,Cantidad, Precio,Estado, Categoria); // llamamos esta operacion asincronica
       const productoActualizado = await GetProducts();
       setProductos(productoActualizado);
       setAlert({show: true, message: '¡Producto Actualizado con exito!'})
@@ -63,7 +63,7 @@ function Principal() {
     
     
   }
-  console.log(ListaProductos);
+ 
 
   //Funcion de cerrar sesion
   const CerrarSesion=()=>{

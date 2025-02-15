@@ -62,20 +62,31 @@ async function PutProduct(id, Nombre_producto, Fecha_vencimiento, Cantidad, Prec
             Fecha_vencimiento,
              Cantidad,
               Precio, 
-              Estado,
-              Categoria
+              Estado : String(Estado), 
+              Categoria: Categoria.id
         }
+        console.log('esto lo que mando de categoria',userData);
+        
         // Asegúrate de que la URL incluya el id de la tarea que quieres eliminar
         const response = await fetch(`http://127.0.0.1:8000/api/productos/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Authorization': tokenBearer,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(userData)
+            body: JSON.stringify(userData),
+           
+            
         });
-        return await response.json();
-
+        const result = await response.json();  // Solo una vez
+        if (!response.ok) {
+          console.error('Error en PATCH:', result);
+        } else {
+          console.log('Producto actualizado:', result);
+        }
+        
+        
+        
         
     } catch (error) {
         console.error('Error deleting task:', error);
@@ -98,7 +109,7 @@ async function Postproducts(Nombre_producto, Fecha_vencimiento,Cantidad,Estado,P
              Categoria,//: { Categoria: Categoria.Categoria }
             Imagen_Producto
         };
-        console.log(userData.Categoria);
+       
         const response = await fetch("http://127.0.0.1:8000/api/productos/", {
             method: 'POST',
             headers: {

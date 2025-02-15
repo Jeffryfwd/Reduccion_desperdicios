@@ -407,19 +407,20 @@ class ProductoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Productos.objects.all()
     serializer_class = ProductoSerializer
 
-    def put(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Producto actualizado exitosamente", "data": serializer.data},
-                status=status.HTTP_200_OK
-            )
+    def patch(self, request, *args, **kwargs):
+     instance = self.get_object()
+     serializer = self.get_serializer(instance, data=request.data, partial=True)  # partial=True
+
+     if serializer.is_valid():
+        serializer.save()
         return Response(
-            {"message": "Error al actualizar el producto", "data": serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST
+            {"message": "Producto actualizado exitosamente", "data": serializer.data},
+            status=status.HTTP_200_OK
         )
+     return Response(
+        {"message": "Error al actualizar el producto", "errors": serializer.errors},
+        status=status.HTTP_400_BAD_REQUEST
+    )
 
     def delete(self, request, *args, **kwargs):
         instance = self.get_object()

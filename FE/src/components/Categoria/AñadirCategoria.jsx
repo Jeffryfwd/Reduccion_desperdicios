@@ -8,25 +8,24 @@ import '../../css/Categoria.css'
 import { Alert } from 'react-bootstrap'
 function AñadirCategoria() {
     const [Categoria, setCategoria]= useState("")
-    const [ListaCategoria, setListaCategoria]=useState([])
+    const [ListaCategoria, setListaCategoria] = useState([])
     const [DatoCategoria, setDatoCategoria]= useState([])
     const [alert, setAlert]= useState({show: false, message: '', variant: ''})
 
 
 
-useEffect(()=>{
-const ObtenerCategorias = async () => {
-  try {
-    const Categorias = await GetCategoria();
-    setListaCategoria(Categorias);
-  } catch (error) {
-    console.error("Error al obtener categorías:", error);
-  } 
-};
-
-ObtenerCategorias()
-
-},[])
+    useEffect(() => {
+      const ObtenerCategorias = async () => {
+        try {
+          const Categorias = await GetCategoria();
+          setListaCategoria(Categorias);
+        } catch (error) {
+          console.error("Error al obtener categorías:", error);
+        }
+      };
+      ObtenerCategorias();
+    }, [ListaCategoria]);
+    
 
     const CargarCategoria=(e)=>{
         setCategoria(e.target.value)
@@ -41,14 +40,14 @@ ObtenerCategorias()
  const AddCategoria= async(e)=>{
   e.preventDefault();
   try {
-    if (DatoCategoria.id) {
+    if (DatoCategoria?.id) {
         // Actualiza la categoría si existe un ID
         await PutCategoria(DatoCategoria.id, Categoria)
-        alert('Categoría actualizada con éxito')
+        setAlert({ show: true, message: 'Categoría actualizada con éxito', variant: 'success' });
     } else {
         // Agrega una nueva categoría si no existe ID
         await PostCategoria(Categoria)
-        alert('Categoría agregada con éxito')
+        setAlert({ show: true, message: 'Categoría agregada con éxito', variant: 'success' });
     }
 
     const ListaActualizada = await GetCategoria()
@@ -81,21 +80,21 @@ ObtenerCategorias()
         }
        
       }
-      async function EditarCategoria() {
-        const {id, Categoria} = DatoCategoria;
-        try {
-          await PutCategoria(id, Categoria)
+      // async function EditarCategoria() {
+      //   const {id, Categoria} = DatoCategoria;
+      //   try {
+      //     await PutCategoria(id, Categoria)
           
-          const CategriaActulizada= GetCategoria()
-          setListaCategoria(CategriaActulizada)
-          setAlert({show: true, message: 'Categoria acyualizada con exito'})
+      //     const CategriaActulizada= GetCategoria()
+      //     setListaCategoria(CategriaActulizada)
+      //     setAlert({show: true, message: 'Categoria acyualizada con exito'})
 
-        } catch (error) {
-          setAlert({show: true, message: 'Hubo error en actualizar la categoria', variant: 'danger'})
+      //   } catch (error) {
+      //     setAlert({show: true, message: 'Hubo error en actualizar la categoria', variant: 'danger'})
           
-        }
+      //   }
        
-      }
+      // }
     
   return (
     <div>
@@ -133,7 +132,7 @@ ObtenerCategorias()
           onChange={CargarCategoria}
         />
       </div>
-      <button type="submit" className="form-submit" onClick={()=>EditarCategoria()}>Añadir Categoría</button>
+      <button type="submit" className="form-submit" >Añadir Categoría</button>
     </form>
   </div>
   <div className="table-container">

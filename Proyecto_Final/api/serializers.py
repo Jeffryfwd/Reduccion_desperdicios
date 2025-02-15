@@ -20,6 +20,9 @@ class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Productos
         fields = '__all__'
+        extra_kwargs = {
+            'Imagen_Producto': {'required': False}  # No requerido en PATCH
+        }
 
     def validate_Fecha_vencimiento(self, value): #Definimos una validacion value=valor ingresado
         if value < date.today():
